@@ -9,6 +9,7 @@ using osu.Game.Rulesets.Osu.Objects.Drawables;
 using System;
 using System.Diagnostics;
 using osu.Framework.Graphics;
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Replays;
 
@@ -36,7 +37,7 @@ namespace osu.Game.Rulesets.Osu.Replays
         /// <summary>
         /// What easing to use when moving between hitobjects
         /// </summary>
-        private EasingTypes preferredEasing => DelayedMovements ? EasingTypes.InOutCubic : EasingTypes.Out;
+        private Easing preferredEasing => DelayedMovements ? Easing.InOutCubic : Easing.Out;
 
         #endregion
 
@@ -89,20 +90,20 @@ namespace osu.Game.Rulesets.Osu.Replays
             double endTime = (prev as IHasEndTime)?.EndTime ?? prev.StartTime;
 
             // Make the cursor stay at a hitObject as long as possible (mainly for autopilot).
-            if (h.StartTime - h.HitWindowFor(OsuScoreResult.Miss) > endTime + h.HitWindowFor(OsuScoreResult.Hit50) + 50)
+            if (h.StartTime - h.HitWindowFor(HitResult.Miss) > endTime + h.HitWindowFor(HitResult.Meh) + 50)
             {
-                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(OsuScoreResult.Hit50), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
-                if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(OsuScoreResult.Miss), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
+                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Meh), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
+                if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(HitResult.Miss), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
             }
-            else if (h.StartTime - h.HitWindowFor(OsuScoreResult.Hit50) > endTime + h.HitWindowFor(OsuScoreResult.Hit50) + 50)
+            else if (h.StartTime - h.HitWindowFor(HitResult.Meh) > endTime + h.HitWindowFor(HitResult.Meh) + 50)
             {
-                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(OsuScoreResult.Hit50), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
-                if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(OsuScoreResult.Hit50), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
+                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Meh), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
+                if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(HitResult.Meh), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
             }
-            else if (h.StartTime - h.HitWindowFor(OsuScoreResult.Hit100) > endTime + h.HitWindowFor(OsuScoreResult.Hit100) + 50)
+            else if (h.StartTime - h.HitWindowFor(HitResult.Good) > endTime + h.HitWindowFor(HitResult.Good) + 50)
             {
-                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(OsuScoreResult.Hit100), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
-                if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(OsuScoreResult.Hit100), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
+                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Good), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
+                if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(HitResult.Good), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
             }
         }
 
@@ -110,7 +111,7 @@ namespace osu.Game.Rulesets.Osu.Replays
         {
             // Default values for circles/sliders
             Vector2 startPosition = h.StackedPosition;
-            EasingTypes easing = preferredEasing;
+            Easing easing = preferredEasing;
             float spinnerDirection = -1;
 
             // The startPosition for the slider should not be its .Position, but the point on the circle whose tangent crosses the current cursor position
@@ -125,7 +126,7 @@ namespace osu.Game.Rulesets.Osu.Replays
                 if (spinCentreOffset.Length > SPIN_RADIUS)
                 {
                     // If moving in from the outside, don't ease out (default eases out). This means auto will "start" spinning immediately after moving into position.
-                    easing = EasingTypes.In;
+                    easing = Easing.In;
                 }
             }
 
@@ -190,7 +191,7 @@ namespace osu.Game.Rulesets.Osu.Replays
             }
         }
 
-        private void moveToHitObject(double targetTime, Vector2 targetPos, double hitObjectRadius, EasingTypes easing)
+        private void moveToHitObject(double targetTime, Vector2 targetPos, double hitObjectRadius, Easing easing)
         {
             ReplayFrame lastFrame = Frames[Frames.Count - 1];
 

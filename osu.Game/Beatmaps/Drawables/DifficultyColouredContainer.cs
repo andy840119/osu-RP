@@ -3,7 +3,6 @@
 
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Containers;
-using osu.Game.Database;
 using osu.Game.Graphics;
 using OpenTK.Graphics;
 
@@ -34,7 +33,8 @@ namespace osu.Game.Beatmaps.Drawables
             Normal,
             Hard,
             Insane,
-            Expert
+            Expert,
+            ExpertPlus
         }
 
         private DifficultyRating getDifficultyRating(BeatmapInfo beatmap)
@@ -45,7 +45,8 @@ namespace osu.Game.Beatmaps.Drawables
             if (rating < 2.25) return DifficultyRating.Normal;
             if (rating < 3.75) return DifficultyRating.Hard;
             if (rating < 5.25) return DifficultyRating.Insane;
-            return DifficultyRating.Expert;
+            if (rating < 6.75) return DifficultyRating.Expert;
+            return DifficultyRating.ExpertPlus;
         }
 
         private Color4 getColour(BeatmapInfo beatmap)
@@ -56,12 +57,14 @@ namespace osu.Game.Beatmaps.Drawables
                     return palette.Green;
                 default:
                 case DifficultyRating.Normal:
-                    return palette.Yellow;
+                    return palette.Blue;
                 case DifficultyRating.Hard:
-                    return palette.Pink;
+                    return palette.Yellow;
                 case DifficultyRating.Insane:
-                    return palette.Purple;
+                    return palette.Pink;
                 case DifficultyRating.Expert:
+                    return palette.Purple;
+                case DifficultyRating.ExpertPlus:
                     return palette.Gray0;
             }
         }

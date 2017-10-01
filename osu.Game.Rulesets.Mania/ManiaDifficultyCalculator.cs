@@ -2,10 +2,10 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using osu.Game.Beatmaps;
-using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.Mania.Beatmaps;
 using osu.Game.Rulesets.Mania.Objects;
 using System.Collections.Generic;
+using System;
 
 namespace osu.Game.Rulesets.Mania
 {
@@ -21,6 +21,6 @@ namespace osu.Game.Rulesets.Mania
             return 0;
         }
 
-        protected override BeatmapConverter<ManiaHitObject> CreateBeatmapConverter() => new ManiaBeatmapConverter();
+        protected override BeatmapConverter<ManiaHitObject> CreateBeatmapConverter() => new ManiaBeatmapConverter(true, (int)Math.Max(1, Math.Round(Beatmap.BeatmapInfo.Difficulty.CircleSize)));
     }
 }

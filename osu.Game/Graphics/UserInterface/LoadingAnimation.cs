@@ -9,7 +9,7 @@ namespace osu.Game.Graphics.UserInterface
 {
     public class LoadingAnimation : VisibilityContainer
     {
-        private readonly TextAwesome spinner;
+        private readonly SpriteIcon spinner;
 
         public LoadingAnimation()
         {
@@ -20,9 +20,9 @@ namespace osu.Game.Graphics.UserInterface
 
             Children = new Drawable[]
             {
-                spinner = new TextAwesome
+                spinner = new SpriteIcon
                 {
-                    TextSize = 20,
+                    Size = new Vector2(20),
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Icon = FontAwesome.fa_spinner
@@ -34,15 +34,13 @@ namespace osu.Game.Graphics.UserInterface
         {
             base.LoadComplete();
 
-            spinner.RotateTo(360, 2000);
-            using (spinner.BeginDelayedSequence(2000))
-                spinner.Loop();
+            spinner.Spin(2000, RotationDirection.Clockwise);
         }
 
         private const float transition_duration = 500;
 
-        protected override void PopIn() => FadeIn(transition_duration * 5, EasingTypes.OutQuint);
+        protected override void PopIn() => this.FadeIn(transition_duration * 5, Easing.OutQuint);
 
-        protected override void PopOut() => FadeOut(transition_duration, EasingTypes.OutQuint);
+        protected override void PopOut() => this.FadeOut(transition_duration, Easing.OutQuint);
     }
 }

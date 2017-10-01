@@ -12,22 +12,22 @@ using osu.Framework.Configuration;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input;
 using osu.Framework.Localisation;
+using osu.Framework.Threading;
 using osu.Game.Beatmaps;
-using osu.Game.Database;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
-using osu.Framework.Threading;
 using osu.Game.Overlays.Music;
 using osu.Game.Graphics.UserInterface;
-using osu.Framework.Graphics.Shapes;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Overlays
 {
-    public class MusicController : FocusedOverlayContainer
+    public class MusicController : OsuFocusedOverlayContainer
     {
         private const float player_height = 130;
 
@@ -38,9 +38,11 @@ namespace osu.Game.Overlays
         private const float bottom_black_area_height = 55;
 
         private Drawable currentBackground;
-        private DragBar progressBar;
+        private ProgressBar progressBar;
 
+        private IconButton prevButton;
         private IconButton playButton;
+        private IconButton nextButton;
         private IconButton playlistButton;
 
         private SpriteText title, artist;
@@ -58,6 +60,9 @@ namespace osu.Game.Overlays
         {
             Width = 400;
             Margin = new MarginPadding(10);
+
+            // required to let MusicController handle beatmap cycling.
+            AlwaysPresent = true;
         }
 
         protected override bool OnDragStart(InputState state) => true;
@@ -77,7 +82,7 @@ namespace osu.Game.Overlays
 
         protected override bool OnDragEnd(InputState state)
         {
-            dragContainer.MoveTo(Vector2.Zero, 800, EasingTypes.OutElastic);
+            dragContainer.MoveTo(Vector2.Zero, 800, Easing.OutElastic);
             return base.OnDragEnd(state);
         }
 
@@ -154,7 +159,7 @@ namespace osu.Game.Overlays
                                             Anchor = Anchor.Centre,
                                             Children = new[]
                                             {
-                                                new IconButton
+                                                prevButton = new IconButton
                                                 {
                                                     Action = prev,
                                                     Icon = FontAwesome.fa_step_backward,
@@ -166,7 +171,7 @@ namespace osu.Game.Overlays
                                                     Action = play,
                                                     Icon = FontAwesome.fa_play_circle_o,
                                                 },
-                                                new IconButton
+                                                nextButton = new IconButton
                                                 {
                                                     Action = next,
                                                     Icon = FontAwesome.fa_step_forward,
@@ -183,13 +188,13 @@ namespace osu.Game.Overlays
                                         },
                                     }
                                 },
-                                progressBar = new DragBar
+                                progressBar = new ProgressBar
                                 {
                                     Origin = Anchor.BottomCentre,
                                     Anchor = Anchor.BottomCentre,
                                     Height = progress_height,
-                                    Colour = colours.Yellow,
-                                    SeekRequested = seek
+                                    FillColour = colours.Yellow,
+                                    OnSeek = progress => current?.Track.Seek(progress)
                                 }
                             },
                         },
@@ -199,15 +204,26 @@ namespace osu.Game.Overlays
 
             beatmapBacking.BindTo(game.Beatmap);
 
-            playlist.StateChanged += (c, s) => playlistButton.FadeColour(s == Visibility.Visible ? colours.Yellow : Color4.White, 200, EasingTypes.OutQuint);
+            playlist.StateChanged += s => playlistButton.FadeColour(s == Visibility.Visible ? colours.Yellow : Color4.White, 200, Easing.OutQuint);
         }
 
         protected override void LoadComplete()
         {
             beatmapBacking.ValueChanged += beatmapChanged;
+            beatmapBacking.DisabledChanged += beatmapDisabledChanged;
             beatmapBacking.TriggerChange();
 
             base.LoadComplete();
+        }
+
+        private void beatmapDisabledChanged(bool disabled)
+        {
+            if (disabled)
+                playlist.Hide();
+
+            prevButton.Enabled.Value = !disabled;
+            nextButton.Enabled.Value = !disabled;
+            playlistButton.Enabled.Value = !disabled;
         }
 
         protected override void UpdateAfterChildren()
@@ -224,10 +240,13 @@ namespace osu.Game.Overlays
             {
                 var track = current.Track;
 
-                progressBar.UpdatePosition(track.Length == 0 ? 0 : (float)(track.CurrentTime / track.Length));
+                progressBar.EndTime = track.Length;
+                progressBar.CurrentTime = track.CurrentTime;
+
                 playButton.Icon = track.IsRunning ? FontAwesome.fa_pause_circle_o : FontAwesome.fa_play_circle_o;
 
-                if (track.HasCompleted && !track.Looping) next();
+                if (track.HasCompleted && !track.Looping && !beatmapBacking.Disabled)
+                    next();
             }
             else
                 playButton.Icon = FontAwesome.fa_play_circle_o;
@@ -239,7 +258,8 @@ namespace osu.Game.Overlays
 
             if (track == null)
             {
-                playlist.PlayNext();
+                if (!beatmapBacking.Disabled)
+                    playlist.PlayNext();
                 return;
             }
 
@@ -266,13 +286,11 @@ namespace osu.Game.Overlays
 
         private void beatmapChanged(WorkingBeatmap beatmap)
         {
-            progressBar.IsEnabled = beatmap != null;
-
             TransformDirection direction = TransformDirection.None;
 
             if (current != null)
             {
-                bool audioEquals = beatmapBacking.Value?.BeatmapInfo?.AudioEquals(current.BeatmapInfo) ?? false;
+                bool audioEquals = beatmap?.BeatmapInfo?.AudioEquals(current.BeatmapInfo) ?? false;
 
                 if (audioEquals)
                     direction = TransformDirection.None;
@@ -284,16 +302,19 @@ namespace osu.Game.Overlays
                 else
                 {
                     //figure out the best direction based on order in playlist.
-                    var last = playlist.BeatmapSets.TakeWhile(b => b.ID != current.BeatmapSetInfo.ID).Count();
-                    var next = beatmapBacking.Value == null ? -1 : playlist.BeatmapSets.TakeWhile(b => b.ID != beatmapBacking.Value.BeatmapSetInfo.ID).Count();
+                    var last = playlist.BeatmapSets.TakeWhile(b => b.ID != current.BeatmapSetInfo?.ID).Count();
+                    var next = beatmap == null ? -1 : playlist.BeatmapSets.TakeWhile(b => b.ID != beatmap.BeatmapSetInfo?.ID).Count();
 
                     direction = last > next ? TransformDirection.Prev : TransformDirection.Next;
                 }
             }
 
-            current = beatmapBacking.Value;
+            current = beatmap;
 
-            updateDisplay(beatmapBacking, direction);
+            progressBar.CurrentTime = 0;
+
+            updateDisplay(current, direction);
+
             queuedDirection = null;
         }
 
@@ -327,23 +348,23 @@ namespace osu.Game.Overlays
 
                 playerContainer.Add(new AsyncLoadWrapper(new Background(beatmap)
                 {
-                    OnLoadComplete = d =>
+                    OnLoadComplete = newBackground =>
                     {
                         switch (direction)
                         {
                             case TransformDirection.Next:
-                                d.Position = new Vector2(400, 0);
-                                d.MoveToX(0, 500, EasingTypes.OutCubic);
-                                currentBackground.MoveToX(-400, 500, EasingTypes.OutCubic);
+                                newBackground.Position = new Vector2(400, 0);
+                                newBackground.MoveToX(0, 500, Easing.OutCubic);
+                                currentBackground.MoveToX(-400, 500, Easing.OutCubic);
                                 break;
                             case TransformDirection.Prev:
-                                d.Position = new Vector2(-400, 0);
-                                d.MoveToX(0, 500, EasingTypes.OutCubic);
-                                currentBackground.MoveToX(400, 500, EasingTypes.OutCubic);
+                                newBackground.Position = new Vector2(-400, 0);
+                                newBackground.MoveToX(0, 500, Easing.OutCubic);
+                                currentBackground.MoveToX(400, 500, Easing.OutCubic);
                                 break;
                         }
                         currentBackground.Expire();
-                        currentBackground = d;
+                        currentBackground = newBackground;
                     }
                 })
                 {
@@ -352,26 +373,20 @@ namespace osu.Game.Overlays
             });
         }
 
-        private void seek(float position)
-        {
-            var track = current?.Track;
-            track?.Seek(track.Length * position);
-        }
-
         protected override void PopIn()
         {
             base.PopIn();
 
-            FadeIn(transition_length, EasingTypes.OutQuint);
-            dragContainer.ScaleTo(1, transition_length, EasingTypes.OutElastic);
+            this.FadeIn(transition_length, Easing.OutQuint);
+            dragContainer.ScaleTo(1, transition_length, Easing.OutElastic);
         }
 
         protected override void PopOut()
         {
             base.PopOut();
 
-            FadeOut(transition_length, EasingTypes.OutQuint);
-            dragContainer.ScaleTo(0.9f, transition_length, EasingTypes.OutQuint);
+            this.FadeOut(transition_length, Easing.OutQuint);
+            dragContainer.ScaleTo(0.9f, transition_length, Easing.OutQuint);
         }
 
         private enum TransformDirection
@@ -397,6 +412,7 @@ namespace osu.Game.Overlays
                 {
                     sprite = new Sprite
                     {
+                        RelativeSizeAxes = Axes.Both,
                         Colour = OsuColour.Gray(150),
                         FillMode = FillMode.Fill,
                     },

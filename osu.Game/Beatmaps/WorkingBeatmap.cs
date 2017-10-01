@@ -4,7 +4,6 @@
 using osu.Framework.Audio.Track;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics.Textures;
-using osu.Game.Database;
 using osu.Game.Rulesets.Mods;
 using System;
 using System.Collections.Generic;
@@ -22,14 +21,11 @@ namespace osu.Game.Beatmaps
 
         public readonly Bindable<IEnumerable<Mod>> Mods = new Bindable<IEnumerable<Mod>>(new Mod[] { });
 
-        public readonly bool WithStoryboard;
-
-        protected WorkingBeatmap(BeatmapInfo beatmapInfo, bool withStoryboard = false)
+        protected WorkingBeatmap(BeatmapInfo beatmapInfo)
         {
             BeatmapInfo = beatmapInfo;
             BeatmapSetInfo = beatmapInfo.BeatmapSet;
-            Metadata = beatmapInfo.Metadata ?? BeatmapSetInfo.Metadata;
-            WithStoryboard = withStoryboard;
+            Metadata = beatmapInfo.Metadata ?? BeatmapSetInfo?.Metadata ?? new BeatmapMetadata();
 
             Mods.ValueChanged += mods => applyRateAdjustments();
         }
@@ -56,7 +52,14 @@ namespace osu.Game.Beatmaps
             {
                 lock (beatmapLock)
                 {
-                    return beatmap ?? (beatmap = GetBeatmap());
+                    if (beatmap != null) return beatmap;
+
+                    beatmap = GetBeatmap() ?? new Beatmap();
+
+                    // use the database-backed info.
+                    beatmap.BeatmapInfo = BeatmapInfo;
+
+                    return beatmap;
                 }
             }
         }
@@ -84,7 +87,9 @@ namespace osu.Game.Beatmaps
                 {
                     if (track != null) return track;
 
-                    track = GetTrack();
+                    // we want to ensure that we always have a track, even if it's a fake one.
+                    track = GetTrack() ?? new TrackVirtual();
+
                     applyRateAdjustments();
                     return track;
                 }
@@ -95,8 +100,11 @@ namespace osu.Game.Beatmaps
 
         public void TransferTo(WorkingBeatmap other)
         {
-            if (track != null && BeatmapInfo.AudioEquals(other.BeatmapInfo))
-                other.track = track;
+            lock (trackLock)
+            {
+                if (track != null && BeatmapInfo.AudioEquals(other.BeatmapInfo))
+                    other.track = track;
+            }
 
             if (background != null && BeatmapInfo.BackgroundEquals(other.BeatmapInfo))
                 other.background = background;
@@ -104,10 +112,17 @@ namespace osu.Game.Beatmaps
 
         public virtual void Dispose()
         {
-            track?.Dispose();
-            track = null;
             background?.Dispose();
             background = null;
+        }
+
+        public void DisposeTrack()
+        {
+            lock (trackLock)
+            {
+                track?.Dispose();
+                track = null;
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
-using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.Objects;
 using System.Collections.Generic;
 
@@ -30,11 +29,15 @@ namespace osu.Game.Beatmaps
 
     public abstract class DifficultyCalculator<T> : DifficultyCalculator where T : HitObject
     {
+        protected readonly Beatmap Beatmap;
+
         protected List<T> Objects;
 
         protected DifficultyCalculator(Beatmap beatmap)
         {
-            Objects = CreateBeatmapConverter().Convert(beatmap, true).HitObjects;
+            Beatmap = beatmap;
+
+            Objects = CreateBeatmapConverter().Convert(beatmap).HitObjects;
 
             foreach (var h in Objects)
                 h.ApplyDefaults(beatmap.ControlPointInfo, beatmap.BeatmapInfo.Difficulty);

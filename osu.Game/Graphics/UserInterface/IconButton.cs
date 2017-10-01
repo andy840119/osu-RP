@@ -9,12 +9,13 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Graphics.UserInterface
 {
-    public class IconButton : ClickableContainer
+    public class IconButton : OsuClickableContainer
     {
-        private readonly TextAwesome icon;
+        private readonly SpriteIcon icon;
         private readonly Box hover;
         private readonly Container content;
 
@@ -46,7 +47,7 @@ namespace osu.Game.Graphics.UserInterface
                 {
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    Size = new Vector2 (button_size),
+                    Size = new Vector2(button_size),
 
                     CornerRadius = 5,
                     Masking = true,
@@ -63,11 +64,11 @@ namespace osu.Game.Graphics.UserInterface
                             RelativeSizeAxes = Axes.Both,
                             Alpha = 0,
                         },
-                        icon = new TextAwesome
+                        icon = new SpriteIcon
                         {
                             Origin = Anchor.Centre,
                             Anchor = Anchor.Centre,
-                            TextSize = 18,
+                            Size = new Vector2(18),
                         }
                     }
                 }
@@ -79,35 +80,37 @@ namespace osu.Game.Graphics.UserInterface
         {
             hover.Colour = colours.Yellow.Opacity(0.6f);
             flashColour = colours.Yellow;
+
+            Enabled.ValueChanged += enabled => this.FadeColour(enabled ? Color4.White : colours.Gray9, 200, Easing.OutQuint);
         }
 
         protected override bool OnHover(InputState state)
         {
-            hover.FadeIn(500, EasingTypes.OutQuint);
+            hover.FadeIn(500, Easing.OutQuint);
             return base.OnHover(state);
         }
 
         protected override void OnHoverLost(InputState state)
         {
-            hover.FadeOut(500, EasingTypes.OutQuint);
+            hover.FadeOut(500, Easing.OutQuint);
             base.OnHoverLost(state);
         }
 
         protected override bool OnClick(InputState state)
         {
-            hover.FlashColour(flashColour, 800, EasingTypes.OutQuint);
+            hover.FlashColour(flashColour, 800, Easing.OutQuint);
             return base.OnClick(state);
         }
 
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
         {
-            content.ScaleTo(0.75f, 2000, EasingTypes.OutQuint);
+            content.ScaleTo(0.75f, 2000, Easing.OutQuint);
             return base.OnMouseDown(state, args);
         }
 
         protected override bool OnMouseUp(InputState state, MouseUpEventArgs args)
         {
-            content.ScaleTo(1, 1000, EasingTypes.OutElastic);
+            content.ScaleTo(1, 1000, Easing.OutElastic);
             return base.OnMouseUp(state, args);
         }
     }

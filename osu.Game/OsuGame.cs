@@ -8,28 +8,28 @@ using osu.Game.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Overlays;
-using osu.Framework.Input;
-using OpenTK.Input;
 using osu.Framework.Logging;
 using osu.Game.Graphics.UserInterface.Volume;
 using osu.Framework.Allocation;
-using osu.Framework.Timing;
 using osu.Game.Overlays.Toolbar;
 using osu.Game.Screens;
 using osu.Game.Screens.Menu;
 using OpenTK;
 using System.Linq;
 using System.Threading.Tasks;
+using osu.Framework.Input.Bindings;
+using osu.Framework.Platform;
 using osu.Framework.Threading;
-using osu.Game.Database;
 using osu.Game.Graphics;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Overlays.Notifications;
+using osu.Game.Rulesets;
 using osu.Game.Screens.Play;
+using osu.Game.Input.Bindings;
 
 namespace osu.Game
 {
-    public class OsuGame : OsuGameBase
+    public class OsuGame : OsuGameBase, IKeyBindingHandler<GlobalAction>
     {
         public Toolbar Toolbar;
 
@@ -37,13 +37,19 @@ namespace osu.Game
 
         private MusicController musicController;
 
-        private NotificationManager notificationManager;
+        private NotificationOverlay notificationOverlay;
 
         private DialogOverlay dialogOverlay;
 
         private DirectOverlay direct;
 
         private SocialOverlay social;
+
+        private UserProfileOverlay userProfile;
+
+        private BeatmapSetOverlay beatmapSetOverlay;
+
+        public virtual Storage GetStorageForStableInstall() => null;
 
         private Intro intro
         {
@@ -55,6 +61,8 @@ namespace osu.Game
                 return s as Intro;
             }
         }
+
+        public float ToolbarOffset => Toolbar.Position.Y + Toolbar.DrawHeight;
 
         private OsuScreen screenStack;
 
@@ -76,6 +84,11 @@ namespace osu.Game
 
         public void ToggleDirect() => direct.ToggleVisibility();
 
+        private DependencyContainer dependencies;
+
+        protected override IReadOnlyDependencyContainer CreateLocalDependencies(IReadOnlyDependencyContainer parent) =>
+            dependencies = new DependencyContainer(base.CreateLocalDependencies(parent));
+
         [BackgroundDependencyLoader]
         private void load(FrameworkConfigManager frameworkConfig)
         {
@@ -90,13 +103,13 @@ namespace osu.Game
             if (args?.Length > 0)
             {
                 var paths = args.Where(a => !a.StartsWith(@"-"));
-                Task.Run(() => BeatmapDatabase.Import(paths.ToArray()));
+                Task.Run(() => BeatmapManager.Import(paths.ToArray()));
             }
 
-            Dependencies.Cache(this);
+            dependencies.Cache(this);
 
             configRuleset = LocalConfig.GetBindable<int>(OsuSetting.Ruleset);
-            Ruleset.Value = RulesetDatabase.GetRuleset(configRuleset.Value);
+            Ruleset.Value = RulesetStore.GetRuleset(configRuleset.Value);
             Ruleset.ValueChanged += r => configRuleset.Value = r.ID ?? 0;
         }
 
@@ -117,14 +130,13 @@ namespace osu.Game
             if (!menu.IsCurrentScreen)
             {
                 menu.MakeCurrent();
-                Delay(500);
-                scoreLoad = Schedule(() => LoadScore(s));
+                this.Delay(500).Schedule(() => LoadScore(s), out scoreLoad);
                 return;
             }
 
             if (s.Beatmap == null)
             {
-                notificationManager.Post(new SimpleNotification
+                notificationOverlay.Post(new SimpleNotification
                 {
                     Text = @"Tried to load a score for a beatmap we don't have!",
                     Icon = FontAwesome.fa_life_saver,
@@ -132,7 +144,7 @@ namespace osu.Game
                 return;
             }
 
-            Beatmap.Value = BeatmapDatabase.GetWorkingBeatmap(s.Beatmap);
+            Beatmap.Value = BeatmapManager.GetWorkingBeatmap(s.Beatmap);
 
             menu.Push(new PlayerLoader(new ReplayPlayer(s.Replay)));
         }
@@ -141,11 +153,15 @@ namespace osu.Game
         {
             base.LoadComplete();
 
-            Add(new Drawable[] {
+            // hook up notifications to components.
+            BeatmapManager.PostNotification = n => notificationOverlay?.Post(n);
+            BeatmapManager.GetStableStorage = GetStorageForStableInstall;
+
+            AddRange(new Drawable[] {
                 new VolumeControlReceptor
                 {
                     RelativeSizeAxes = Axes.Both,
-                    ActionRequested = delegate(InputState state) { volume.Adjust(state); }
+                    ActionRequested = action => volume.Adjust(action)
                 },
                 mainContent = new Container
                 {
@@ -154,10 +170,6 @@ namespace osu.Game
                 volume = new VolumeControl(),
                 overlayContent = new Container { RelativeSizeAxes = Axes.Both },
                 new OnScreenDisplay(),
-                new GlobalHotkeys //exists because UserInputManager is at a level below us.
-                {
-                    Handler = globalHotkeyPressed
-                }
             });
 
             LoadComponentAsync(screenStack = new Loader(), d =>
@@ -171,52 +183,77 @@ namespace osu.Game
             LoadComponentAsync(direct = new DirectOverlay { Depth = -1 }, mainContent.Add);
             LoadComponentAsync(social = new SocialOverlay { Depth = -1 }, mainContent.Add);
             LoadComponentAsync(chat = new ChatOverlay { Depth = -1 }, mainContent.Add);
-            LoadComponentAsync(settings = new SettingsOverlay { Depth = -1 }, overlayContent.Add);
+            LoadComponentAsync(settings = new MainSettings
+            {
+                GetToolbarHeight = () => ToolbarOffset,
+                Depth = -1
+            }, overlayContent.Add);
+            LoadComponentAsync(userProfile = new UserProfileOverlay { Depth = -2 }, mainContent.Add);
+            LoadComponentAsync(beatmapSetOverlay = new BeatmapSetOverlay { Depth = -2 }, mainContent.Add);
             LoadComponentAsync(musicController = new MusicController
             {
-                Depth = -2,
+                Depth = -3,
                 Position = new Vector2(0, Toolbar.HEIGHT),
                 Anchor = Anchor.TopRight,
                 Origin = Anchor.TopRight,
             }, overlayContent.Add);
 
-            LoadComponentAsync(notificationManager = new NotificationManager
+            LoadComponentAsync(notificationOverlay = new NotificationOverlay
             {
-                Depth = -2,
+                Depth = -3,
                 Anchor = Anchor.TopRight,
                 Origin = Anchor.TopRight,
             }, overlayContent.Add);
 
             LoadComponentAsync(dialogOverlay = new DialogOverlay
             {
-                Depth = -4,
+                Depth = -5,
             }, overlayContent.Add);
 
             Logger.NewEntry += entry =>
             {
                 if (entry.Level < LogLevel.Important) return;
 
-                notificationManager.Post(new SimpleNotification
+                notificationOverlay.Post(new SimpleNotification
                 {
                     Text = $@"{entry.Level}: {entry.Message}"
                 });
             };
 
-            Dependencies.Cache(settings);
-            Dependencies.Cache(social);
-            Dependencies.Cache(chat);
-            Dependencies.Cache(musicController);
-            Dependencies.Cache(notificationManager);
-            Dependencies.Cache(dialogOverlay);
+            dependencies.Cache(settings);
+            dependencies.Cache(social);
+            dependencies.Cache(direct);
+            dependencies.Cache(chat);
+            dependencies.Cache(userProfile);
+            dependencies.Cache(musicController);
+            dependencies.Cache(beatmapSetOverlay);
+            dependencies.Cache(notificationOverlay);
+            dependencies.Cache(dialogOverlay);
 
-            // ensure both overlays aren't presented at the same time
-            chat.StateChanged += (container, state) => social.State = state == Visibility.Visible ? Visibility.Hidden : social.State;
-            social.StateChanged += (container, state) => chat.State = state == Visibility.Visible ? Visibility.Hidden : chat.State;
+            // ensure only one of these overlays are open at once.
+            var singleDisplayOverlays = new OverlayContainer[] { chat, social, direct };
+            foreach (var overlay in singleDisplayOverlays)
+            {
+                overlay.StateChanged += state =>
+                {
+                    if (state == Visibility.Hidden) return;
+
+                    foreach (var c in singleDisplayOverlays)
+                    {
+                        if (c == overlay) continue;
+                        c.State = Visibility.Hidden;
+                    }
+                };
+            }
 
             LoadComponentAsync(Toolbar = new Toolbar
             {
-                Depth = -3,
-                OnHome = delegate { intro?.ChildScreen?.MakeCurrent(); },
+                Depth = -4,
+                OnHome = delegate
+                {
+                    hideAllOverlays();
+                    intro?.ChildScreen?.MakeCurrent();
+                },
             }, overlayContent.Add);
 
             settings.StateChanged += delegate
@@ -224,10 +261,10 @@ namespace osu.Game
                 switch (settings.State)
                 {
                     case Visibility.Hidden:
-                        intro.MoveToX(0, SettingsOverlay.TRANSITION_LENGTH, EasingTypes.OutQuint);
+                        intro.MoveToX(0, SettingsOverlay.TRANSITION_LENGTH, Easing.OutQuint);
                         break;
                     case Visibility.Visible:
-                        intro.MoveToX(SettingsOverlay.SIDEBAR_WIDTH / 2, SettingsOverlay.TRANSITION_LENGTH, EasingTypes.OutQuint);
+                        intro.MoveToX(SettingsOverlay.SIDEBAR_WIDTH / 2, SettingsOverlay.TRANSITION_LENGTH, Easing.OutQuint);
                         break;
                 }
             };
@@ -235,62 +272,42 @@ namespace osu.Game
             Cursor.State = Visibility.Hidden;
         }
 
-        private bool globalHotkeyPressed(InputState state, KeyDownEventArgs args)
+        public bool OnPressed(GlobalAction action)
         {
-            if (args.Repeat || intro == null) return false;
+            if (intro == null) return false;
 
-            switch (args.Key)
+            switch (action)
             {
-                case Key.F8:
+                case GlobalAction.ToggleChat:
                     chat.ToggleVisibility();
                     return true;
-                case Key.F9:
+                case GlobalAction.ToggleSocial:
                     social.ToggleVisibility();
                     return true;
-                case Key.PageUp:
-                case Key.PageDown:
-                    var swClock = (Clock as ThrottledFrameClock)?.Source as StopwatchClock;
-                    if (swClock == null) return false;
+                case GlobalAction.ResetInputSettings:
+                    var sensitivity = frameworkConfig.GetBindable<double>(FrameworkSetting.CursorSensitivity);
 
-                    swClock.Rate *= args.Key == Key.PageUp ? 1.1f : 0.9f;
-                    Logger.Log($@"Adjusting game clock to {swClock.Rate}", LoggingTarget.Debug);
+                    sensitivity.Disabled = false;
+                    sensitivity.Value = 1;
+                    sensitivity.Disabled = true;
+
+                    frameworkConfig.Set(FrameworkSetting.ActiveInputHandlers, string.Empty);
                     return true;
-            }
-
-            if (state.Keyboard.ControlPressed)
-            {
-                switch (args.Key)
-                {
-                    case Key.R:
-                        if (state.Keyboard.AltPressed)
-                        {
-                            var sensitivity = frameworkConfig.GetBindable<double>(FrameworkSetting.CursorSensitivity);
-
-                            sensitivity.Disabled = false;
-                            sensitivity.Value = 1;
-                            sensitivity.Disabled = true;
-
-                            frameworkConfig.Set(FrameworkSetting.ActiveInputHandlers, string.Empty);
-                            return true;
-                        }
-                        break;
-                    case Key.T:
-                        Toolbar.ToggleVisibility();
-                        return true;
-                    case Key.O:
-                        settings.ToggleVisibility();
-                        return true;
-                    case Key.D:
-                        if (state.Keyboard.ShiftPressed || state.Keyboard.AltPressed)
-                            return false;
-
-                        direct.ToggleVisibility();
-                        return true;
-                }
+                case GlobalAction.ToggleToolbar:
+                    Toolbar.ToggleVisibility();
+                    return true;
+                case GlobalAction.ToggleSettings:
+                    settings.ToggleVisibility();
+                    return true;
+                case GlobalAction.ToggleDirect:
+                    direct.ToggleVisibility();
+                    return true;
             }
 
             return false;
         }
+
+        public bool OnReleased(GlobalAction action) => false;
 
         public event Action<Screen> ScreenChanged;
 
@@ -300,6 +317,16 @@ namespace osu.Game
 
         private OsuScreen currentScreen;
         private FrameworkConfigManager frameworkConfig;
+
+        private void hideAllOverlays()
+        {
+            settings.State = Visibility.Hidden;
+            chat.State = Visibility.Hidden;
+            direct.State = Visibility.Hidden;
+            social.State = Visibility.Hidden;
+            userProfile.State = Visibility.Hidden;
+            notificationOverlay.State = Visibility.Hidden;
+        }
 
         private void screenChanged(Screen newScreen)
         {
@@ -314,17 +341,12 @@ namespace osu.Game
             //central game screen change logic.
             if (!currentScreen.ShowOverlays)
             {
-                settings.State = Visibility.Hidden;
-                Toolbar.State = Visibility.Hidden;
+                hideAllOverlays();
                 musicController.State = Visibility.Hidden;
-                chat.State = Visibility.Hidden;
-                direct.State = Visibility.Hidden;
-                social.State = Visibility.Hidden;
+                Toolbar.State = Visibility.Hidden;
             }
             else
-            {
                 Toolbar.State = Visibility.Visible;
-            }
 
             ScreenChanged?.Invoke(newScreen);
         }
@@ -360,7 +382,14 @@ namespace osu.Game
         {
             base.UpdateAfterChildren();
 
-            mainContent.Padding = new MarginPadding { Top = Toolbar.Position.Y + Toolbar.DrawHeight };
+            // we only want to apply these restrictions when we are inside a screen stack.
+            // the use case for not applying is in visual/unit tests.
+            bool applyRestrictions = !currentScreen?.AllowBeatmapRulesetChange ?? false;
+
+            Ruleset.Disabled = applyRestrictions;
+            Beatmap.Disabled = applyRestrictions;
+
+            mainContent.Padding = new MarginPadding { Top = ToolbarOffset };
 
             Cursor.State = currentScreen?.HasLocalCursorDisplayed == false ? Visibility.Visible : Visibility.Hidden;
         }

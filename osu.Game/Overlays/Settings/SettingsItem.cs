@@ -1,6 +1,7 @@
 // Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
+using System.Collections.Generic;
 using OpenTK.Graphics;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
@@ -29,7 +30,7 @@ namespace osu.Game.Overlays.Settings
                 if (text == null)
                 {
                     // construct lazily for cases where the label is not needed (may be provided by the Control).
-                    Add(text = new OsuSpriteText() { Depth = 1 });
+                    Add(text = new OsuSpriteText { Depth = 1 });
                 }
 
                 text.Text = value;
@@ -53,14 +54,14 @@ namespace osu.Game.Overlays.Settings
             }
         }
 
-        public string[] FilterTerms => new[] { LabelText };
+        public IEnumerable<string> FilterTerms => new[] { LabelText };
 
         public bool MatchingFilter
         {
             set
             {
                 // probably needs a better transition.
-                FadeTo(value ? 1 : 0);
+                this.FadeTo(value ? 1 : 0);
             }
         }
 

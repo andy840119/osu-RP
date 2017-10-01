@@ -7,18 +7,21 @@ using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Game.Database;
+using osu.Game.Beatmaps;
 using osu.Game.Graphics;
+using osu.Game.Graphics.Containers;
 using osu.Game.Overlays.SearchableList;
+using osu.Game.Rulesets;
 
 namespace osu.Game.Overlays.Direct
 {
-    public class FilterControl : SearchableListFilterControl<DirectSortCritera, RankStatus>
+    public class FilterControl : SearchableListFilterControl<DirectSortCriteria, RankStatus>
     {
+        public readonly Bindable<RulesetInfo> Ruleset = new Bindable<RulesetInfo>();
         private FillFlowContainer<RulesetToggleButton> modeButtons;
 
         protected override Color4 BackgroundColour => OsuColour.FromHex(@"384552");
-        protected override DirectSortCritera DefaultTab => DirectSortCritera.Title;
+        protected override DirectSortCriteria DefaultTab => DirectSortCriteria.Ranked;
         protected override Drawable CreateSupplementaryControls()
         {
             modeButtons = new FillFlowContainer<RulesetToggleButton>
@@ -31,20 +34,24 @@ namespace osu.Game.Overlays.Direct
         }
 
         [BackgroundDependencyLoader(true)]
-        private void load(OsuGame game, RulesetDatabase rulesets, OsuColour colours)
+        private void load(OsuGame game, RulesetStore rulesets, OsuColour colours)
         {
             DisplayStyleControl.Dropdown.AccentColour = colours.BlueDark;
 
-            var b = new Bindable<RulesetInfo>(); //backup bindable incase the game is null
+            Ruleset.BindTo(game?.Ruleset ?? new Bindable<RulesetInfo> { Value = rulesets.GetRuleset(0) });
             foreach (var r in rulesets.AllRulesets)
             {
-                modeButtons.Add(new RulesetToggleButton(game?.Ruleset ?? b, r));
+                modeButtons.Add(new RulesetToggleButton(Ruleset, r));
             }
         }
 
-        private class RulesetToggleButton : ClickableContainer
+        private class RulesetToggleButton : OsuClickableContainer
         {
-            private readonly TextAwesome icon;
+            private Drawable icon
+            {
+                get { return iconContainer.Icon; }
+                set { iconContainer.Icon = value; }
+            }
 
             private RulesetInfo ruleset;
             public RulesetInfo Ruleset
@@ -53,15 +60,17 @@ namespace osu.Game.Overlays.Direct
                 set
                 {
                     ruleset = value;
-                    icon.Icon = Ruleset.CreateInstance().Icon;
+                    icon = Ruleset.CreateInstance().CreateIcon();
                 }
             }
 
             private readonly Bindable<RulesetInfo> bindable;
 
+            private readonly ConstrainedIconContainer iconContainer;
+
             private void Bindable_ValueChanged(RulesetInfo obj)
             {
-                icon.FadeTo(Ruleset.ID == obj?.ID ? 1f : 0.5f, 100);
+                iconContainer.FadeTo(Ruleset.ID == obj?.ID ? 1f : 0.5f, 100);
             }
 
             public RulesetToggleButton(Bindable<RulesetInfo> bindable, RulesetInfo ruleset)
@@ -71,11 +80,11 @@ namespace osu.Game.Overlays.Direct
 
                 Children = new[]
                 {
-                    icon = new TextAwesome
+                    iconContainer = new ConstrainedIconContainer
                     {
                         Origin = Anchor.TopLeft,
                         Anchor = Anchor.TopLeft,
-                        TextSize = 32,
+                        Size = new Vector2(32),
                     }
                 };
 
@@ -94,7 +103,7 @@ namespace osu.Game.Overlays.Direct
         }
     }
 
-    public enum DirectSortCritera
+    public enum DirectSortCriteria
     {
         Title,
         Artist,
@@ -102,5 +111,6 @@ namespace osu.Game.Overlays.Direct
         Difficulty,
         Ranked,
         Rating,
+        Plays,
     }
 }

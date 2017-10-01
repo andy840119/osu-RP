@@ -57,7 +57,7 @@ namespace osu.Game.Screens.Menu
             set { colourAndTriangles.Alpha = value ? 1 : 0; }
         }
 
-        protected override bool InternalContains(Vector2 screenSpacePos) => logoContainer.Contains(screenSpacePos);
+        public override bool ReceiveMouseInputAt(Vector2 screenSpacePos) => logoContainer.ReceiveMouseInputAt(screenSpacePos);
 
         public bool Ripple
         {
@@ -72,11 +72,11 @@ namespace osu.Game.Screens.Menu
 
         private const float default_size = 480;
 
-        private const double beat_in_time = 60;
+        private const double early_activation = 60;
 
         public OsuLogo()
         {
-            EarlyActivationMilliseconds = beat_in_time;
+            EarlyActivationMilliseconds = early_activation;
 
             Size = new Vector2(default_size);
 
@@ -108,7 +108,7 @@ namespace osu.Game.Screens.Menu
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
-                                            BlendingMode = BlendingMode.Additive,
+                                            Blending = BlendingMode.Additive,
                                             Alpha = 0
                                         }
                                     }
@@ -169,7 +169,7 @@ namespace osu.Game.Screens.Menu
                                                                 flashLayer = new Box
                                                                 {
                                                                     RelativeSizeAxes = Axes.Both,
-                                                                    BlendingMode = BlendingMode.Additive,
+                                                                    Blending = BlendingMode.Additive,
                                                                     Colour = Color4.White,
                                                                     Alpha = 0,
                                                                 },
@@ -215,8 +215,9 @@ namespace osu.Game.Screens.Menu
         [BackgroundDependencyLoader]
         private void load(TextureStore textures, AudioManager audio)
         {
-            sampleClick = audio.Sample.Get(@"Menu/menuhit");
+            sampleClick = audio.Sample.Get(@"Menu/select-2");
             sampleBeat = audio.Sample.Get(@"Menu/heartbeat");
+
             logo.Texture = textures.Get(@"Menu/logo");
             ripple.Texture = textures.Get(@"Menu/logo");
         }
@@ -227,9 +228,6 @@ namespace osu.Game.Screens.Menu
         {
             base.OnNewBeat(beatIndex, timingPoint, effectPoint, amplitudes);
 
-            if (Hovering)
-                sampleBeat.Play();
-
             lastBeatIndex = beatIndex;
 
             var beatLength = timingPoint.BeatLength;
@@ -238,29 +236,33 @@ namespace osu.Game.Screens.Menu
 
             if (beatIndex < 0) return;
 
-            logoBeatContainer.ScaleTo(1 - 0.02f * amplitudeAdjust, beat_in_time, EasingTypes.Out);
-            using (logoBeatContainer.BeginDelayedSequence(beat_in_time))
-                logoBeatContainer.ScaleTo(1, beatLength * 2, EasingTypes.OutQuint);
+            if (IsHovered)
+                this.Delay(early_activation).Schedule(() => sampleBeat.Play());
+
+            logoBeatContainer
+                .ScaleTo(1 - 0.02f * amplitudeAdjust, early_activation, Easing.Out)
+                .Then()
+                .ScaleTo(1, beatLength * 2, Easing.OutQuint);
 
             ripple.ClearTransforms();
-
-            ripple.ScaleTo(logoAmplitudeContainer.Scale);
-            ripple.Alpha = 0.15f * amplitudeAdjust;
-
-            ripple.ScaleTo(logoAmplitudeContainer.Scale * (1 + 0.04f * amplitudeAdjust), beatLength, EasingTypes.OutQuint);
-            ripple.FadeOut(beatLength, EasingTypes.OutQuint);
+            ripple
+                .ScaleTo(logoAmplitudeContainer.Scale)
+                .ScaleTo(logoAmplitudeContainer.Scale * (1 + 0.04f * amplitudeAdjust), beatLength, Easing.OutQuint)
+                .FadeTo(0.15f * amplitudeAdjust).FadeOut(beatLength, Easing.OutQuint);
 
             if (effectPoint.KiaiMode && flashLayer.Alpha < 0.4f)
             {
                 flashLayer.ClearTransforms();
-                visualizer.ClearTransforms();
+                flashLayer
+                    .FadeTo(0.2f * amplitudeAdjust, early_activation, Easing.Out)
+                    .Then()
+                    .FadeOut(beatLength);
 
-                flashLayer.FadeTo(0.2f * amplitudeAdjust, beat_in_time, EasingTypes.Out);
-                visualizer.FadeTo(0.9f * amplitudeAdjust, beat_in_time, EasingTypes.Out);
-                using (flashLayer.BeginDelayedSequence(beat_in_time))
-                    flashLayer.FadeOut(beatLength);
-                using (visualizer.BeginDelayedSequence(beat_in_time))
-                    visualizer.FadeTo(0.5f, beatLength);
+                visualizer.ClearTransforms();
+                visualizer
+                    .FadeTo(0.9f * amplitudeAdjust, early_activation, Easing.Out)
+                    .Then()
+                    .FadeTo(0.5f, beatLength);
             }
         }
 
@@ -270,27 +272,35 @@ namespace osu.Game.Screens.Menu
 
             const float scale_adjust_cutoff = 0.4f;
             const float velocity_adjust_cutoff = 0.98f;
+            const float paused_velocity = 0.5f;
 
-            var maxAmplitude = lastBeatIndex >= 0 ? Beatmap.Value?.Track?.CurrentAmplitudes.Maximum ?? 0 : 0;
-            logoAmplitudeContainer.ScaleTo(1 - Math.Max(0, maxAmplitude - scale_adjust_cutoff) * 0.04f, 75, EasingTypes.OutQuint);
+            if (Beatmap.Value.Track.IsRunning)
+            {
+                var maxAmplitude = lastBeatIndex >= 0 ? Beatmap.Value.Track.CurrentAmplitudes.Maximum : 0;
+                logoAmplitudeContainer.ScaleTo(1 - Math.Max(0, maxAmplitude - scale_adjust_cutoff) * 0.04f, 75, Easing.OutQuint);
 
-            if (maxAmplitude > velocity_adjust_cutoff)
-                triangles.Velocity = 1 + Math.Max(0, maxAmplitude - velocity_adjust_cutoff) * 50;
+                if (maxAmplitude > velocity_adjust_cutoff)
+                    triangles.Velocity = 1 + Math.Max(0, maxAmplitude - velocity_adjust_cutoff) * 50;
+                else
+                    triangles.Velocity = (float)Interpolation.Damp(triangles.Velocity, 1, 0.995f, Time.Elapsed);
+            }
             else
-                triangles.Velocity = (float)Interpolation.Damp(triangles.Velocity, 1, 0.995f, Time.Elapsed);
+            {
+                triangles.Velocity = paused_velocity;
+            }
         }
 
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
         {
             if (!Interactive) return false;
 
-            logoBounceContainer.ScaleTo(0.9f, 1000, EasingTypes.Out);
+            logoBounceContainer.ScaleTo(0.9f, 1000, Easing.Out);
             return true;
         }
 
         protected override bool OnMouseUp(InputState state, MouseUpEventArgs args)
         {
-            logoBounceContainer.ScaleTo(1f, 500, EasingTypes.OutElastic);
+            logoBounceContainer.ScaleTo(1f, 500, Easing.OutElastic);
             return true;
         }
 
@@ -302,7 +312,7 @@ namespace osu.Game.Screens.Menu
 
             flashLayer.ClearTransforms();
             flashLayer.Alpha = 0.4f;
-            flashLayer.FadeOut(1500, EasingTypes.OutExpo);
+            flashLayer.FadeOut(1500, Easing.OutExpo);
 
             Action?.Invoke();
             return true;
@@ -312,18 +322,18 @@ namespace osu.Game.Screens.Menu
         {
             if (!Interactive) return false;
 
-            logoHoverContainer.ScaleTo(1.1f, 500, EasingTypes.OutElastic);
+            logoHoverContainer.ScaleTo(1.1f, 500, Easing.OutElastic);
             return true;
         }
 
         protected override void OnHoverLost(InputState state)
         {
-            logoHoverContainer.ScaleTo(1, 500, EasingTypes.OutElastic);
+            logoHoverContainer.ScaleTo(1, 500, Easing.OutElastic);
         }
 
         public void Impact()
         {
-            impactContainer.FadeOutFromOne(250, EasingTypes.In);
+            impactContainer.FadeOutFromOne(250, Easing.In);
             impactContainer.ScaleTo(0.96f);
             impactContainer.ScaleTo(1.12f, 250);
         }

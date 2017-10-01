@@ -11,7 +11,6 @@ using OpenTK;
 using OpenTK.Graphics;
 using osu.Game.Graphics;
 using osu.Framework.Allocation;
-using osu.Framework.Audio;
 using osu.Game.Graphics.UserInterface;
 using osu.Framework.Graphics.Shapes;
 
@@ -22,8 +21,6 @@ namespace osu.Game.Screens.Play
         private const int transition_duration = 200;
         private const int button_height = 70;
         private const float background_alpha = 0.75f;
-
-        protected override bool HideOnEscape => false;
 
         protected override bool BlockPassThroughKeyboard => true;
 
@@ -77,8 +74,8 @@ namespace osu.Game.Screens.Play
 
         public override bool HandleInput => State == Visibility.Visible;
 
-        protected override void PopIn() => FadeIn(transition_duration, EasingTypes.In);
-        protected override void PopOut() => FadeOut(transition_duration, EasingTypes.In);
+        protected override void PopIn() => this.FadeIn(transition_duration, Easing.In);
+        protected override void PopOut() => this.FadeOut(transition_duration, Easing.In);
 
         // Don't let mouse down events through the overlay or people can click circles while paused.
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args) => true;
@@ -96,7 +93,8 @@ namespace osu.Game.Screens.Play
                 Origin = Anchor.TopCentre,
                 Anchor = Anchor.TopCentre,
                 Height = button_height,
-                Action = delegate {
+                Action = delegate
+                {
                     action?.Invoke();
                     Hide();
                 }
@@ -186,18 +184,11 @@ namespace osu.Game.Screens.Play
 
         protected MenuOverlay()
         {
-            AlwaysReceiveInput = true;
             RelativeSizeAxes = Axes.Both;
         }
 
         public class Button : DialogButton
         {
-            [BackgroundDependencyLoader]
-            private void load(AudioManager audio)
-            {
-                SampleHover = audio.Sample.Get(@"Menu/menuclick");
-                SampleClick = audio.Sample.Get(@"Menu/menuback");
-            }
         }
     }
 }

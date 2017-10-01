@@ -16,10 +16,11 @@ using osu.Game.Graphics.Backgrounds;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Online.Chat;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Overlays.Chat
 {
-    public class ChannelSelectionOverlay : FocusedOverlayContainer
+    public class ChannelSelectionOverlay : OsuFocusedOverlayContainer
     {
         public static readonly float WIDTH_PADDING = 170;
 
@@ -38,7 +39,7 @@ namespace osu.Game.Overlays.Chat
         {
             set
             {
-                sectionsFlow.Children = value;
+                sectionsFlow.ChildrenEnumerable = value;
 
                 foreach (ChannelSection s in sectionsFlow.Children)
                 {
@@ -80,7 +81,7 @@ namespace osu.Game.Overlays.Chat
                     Padding = new MarginPadding { Top = 85, Right = WIDTH_PADDING },
                     Children = new[]
                     {
-                        new ScrollContainer
+                        new OsuScrollContainer
                         {
                             RelativeSizeAxes = Axes.Both,
                             Children = new[]
@@ -91,7 +92,7 @@ namespace osu.Game.Overlays.Chat
                                     AutoSizeAxes = Axes.Y,
                                     Direction = FillDirection.Vertical,
                                     LayoutDuration = 200,
-                                    LayoutEasing = EasingTypes.OutQuint,
+                                    LayoutEasing = Easing.OutQuint,
                                     Spacing = new Vector2(0f, 20f),
                                     Padding = new MarginPadding { Vertical = 20, Left = WIDTH_PADDING },
                                 },
@@ -151,16 +152,16 @@ namespace osu.Game.Overlays.Chat
 
         protected override void OnFocus(InputState state)
         {
-            InputManager.ChangeFocus(search);
+            GetContainingInputManager().ChangeFocus(search);
             base.OnFocus(state);
         }
 
         protected override void PopIn()
         {
-            if (Alpha == 0) MoveToY(DrawHeight);
+            if (Alpha == 0) this.MoveToY(DrawHeight);
 
-            FadeIn(transition_duration, EasingTypes.OutQuint);
-            MoveToY(0, transition_duration, EasingTypes.OutQuint);
+            this.FadeIn(transition_duration, Easing.OutQuint);
+            this.MoveToY(0, transition_duration, Easing.OutQuint);
 
             search.HoldFocus = true;
             base.PopIn();
@@ -168,8 +169,8 @@ namespace osu.Game.Overlays.Chat
 
         protected override void PopOut()
         {
-            FadeOut(transition_duration, EasingTypes.InSine);
-            MoveToY(DrawHeight, transition_duration, EasingTypes.InSine);
+            this.FadeOut(transition_duration, Easing.InSine);
+            this.MoveToY(DrawHeight, transition_duration, Easing.InSine);
 
             search.HoldFocus = false;
             base.PopOut();

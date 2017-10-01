@@ -6,39 +6,23 @@ using osu.Game.Rulesets.Mania.Objects;
 using osu.Game.Rulesets.UI;
 using OpenTK;
 using OpenTK.Graphics;
-using osu.Game.Rulesets.Mania.Judgements;
 using osu.Framework.Graphics.Containers;
 using System;
 using osu.Game.Graphics;
 using osu.Framework.Allocation;
-using OpenTK.Input;
 using System.Linq;
 using System.Collections.Generic;
-using osu.Game.Rulesets.Objects.Drawables;
-using osu.Framework.Input;
-using osu.Framework.Graphics.Transforms;
-using osu.Framework.MathUtils;
-using osu.Game.Rulesets.Mania.Objects.Drawables;
-using osu.Game.Rulesets.Timing;
 using osu.Framework.Configuration;
+using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.Mania.Objects.Drawables;
 using osu.Framework.Graphics.Shapes;
+using osu.Game.Rulesets.Judgements;
 
 namespace osu.Game.Rulesets.Mania.UI
 {
-    public class ManiaPlayfield : Playfield<ManiaHitObject, ManiaJudgement>
+    public class ManiaPlayfield : ScrollingPlayfield
     {
         public const float HIT_TARGET_POSITION = 50;
-
-        private const double time_span_default = 1500;
-        private const double time_span_min = 50;
-        private const double time_span_max = 10000;
-        private const double time_span_step = 50;
-
-        /// <summary>
-        /// Default column keys, expanding outwards from the middle as more column are added.
-        /// E.g. 2 columns use FJ, 4 columns use DFJK, 6 use SDFJKL, etc...
-        /// </summary>
-        private static readonly Key[] default_keys = { Key.A, Key.S, Key.D, Key.F, Key.J, Key.K, Key.L, Key.Semicolon };
 
         private SpecialColumnPosition specialColumnPosition;
         /// <summary>
@@ -55,44 +39,49 @@ namespace osu.Game.Rulesets.Mania.UI
             }
         }
 
+        /// <summary>
+        /// Whether this playfield should be inverted. This flips everything inside the playfield.
+        /// </summary>
+        public readonly Bindable<bool> Inverted = new Bindable<bool>(true);
+
         private readonly FlowContainer<Column> columns;
         public IEnumerable<Column> Columns => columns.Children;
 
-        private readonly BindableDouble visibleTimeRange = new BindableDouble(time_span_default)
-        {
-            MinValue = time_span_min,
-            MaxValue = time_span_max
-        };
-
-        private readonly SpeedAdjustmentCollection barLineContainer;
+        protected override Container<Drawable> Content => content;
+        private readonly Container<Drawable> content;
 
         private List<Color4> normalColumnColours = new List<Color4>();
         private Color4 specialColumnColour;
 
+        private readonly Container<DrawableManiaJudgement> judgements;
+
         private readonly int columnCount;
 
         public ManiaPlayfield(int columnCount)
+            : base(Axes.Y)
         {
             this.columnCount = columnCount;
 
             if (columnCount <= 0)
                 throw new ArgumentException("Can't have zero or fewer columns.");
 
-            Children = new Drawable[]
+            Inverted.Value = true;
+
+            Container topLevelContainer;
+            InternalChildren = new Drawable[]
             {
                 new Container
                 {
+                    Name = "Playfield elements",
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
-                    RelativeSizeAxes = Axes.Both,
-                    Masking = true,
+                    RelativeSizeAxes = Axes.Y,
+                    AutoSizeAxes = Axes.X,
                     Children = new Drawable[]
                     {
                         new Container
                         {
-                            Name = "Masked elements",
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
+                            Name = "Columns mask",
                             RelativeSizeAxes = Axes.Y,
                             AutoSizeAxes = Axes.X,
                             Masking = true,
@@ -100,6 +89,7 @@ namespace osu.Game.Rulesets.Mania.UI
                             {
                                 new Box
                                 {
+                                    Name = "Background",
                                     RelativeSizeAxes = Axes.Both,
                                     Colour = Color4.Black
                                 },
@@ -111,34 +101,63 @@ namespace osu.Game.Rulesets.Mania.UI
                                     Direction = FillDirection.Horizontal,
                                     Padding = new MarginPadding { Left = 1, Right = 1 },
                                     Spacing = new Vector2(1, 0)
-                                }
+                                },
                             }
                         },
                         new Container
                         {
+                            Name = "Barlines mask",
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
-                            RelativeSizeAxes = Axes.Both,
-                            Padding = new MarginPadding { Top = HIT_TARGET_POSITION },
-                            Children = new[]
+                            RelativeSizeAxes = Axes.Y,
+                            Width = 1366, // Bar lines should only be masked on the vertical axis
+                            BypassAutoSizeAxes = Axes.Both,
+                            Masking = true,
+                            Child = content = new Container
                             {
-                                barLineContainer = new SpeedAdjustmentCollection(Axes.Y)
-                                {
-                                    Name = "Bar lines",
-                                    Anchor = Anchor.TopCentre,
-                                    Origin = Anchor.TopCentre,
-                                    RelativeSizeAxes = Axes.Y,
-                                    VisibleTimeRange = visibleTimeRange
-                                    // Width is set in the Update method
-                                }
+                                Name = "Bar lines",
+                                Anchor = Anchor.TopCentre,
+                                Origin = Anchor.TopCentre,
+                                RelativeSizeAxes = Axes.Y,
+                                Padding = new MarginPadding { Top = HIT_TARGET_POSITION }
                             }
-                        }
+                        },
+                        judgements = new Container<DrawableManiaJudgement>
+                        {
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.Centre,
+                            AutoSizeAxes = Axes.Both,
+                            Y = HIT_TARGET_POSITION + 150,
+                            BypassAutoSizeAxes = Axes.Both
+                        },
+                        topLevelContainer = new Container { RelativeSizeAxes = Axes.Both }
                     }
                 }
             };
 
+            var currentAction = ManiaAction.Key1;
             for (int i = 0; i < columnCount; i++)
-                columns.Add(new Column { VisibleTimeRange = visibleTimeRange });
+            {
+                var c = new Column();
+                c.VisibleTimeRange.BindTo(VisibleTimeRange);
+
+                c.IsSpecial = isSpecialColumn(i);
+                c.Action = c.IsSpecial ? ManiaAction.Special : currentAction++;
+
+                topLevelContainer.Add(c.TopLevelContainer.CreateProxy());
+
+                columns.Add(c);
+                AddNested(c);
+            }
+
+            Inverted.ValueChanged += invertedChanged;
+            Inverted.TriggerChange();
+        }
+
+        private void invertedChanged(bool newValue)
+        {
+            Scale = new Vector2(1, newValue ? -1 : 1);
+            judgements.Scale = Scale;
         }
 
         [BackgroundDependencyLoader]
@@ -153,15 +172,11 @@ namespace osu.Game.Rulesets.Mania.UI
             specialColumnColour = colours.BlueDark;
 
             // Set the special column + colour + key
-            for (int i = 0; i < columnCount; i++)
+            foreach (var column in Columns)
             {
-                Column column = Columns.ElementAt(i);
-                column.IsSpecial = isSpecialColumn(i);
-
                 if (!column.IsSpecial)
                     continue;
 
-                column.Key.Value = Key.Space;
                 column.AccentColour = specialColumnColour;
             }
 
@@ -175,21 +190,19 @@ namespace osu.Game.Rulesets.Mania.UI
                 nonSpecialColumns[i].AccentColour = colour;
                 nonSpecialColumns[nonSpecialColumns.Count - 1 - i].AccentColour = colour;
             }
+        }
 
-            // We'll set the keys for non-special columns in another separate loop because it's not mirrored like the above colours
-            // Todo: This needs to go when we get to bindings and use Button1, ..., ButtonN instead
-            for (int i = 0; i < nonSpecialColumns.Count; i++)
+        public override void OnJudgement(DrawableHitObject judgedObject, Judgement judgement)
+        {
+            var maniaObject = (ManiaHitObject)judgedObject.HitObject;
+            columns[maniaObject.Column].OnJudgement(judgedObject, judgement);
+
+            judgements.Clear();
+            judgements.Add(new DrawableManiaJudgement(judgement)
             {
-                Column column = nonSpecialColumns[i];
-
-                int keyOffset = default_keys.Length / 2 - nonSpecialColumns.Count / 2 + i;
-                if (keyOffset >= 0 && keyOffset < default_keys.Length)
-                    column.Key.Value = default_keys[keyOffset];
-                else
-                    // There is no default key defined for this column. Let's set this to Unknown for now
-                    // however note that this will be gone after bindings are in place
-                    column.Key.Value = Key.Unknown;
-            }
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+            });
         }
 
         /// <summary>
@@ -211,61 +224,15 @@ namespace osu.Game.Rulesets.Mania.UI
             }
         }
 
-        public override void Add(DrawableHitObject<ManiaHitObject, ManiaJudgement> h) => Columns.ElementAt(h.HitObject.Column).Add(h);
-        public void Add(DrawableBarLine barline) => barLineContainer.Add(barline);
-        public void Add(SpeedAdjustmentContainer speedAdjustment) => barLineContainer.Add(speedAdjustment);
+        public override void Add(DrawableHitObject h) => Columns.ElementAt(((ManiaHitObject)h.HitObject).Column).Add(h);
 
-        protected override bool OnKeyDown(InputState state, KeyDownEventArgs args)
-        {
-            if (state.Keyboard.ControlPressed)
-            {
-                switch (args.Key)
-                {
-                    case Key.Minus:
-                        transformVisibleTimeRangeTo(visibleTimeRange + time_span_step, 200, EasingTypes.OutQuint);
-                        break;
-                    case Key.Plus:
-                        transformVisibleTimeRangeTo(visibleTimeRange - time_span_step, 200, EasingTypes.OutQuint);
-                        break;
-                }
-            }
-
-            return false;
-        }
-
-        private void transformVisibleTimeRangeTo(double newTimeRange, double duration = 0, EasingTypes easing = EasingTypes.None)
-        {
-            TransformTo(() => visibleTimeRange.Value, newTimeRange, duration, easing, new TransformTimeSpan());
-        }
+        public void Add(DrawableBarLine barline) => HitObjects.Add(barline);
 
         protected override void Update()
         {
             // Due to masking differences, it is not possible to get the width of the columns container automatically
             // While masking on effectively only the Y-axis, so we need to set the width of the bar line container manually
-            barLineContainer.Width = columns.Width;
-        }
-
-        private class TransformTimeSpan : Transform<double, Drawable>
-        {
-            public override double CurrentValue
-            {
-                get
-                {
-                    double time = Time?.Current ?? 0;
-                    if (time < StartTime) return StartValue;
-                    if (time >= EndTime) return EndValue;
-
-                    return Interpolation.ValueAt(time, StartValue, EndValue, StartTime, EndTime, Easing);
-                }
-            }
-
-            public override void Apply(Drawable d)
-            {
-                base.Apply(d);
-
-                var p = (ManiaPlayfield)d;
-                p.visibleTimeRange.Value = (float)CurrentValue;
-            }
+            content.Width = columns.Width;
         }
     }
 }
