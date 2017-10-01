@@ -20,7 +20,7 @@ namespace osu.Game.Rulesets.RP
     /// <summary>
     /// note : 
     /// mac beatmamp save path : /Users/Mac/.local/share/osu
-    /// windows : 
+    /// windows : C:\Users\andy840119\AppData\Roaming\osu
     /// </summary>
     public class RpRuleset : Ruleset
     {
