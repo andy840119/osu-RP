@@ -1,6 +1,5 @@
 ﻿using System;
 using osu.Game.Beatmaps;
-using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.RP.Objects;
 
 namespace osu.Game.Rulesets.RP.Beatmaps.RPBeatmap

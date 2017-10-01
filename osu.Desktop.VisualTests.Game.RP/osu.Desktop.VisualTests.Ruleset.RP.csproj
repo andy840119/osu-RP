@@ -147,10 +147,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\osu-framework\osu.Framework.Desktop\osu.Framework.Desktop.csproj">
-      <Project>{65dc628f-a640-4111-ab35-3a5652bc1e17}</Project>
-      <Name>osu.Framework.Desktop</Name>
-    </ProjectReference>
     <ProjectReference Include="..\osu-framework\osu.Framework.Testing\osu.Framework.Testing.csproj">
       <Project>{007b2356-ab6f-4bd9-96d5-116fc2dce69a}</Project>
       <Name>osu.Framework.Testing</Name>
