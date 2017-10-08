@@ -1,55 +1,35 @@
-//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
-using System;
 using osu.Game.Rulesets.Objects.Types;
-using osu.Game.Rulesets.RP.Objects.type;
+using osu.Game.Rulesets.RP.Input;
 
 namespace osu.Game.Rulesets.RP.Objects
 {
     /// <summary>
     ///     RPí∑ï®åè
     /// </summary>
-    public class RpHoldObject : BaseRpHitableObject, IHasEndTime
+    public class RpHoldObject : RpHitObject, IHasEndTime
     {
-        public bool isHold
+        //end time
+        public double EndTime { get; set; }
+
+        //Duration
+        public double Duration => EndTime - StartTime;
+
+        //ObjectType
+        public override ObjectType ObjectType => ObjectType.Hold;
+
+        //Constructor
+        public RpHoldObject(RpContainerLine parent, double startTime)
+            : base(parent, startTime)
         {
-            get
-            {
-                if (StartHoldingTime >= EndTime)
-                    return true;
-                return false;
-            }
-            set
-            {
-                if (value == true)
-                    StartHoldingTime = EndTime;
-            }
-
-        }
-        /// <summary>
-        /// the time that starting holding
-        /// </summary>
-        public double StartHoldingTime;
-
-        /// <summary>
-        ///     åãë©éûä‘
-        /// </summary>
-        public double EndTime => StartTime + Curve.Length / Velocity;
-
-
-        public void SetEndTime(Double time)
-        {
-            //EndTime = time;
         }
 
-        /// <summary>
-        ///     èâénâªóaê›ï®åè
-        /// </summary>
-        public override void InitialDefaultValue()
+        //InitialDefaultValue
+        protected override void InitialDefaultValue()
         {
             base.InitialDefaultValue();
-            ObjectType = RpBaseObjectType.ObjectType.LongTail;
         }
     }
 }

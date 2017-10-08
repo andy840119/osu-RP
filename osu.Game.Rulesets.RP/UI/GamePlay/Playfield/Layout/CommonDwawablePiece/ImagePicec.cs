@@ -1,5 +1,5 @@
-﻿//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -13,10 +13,10 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
     /// <summary>
     ///     負責用來載入圖片元素的
     /// </summary>
-    internal class ImagePicec : Container
+    public class ImagePicec : Container
     {
-        public Sprite disc;
-        private readonly string _resource;
+        private readonly Sprite disc;
+        private string _resource;
 
         public ImagePicec(string resource)
         {
@@ -46,6 +46,11 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         private void load(TextureStore textures)
         {
             disc.Texture = textures.Get(_resource);
+
+            if (disc.Texture == null)
+            {
+                return;
+            }
         }
     }
 }

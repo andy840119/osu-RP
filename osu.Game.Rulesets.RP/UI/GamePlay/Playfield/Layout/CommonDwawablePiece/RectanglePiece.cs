@@ -1,4 +1,7 @@
-﻿using osu.Framework.Allocation;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -14,12 +17,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
     /// </summary>
     public class RectanglePiece : Container
     {
-        /// <summary>
-        ///     設定物件texture
-        /// </summary>
-        public string Resource = RpTexturePathManager.GetRectangleTexture();
-
-
         public new float Width
         {
             get { return _rectangleWidth; }
@@ -94,7 +91,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         [BackgroundDependencyLoader]
         private void load(TextureStore textures)
         {
-            rectangle.Texture = textures.Get(Resource);
+            rectangle.Texture = textures.Get(RpTexturePathManager.GetRectangleTexture());
         }
     }
 }

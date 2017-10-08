@@ -1,11 +1,12 @@
-﻿//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
 using osu.Framework.Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects.Drawables;
+using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.UI;
 
@@ -20,7 +21,7 @@ namespace osu.Game.Rulesets.RP.Scoreing
         {
         }
 
-        public RpScoreProcessor(HitRenderer<BaseRpObject, RpJudgement> hitRenderer)
+        public RpScoreProcessor(RulesetContainer<BaseRpObject, RpJudgement> hitRenderer)
             : base(hitRenderer)
         {
         }
@@ -58,16 +59,16 @@ namespace osu.Game.Rulesets.RP.Scoreing
                 }
 
             switch (judgement.Result)
-                {
-                    case HitResult.Hit:
-                        Combo.Value++;
-                        Health.Value += 0.1f;
-                        break;
-                    case HitResult.Miss:
-                        Combo.Value = 0;
-                        Health.Value -= 0.1f;
-                        break;
-                }
+            {
+                case HitResult.Hit:
+                    Combo.Value++;
+                    Health.Value += 0.1f;
+                    break;
+                case HitResult.Miss:
+                    Combo.Value = 0;
+                    Health.Value -= 0.1f;
+                    break;
+            }
 
             //成績
             var score = 0;

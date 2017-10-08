@@ -1,5 +1,5 @@
-﻿//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using osu.Framework.Allocation;
@@ -17,22 +17,22 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
     /// </summary>
     public class Pointer : Container
     {
-        public readonly float TIME_FADEIN = 100;
-        public readonly float TIME_PREEMPT = 2000;
-        public readonly float TIME_FADEOUT = 100;
+        public const float TIME_FADEIN = 100;
+        public const float TIME_PREEMPT = 2000;
+        public const float TIME_FADEOUT = 100;
 
-        private readonly BaseRpObject _baseRPObject;
+        private readonly BaseRpObject baseRpObject;
 
 
         private readonly Sprite approachCircle;
 
-        public Pointer(BaseRpObject baseRPObject)
+        public Pointer(BaseRpObject baseRpObject)
         {
-            _baseRPObject = baseRPObject;
+            this.baseRpObject = baseRpObject;
 
-            TIME_FADEIN = _baseRPObject.TIME_FADEIN;
-            TIME_PREEMPT = _baseRPObject.TIME_PREEMPT;
-            TIME_FADEOUT = _baseRPObject.TIME_FADEOUT;
+            //TIME_FADEIN = _baseRPObject.FadeInTime;
+            //TIME_PREEMPT = _baseRPObject.PreemptTime;
+            //TIME_FADEOUT = _baseRPObject.FadeOutTime;
 
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
@@ -59,9 +59,9 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         /// </summary>
         public void StartEffect()
         {
-            FadeIn(Math.Min(TIME_FADEIN * 2, TIME_PREEMPT));
+            this.FadeIn(Math.Min(TIME_FADEIN * 2, TIME_PREEMPT));
             //轉一圈
-            RotateTo(360.0f, TIME_PREEMPT);
+            this.RotateTo(360.0f, TIME_PREEMPT);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         /// </summary>
         public void FadeOut()
         {
-            base.FadeOut();
+            //base.FadeOut();
         }
 
         /// <summary>

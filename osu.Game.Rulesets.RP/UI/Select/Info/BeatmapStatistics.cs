@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
@@ -50,7 +53,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Info
             //RpContainer
             yield return new BeatmapStatistic
             {
-                Name = @"Container",
+                Name = @"ContainerGroup",
                 Content = "10000", //beatmap.Beatmap.HitObjects.Count(h => h is Slider).ToString(),
                 Icon = FontAwesome.fa_circle_o
             };

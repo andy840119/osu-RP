@@ -1,6 +1,8 @@
-﻿using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.type;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects.Drawables;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using osu.Game.Rulesets.RP.Objects;
+using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.RP.SkinManager
@@ -42,7 +44,7 @@ namespace osu.Game.Rulesets.RP.SkinManager
         ///     按鈕要用的icon
         /// </summary>
         /// <returns></returns>
-        public static string GetKeyLayoutButtonIcon(RpBaseHitObjectType.Shape Type)
+        public static string GetKeyLayoutButtonIcon(Shape Type)
         {
             return RP_KEYCOUNTER_FOLDER + Type;
         }
@@ -179,16 +181,16 @@ namespace osu.Game.Rulesets.RP.SkinManager
 
 
             //如果是黃金模式(家分模式)
-            if (baseHitObject.Special == RpBaseObjectType.Special.Normal)
+            if (baseHitObject.Special == Special.Normal)
                 fileName = @"Normal/" + fileName;
             else
                 fileName = @"Special/" + fileName;
 
             //不同落下模式
-            if (baseHitObject.ApproachType == RpBaseHitObjectType.ApproachType.ApproachCircle)
-                fileName = @"Circle/" + fileName;
-            else
-                fileName = @"Square/" + fileName;
+            //if (baseHitObject.ApproachType == ApproachType.ApproachCircle)
+            fileName = @"Circle/" + fileName;
+            //else
+            //    fileName = @"Square/" + fileName;
 
             return RP_OBJECT_FOLDER + fileName;
         }
@@ -202,28 +204,37 @@ namespace osu.Game.Rulesets.RP.SkinManager
         private static string GetImageNameByType(BaseRpHitableObject baseHitObject)
         {
             string fileName = null;
-            switch (baseHitObject.Shape)
+
+            if ((baseHitObject as RpHitObject) != null)
             {
-                case RpBaseHitObjectType.Shape.Up:
-                    fileName = @"Up";
-                    break;
-                case RpBaseHitObjectType.Shape.Down:
-                    fileName = @"Down";
-                    break;
-                case RpBaseHitObjectType.Shape.Left:
-                    fileName = @"Left";
-                    break;
-                case RpBaseHitObjectType.Shape.Right:
-                    fileName = @"Right";
-                    break;
-                case RpBaseHitObjectType.Shape.Special:
-                    fileName = @"Star";
-                    break;
-                case RpBaseHitObjectType.Shape.ContainerPress:
-                    fileName = @"Left";
-                    break;
-                default:
-                    return @"RP_Unknown";
+                switch ((baseHitObject as RpHitObject).Direction)
+                {
+                    case Direction.Up:
+                        fileName = @"Up";
+                        break;
+                    case Direction.Down:
+                        fileName = @"Down";
+                        break;
+                    case Direction.Left:
+                        fileName = @"Left";
+                        break;
+                    case Direction.Right:
+                        fileName = @"Right";
+                        break;
+                    default:
+                        return @"RP_Unknown";
+                }
+            }
+            else
+            {
+                switch (baseHitObject.Shape)
+                {
+                    case Shape.ContainerPress:
+                        fileName = @"Left";
+                        break;
+                    default:
+                        return @"RP_Unknown";
+                }
             }
             return fileName;
         }

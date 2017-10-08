@@ -1,11 +1,10 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using osu.Game.Rulesets.Mods;
+using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Scoreing;
 using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.GameField
@@ -21,7 +20,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.GameField
 
         internal void ProcessGameField(Playfield<BaseRpObject, RpJudgement> playfield)
         {
-
         }
     }
 }

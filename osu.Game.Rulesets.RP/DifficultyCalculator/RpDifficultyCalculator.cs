@@ -1,13 +1,11 @@
 // Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
-using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap;
 using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.type;
 
 namespace osu.Game.Rulesets.RP.DifficultyCalculator
 {
@@ -41,9 +39,6 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
 
         protected override void PreprocessHitObjects()
         {
-            foreach (var h in Objects)
-                if (h.ObjectType == RpBaseObjectType.ObjectType.LongTail)
-                    ((RpHoldObject)h).Curve.Calculate();
         }
 
         protected override double CalculateInternal(Dictionary<string, string> categoryDifficulty)
@@ -83,8 +78,8 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
                 categoryDifficulty.Add("Aim", aimStars.ToString("0.00"));
                 categoryDifficulty.Add("Speed", speedStars.ToString("0.00"));
 
-                var hitWindow300 = 30 /*HitObjectManager.HitWindow300*// TimeRate;
-                var preEmpt = 450 /*HitObjectManager.PreEmpt*// TimeRate;
+                var hitWindow300 = 30 /*HitObjectManager.HitWindow300*/ / TimeRate;
+                var preEmpt = 450 /*HitObjectManager.PreEmpt*/ / TimeRate;
 
                 categoryDifficulty.Add("OD", (-(hitWindow300 - 80.0) / 6.0).ToString("0.00"));
                 categoryDifficulty.Add("AR", (preEmpt > 1200.0 ? -(preEmpt - 1800.0) / 120.0 : -(preEmpt - 1200.0) / 150.0 + 5.0).ToString("0.00"));
@@ -186,7 +181,7 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
         protected override BeatmapConverter<BaseRpObject> CreateBeatmapConverter() => new BeatmapConvertor();
 
 
-        //ÁzÊñE
+        //ÅEΩzÅEΩE
         //protected override BeatmapConverter<BaseRpObject> CreateBeatmapConverter() => new BeatmapConvertor();
 
         // Those values are used as array indices. Be careful when changing them!

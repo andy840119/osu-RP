@@ -1,5 +1,5 @@
-﻿//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -23,7 +23,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
 
-            BlendingMode = BlendingMode.Additive;
+            Blending = BlendingMode.Additive;
             Alpha = 0;
 
             Children = new Drawable[]

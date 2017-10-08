@@ -67,7 +67,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
                     {
                         path = new Path
                         {
-                            BlendingMode = BlendingMode.None
+                            Blending = BlendingMode.None
                         }
                     }
                 }

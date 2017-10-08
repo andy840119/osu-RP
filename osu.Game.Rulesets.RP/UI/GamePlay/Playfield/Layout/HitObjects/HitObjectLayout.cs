@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System.Collections.Generic;
 using System.Linq;
+using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects.Drawables;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects
 {
@@ -35,17 +38,22 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects
         /// <param name="drawableHitObject"></param>
         public void AddDrawableBaseHitObject(DrawableBaseRpHitableObject drawableHitObject)
         {
+            var containerIndex = drawableHitObject.HitObject.RelativeContainerLineGroupIndex;
+            var layoutIndex = drawableHitObject.HitObject.RelativeContainerLineIndex;
+
+            //如果是背景按壓物件
+            //if (drawableHitObject is DrawableRpContainerLineHoldObject)
+            //     ContainerBackgroundLayout.GetContainerByTime(((DrawableBaseRpObject)drawableHitObject).HitObject.StartTime).ElementAt(containerIndex).Template.AddObject(drawableHitObject as DrawableRpContainerLineHoldObject);
+            //else
+            //    ContainerBackgroundLayout.GetContainerByTime(((DrawableBaseRpObject)drawableHitObject).HitObject.StartTime).ElementAt(containerIndex).Template.ListContainObject[layoutIndex].AddObject(drawableHitObject);
+
+
             try
             {
-                var containerIndex = drawableHitObject.HitObject.ContainerIndex;
-                var layoutIndex = drawableHitObject.HitObject.LayoutIndex;
-
-                //如果是背景按壓物件
-                if (drawableHitObject is DrawableRpContainerLineHoldObject)
-                    ContainerBackgroundLayout.GetContainerByTime(drawableHitObject.HitObject.StartTime).ElementAt(containerIndex).ContainerTemplate.AddObject(drawableHitObject as DrawableRpContainerLineHoldObject);
-                else
-                    ContainerBackgroundLayout.GetContainerByTime(drawableHitObject.HitObject.StartTime).ElementAt(containerIndex).ContainerTemplate.ListLayoutTemplate[layoutIndex].AddObject(
-                        drawableHitObject);
+                //double time = ((DrawableBaseRpObject)drawableHitObject).HitObject.StartTime;
+                //DrawableRpContainerLineGroup lineGroup = ContainerBackgroundLayout.GetContainerByTime(time).ElementAt(containerIndex);
+                DrawableRpContainerLine line = ContainerBackgroundLayout.GetContainerLineByRpObject(drawableHitObject.HitObject.ParentObject);
+                line.AddObject(drawableHitObject);
             }
             catch
             {
@@ -60,17 +68,20 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects
         public IEnumerable<DrawableBaseRpObject> GetHitObjectByTime(double time)
         {
             var listContainer = ContainerBackgroundLayout.GetContainerByTime(time);
-            if (listContainer.Count() > 0)
+            if (listContainer.Any())
                 foreach (var container in listContainer)
                 {
+                    int offset = 50;
+
                     //Hold
-                    foreach (var singleHold in container.ContainerTemplate.ContainerLongPressDrawComponent.ListPressObject)
-                        if (singleHold.HitObject.StartTime <= time && singleHold.HitObject.EndTime >= time)
-                            yield return container;
-                    //HitObject
-                    foreach (var layoutTemplate in container.ContainerTemplate.ListLayoutTemplate)
-                    foreach (DrawableRpContainerLineHoldObject hitObject in layoutTemplate.ListHitObject)
-                        if (hitObject.HitObject.StartTime <= time && hitObject.HitObject.EndTime >= time)
+                    //foreach (var singleHold in container.Template.ContainerLongPressDraw.ListPressObject)
+                    //    if (((DrawableBaseRpObject)singleHold).HitObject.StartTime <= time && ((DrawableBaseRpObject)singleHold).HitObject.EndTime >= time)
+                    //        yield return container;
+
+                    //RpHitObject
+                    foreach (var layoutTemplate in container.ListContainObject)
+                    foreach (DrawableRpContainerLineHoldObject hitObject in layoutTemplate.ListContainObject)
+                        if (((DrawableBaseRpObject)hitObject).HitObject.StartTime <= time + offset && ((DrawableBaseRpObject)hitObject).HitObject.StartTime >= time - offset)
                             yield return container;
                 }
         }

@@ -1,6 +1,9 @@
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.ContainerPosition;
-using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Coop;
+using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.CoopDecide;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Generator;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.MultiContainer;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Parameter;
@@ -9,15 +12,16 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator
 {
     public class ContainerProcessor
     {
-        //物件數量決定
+        //MultiContainerDecidor
         private readonly MultiContainerDecidor multiContainerDecidor = new MultiContainerDecidor();
 
-        //實作並且分配
+        //ContainerGenerator
         private readonly ContainerGenerator containerGenerator = new ContainerGenerator();
 
-        //決定物件位置
+        //PositionDecidor
         private readonly PositionDecidor positionDecidor = new PositionDecidor();
 
+        //CoopDecider
         private readonly CoopDecider coopDecider = new CoopDecider();
 
         public List<ConvertParameter> Convert(List<ConvertParameter> output)

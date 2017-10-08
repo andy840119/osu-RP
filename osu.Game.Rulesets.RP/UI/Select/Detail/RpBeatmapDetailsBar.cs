@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -48,7 +48,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Detail
 
         private const int resize_duration = 250;
 
-        private const EasingTypes easing = EasingTypes.InOutCubic;
+        private const Easing easing = Easing.InOutCubic;
 
         private float length;
 

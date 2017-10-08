@@ -1,22 +1,13 @@
-//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using osu.Game.Audio;
-using osu.Game.Rulesets.Objects;
-using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.type;
-using OpenTK;
-using SliderCurve = osu.Game.Rulesets.RP.Objects.MovingPath.SliderCurve;
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 namespace osu.Game.Rulesets.RP.Parser
 {
+    /*
     public class RpHitObjectParser : HitObjectParser
     {
         /// <summary>
-        ///     如果是RP專用譜面�E�就朁E��老E��個轉換器
+        ///     如果是RP專用譜面�E�E�E�就朁E�E��E�老E�E��E�個轉換器
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
@@ -30,10 +21,10 @@ namespace osu.Game.Rulesets.RP.Parser
             BaseRpHitableObject result;
             switch (type)
             {
-                case RpBaseObjectType.ObjectType.Click:
+                case RpBaseObjectType.ObjectType.Hit:
                     result = new RpHitObject();
                     break;
-                case RpBaseObjectType.ObjectType.LongTail:
+                case RpBaseObjectType.ObjectType.Hold:
                     var s = new RpHoldObject();
 
                     var curveType = RpBaseObjectType.CurveTypes.Catmull;
@@ -84,7 +75,7 @@ namespace osu.Game.Rulesets.RP.Parser
 
                     //s.RepeatCount = repeatCount;
 
-                    //建立裡面皁E��有座樁E
+                    //建立裡面皁E�E��E�有座樁E
                     s.Curve = new SliderCurve
                     {
                         ControlPoints = points,
@@ -96,7 +87,7 @@ namespace osu.Game.Rulesets.RP.Parser
 
                     result = s;
                     break;
-                case RpBaseObjectType.ObjectType.ContainerPress:
+                case RpBaseObjectType.ObjectType.ContainerHold:
                     result = new RpContainerLineHoldObject();
                     break;
                 default:
@@ -117,4 +108,5 @@ namespace osu.Game.Rulesets.RP.Parser
             return result;
         }
     }
+    */
 }

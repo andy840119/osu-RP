@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using osu.Framework.Graphics;
 
 namespace osu.Game.Rulesets.RP.Objects.RpEffect.Point
@@ -18,12 +20,12 @@ namespace osu.Game.Rulesets.RP.Objects.RpEffect.Point
         /// EastingType
         /// </summary>
         /// <value>The easing types.</value>
-        public EasingTypes EasingTypes { get; set; }
+        public Easing EasingTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the process time.
         /// </summary>
         /// <value>The process time.</value>
-        public Double ProcessTime { get; set; }
+        public double ProcessTime { get; set; }
     }
 }

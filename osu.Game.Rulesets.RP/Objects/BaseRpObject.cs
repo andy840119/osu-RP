@@ -1,104 +1,78 @@
-﻿using System.Collections.Generic;
-using osu.Framework.Graphics;
-using osu.Game.Beatmaps;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System;
+using System.ComponentModel;
 using osu.Game.Rulesets.Objects;
-using osu.Game.Rulesets.Objects.Types;
-using osu.Game.Rulesets.RP.Objects.type;
-using OpenTK;
-using OpenTK.Graphics;
-using SliderCurve = osu.Game.Rulesets.RP.Objects.MovingPath.SliderCurve;
+using osu.Game.Rulesets.RP.Objects.Attribute;
+using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects
 {
     /// <summary>
-    ///     目前所有RP物件共通都會出現的
-    ///     包括打擊物件和Container(乘載RP物件的地方)
+    ///     all RpObject should inherit it
     /// </summary>
-    public class BaseRpObject : HitObject 
+    public abstract class BaseRpObject : HitObject, IHasBPM, IHasVelocity, IHasPreemptTime
     {
-        public bool Editable = false;
+        //BPM
+        public virtual double BPM { get; set; }
 
-        public virtual double EndTime => StartTime;
+        //before startTime
+        public float PreemptTime { get; set; }
 
-        public virtual double Duration => EndTime - StartTime;
+        //List attributer
+        public BindingList<BaseRpObjectAttribute> ListAttrobutes = new BindingList<BaseRpObjectAttribute>();
 
-        /// <summary>
-        ///     結束位置
-        /// </summary>
-        public Vector2 EndPosition => Curve.EndPosition;
+        //Object type
+        public virtual ObjectType ObjectType => ObjectType.Undefined;
 
-        /// <summary>
-        ///     Type
-        /// </summary>
-        public RpBaseObjectType.ObjectType ObjectType;
+        //Velocity
+        public double Velocity { get; set; }
 
-        //物件出現需要花的時間
-        public float TIME_FADEIN = 200;
-        //物件在打擊多久前提早出現
-        public float TIME_PREEMPT = 1500;
-        //打擊過後多久會消失
-        public float TIME_FADEOUT = 300;
-
-        public Color4 Colour;
-
-        /// <summary>
-        ///     移動速度
-        /// </summary>
-        public double Velocity;
-
-        /// <summary>
-        ///     移動曲線
-        /// </summary>
-        public SliderCurve Curve = new SliderCurve
+        //Construct
+        protected BaseRpObject(double startTime)
         {
-            ControlPoints = new List<Vector2>(),
-            Length = 0,
-            CurveType = RpBaseObjectType.CurveTypes.Bezier
-        };
-
-        /// <summary>
-        ///     設定移動軌跡的曲線
-        /// </summary>
-        public EasingTypes CurveEasingTypes = EasingTypes.None;
-
-        /// <summary>
-        ///     特殊曲線佔的百分比(0~1)
-        /// </summary>
-        public double CurveEasingTypesPrecentage = 0.5;
-
-        public float Scale { get; set; } = 1;
-
-        //物件位置
-        public Vector2 Position
-        {
-            get { return Curve.StartPosition; }
-            set { Curve.StartPosition = value; }
-        }
-
-        public IHasCurve CurveObject { get; internal set; }
-
-        public BaseRpObject()
-        {
+            PreemptTime = 1500;
+            StartTime = startTime;
             InitialDefaultValue();
         }
 
-        public void SetDefaultsFromBeatmap(Beatmap beatmap)
+        //Initial
+        protected virtual void InitialDefaultValue()
         {
-            //Scale = (1.0f - 0.7f * (beatmap.BeatmapInfo.Difficulty.CircleSize - 5) / 5) / 2;
-            Scale = (1.0f - 0.7f * (beatmap.BeatmapInfo.Difficulty.CircleSize - 5) / 5) / 4 * 3;
-            //Velocity = 100 / beatmap.BeatLengthAt(StartTime) * beatmap.BeatmapInfo.BaseDifficulty.SliderMultiplier;
-            //Velocity = 100 / beatmap.SliderVelocityAt(StartTime) * beatmap.BeatmapInfo.Difficulty.SliderMultiplier * 1.5;
-
-            Scale = 1;
+            Velocity = 1;
+            BPM = 180;
         }
+    }
 
-        /// <summary>
-        ///     初始化預設物件
-        /// </summary>
-        public virtual void InitialDefaultValue()
-        {
-            CurveEasingTypes = EasingTypes.InSine;
-            ObjectType = RpBaseObjectType.ObjectType.Undefined;
-        }
+    //ObjectType
+    [Flags]
+    public enum ObjectType
+    {
+        Undefined = 1,
+        HitObject = 2,
+        Hit = 16,
+        Hold = 32,
+        ContainerGroup = 4,
+        ContainerLine = 8,
+        ContainerHold = 64,
+        NewCombo = 128
+    }
+
+    //Convert
+    [Flags]
+    public enum Convert
+    {
+        Original,
+        Convert
+    }
+
+    //Coop
+    [Flags]
+    public enum Coop
+    {
+        LeftOnly,
+        RightOnly,
+        Both
     }
 }

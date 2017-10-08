@@ -1,17 +1,20 @@
-﻿using osu.Framework.Graphics;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using osu.Framework.Graphics;
+using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects.Drawables;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate
 {
-    internal class SlideHitEffectTemplate : BaseHitEffectTemplate
+    public class SlideHitEffectTemplate : BaseHitEffectTemplate
     {
         /// <summary>
         ///     目前結果
         /// </summary>
-        protected new RpScoreResult RPScoreResult = RpScoreResult.Slider;
+        protected override RpScoreResult RpScoreResult => RpScoreResult.Slider;
 
         /// <summary>
         ///     白色十字
@@ -27,11 +30,11 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         {
             Children = new Drawable[]
             {
-                _effectPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RPScoreResult, "Slide_effect"))
+                _effectPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Slide_effect"))
                 {
                     Position = new Vector2(0, 0)
                 },
-                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RPScoreResult, "RP"))
+                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "RP"))
                 {
                     Position = new Vector2(0, 0)
                 }

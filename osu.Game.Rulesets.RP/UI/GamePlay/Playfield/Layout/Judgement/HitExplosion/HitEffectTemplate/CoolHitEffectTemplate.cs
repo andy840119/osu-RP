@@ -1,7 +1,10 @@
-﻿using osu.Framework.Graphics;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using osu.Framework.Graphics;
+using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects.Drawables;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate
@@ -9,12 +12,12 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
     /// <summary>
     ///     如果是Cool的打擊特效
     /// </summary>
-    internal class CoolHitEffectTemplate : BaseHitEffectTemplate
+    public class CoolHitEffectTemplate : BaseHitEffectTemplate
     {
         /// <summary>
         ///     目前結果
         /// </summary>
-        protected new RpScoreResult RPScoreResult = RpScoreResult.Cool;
+        protected override RpScoreResult RpScoreResult => RpScoreResult.Cool;
 
         /// <summary>
         ///     黃色光環
@@ -35,16 +38,16 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         {
             Children = new Drawable[]
             {
-                _flarePicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RPScoreResult, "Flare"))
+                _flarePicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Flare"))
                 {
                     Position = new Vector2(0, 0)
                 },
-                _loopPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RPScoreResult, "Loop"))
+                _loopPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Loop"))
                 {
                     //Colour = osuObject.Colour,
                     Position = new Vector2(0, 0)
                 },
-                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RPScoreResult, "RP"))
+                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "RP"))
                 {
                     //Colour = osuObject.Colour,
                     Position = new Vector2(0, 0)
@@ -52,35 +55,37 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
             };
         }
 
+        private float multi = 1;
+
         //開始特效
         public override void StartEffect()
         {
             //透明度
             _loopPicec.FadeTo(0.7f, 0);
-            _loopPicec.FadeTo(0.7f, 250);
-            _loopPicec.FadeTo(0f, 300);
+            _loopPicec.FadeTo(0.7f, 250 * multi);
+            _loopPicec.FadeTo(0f, 300 * multi);
             //scale
             _loopPicec.Scale = new Vector2(1.4f);
-            _loopPicec.ScaleTo(3.0f, 200);
-            _loopPicec.ScaleTo(3.0f, 220);
+            _loopPicec.ScaleTo(3.0f, 200 * multi);
+            _loopPicec.ScaleTo(3.0f, 220 * multi);
 
             //透明度
             _flarePicec.FadeTo(0.7f, 0);
-            _flarePicec.FadeTo(0.7f, 250);
-            _flarePicec.FadeTo(0f, 300);
+            _flarePicec.FadeTo(0.7f, 250 * multi);
+            _flarePicec.FadeTo(0f, 300 * multi);
             //scale
             _flarePicec.Scale = new Vector2(0.8f);
-            _flarePicec.ScaleTo(1.6f, 50);
-            _flarePicec.ScaleTo(1.6f, 150);
+            _flarePicec.ScaleTo(1.6f, 50 * multi);
+            _flarePicec.ScaleTo(1.6f, 150 * multi);
 
             //透明度
             _onpuPicec.FadeTo(0.8f, 0);
-            _onpuPicec.FadeTo(0.8f, 350);
-            _onpuPicec.FadeTo(0f, 400);
+            _onpuPicec.FadeTo(0.8f, 350 * multi);
+            _onpuPicec.FadeTo(0f, 400 * multi);
             //scale
             _onpuPicec.Scale = new Vector2(1f);
-            _onpuPicec.ScaleTo(1.8f, 200);
-            _onpuPicec.ScaleTo(1.8f, 220);
+            _onpuPicec.ScaleTo(1.8f, 200 * multi);
+            _onpuPicec.ScaleTo(1.8f, 220 * multi);
         }
     }
 }

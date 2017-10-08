@@ -4,7 +4,7 @@
 namespace osu.Game.Rulesets.RP.SkinManager
 {
     /// <summary>
-    ///     Manager all the Default Value of Rp HitObject can be adjust in the skin config.
+    ///     Manager all the Default Value of Rp RpHitObject can be adjust in the skin config.
     /// </summary>
     public class RpObjectValueManager
     {

@@ -1,6 +1,7 @@
-﻿﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using OpenTK;
-using osu.Framework.Graphics;
 
 namespace osu.Game.Rulesets.RP.Objects.RpEffect.Point
 {
@@ -13,7 +14,6 @@ namespace osu.Game.Rulesets.RP.Objects.RpEffect.Point
         {
             //Set default effect ProcessTime is 200ms
             ProcessTime = 200;
-
         }
 
         /// <summary>
@@ -21,8 +21,5 @@ namespace osu.Game.Rulesets.RP.Objects.RpEffect.Point
         /// </summary>
         /// <value>The new scale.</value>
         public Vector2 NewScale { get; set; }
-
-       
-
     }
 }

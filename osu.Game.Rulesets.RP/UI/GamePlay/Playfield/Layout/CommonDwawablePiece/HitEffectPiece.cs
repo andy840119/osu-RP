@@ -1,12 +1,12 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using osu.Framework.Graphics.Containers;
-using osu.Game.Rulesets.RP.Objects.RpEffect;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
 {
     public class HitEffectPiece<T> : EffectPiece<T> where T : Container
     {
-        
         /// <summary>
         /// InitialHitEffectPiece
         /// </summary>
@@ -20,7 +20,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         /// </summary>
         public virtual void GenerateHitEffect()
         {
-            
         }
 
         /// <summary>

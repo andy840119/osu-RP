@@ -3,13 +3,13 @@
 
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Parameter;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Parameter;
-using osu.Game.Rulesets.RP.Objects.type;
+using osu.Game.Rulesets.RP.Objects;
 
 namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 {
     internal class ProcessObjectTypeRandom
     {
-        //單一一段的物件
+        //單一一段皁E�E��E�件
         private ConvertParameter _singleSlideParameter;
 
 
@@ -22,28 +22,31 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
         internal void Process(SingleHitObjectConvertParameter singleTuple)
         {
             for (var i = 0; i < singleTuple.ListBaseHitObject.Count; i++)
-                singleTuple.ListBaseHitObject[i].Shape = CalRandomShape(singleTuple, i);
+            {
+                (singleTuple.ListBaseHitObject[i] as RpHitObject).Direction = CalRandomShape(singleTuple, i);
+            }
+            
         }
 
         /// <summary>
         ///     計算隨機形狀
         /// </summary>
         /// <returns></returns>
-        private RpBaseHitObjectType.Shape CalRandomShape(SingleHitObjectConvertParameter singleTuple, int index)
+        private Direction CalRandomShape(SingleHitObjectConvertParameter singleTuple, int index)
         {
             var randNum = CalRandNumber(singleTuple, index);
             switch (randNum % 4)
             {
                 case 0:
-                    return RpBaseHitObjectType.Shape.Up;
+                    return Direction.Up;
                 case 1:
-                    return RpBaseHitObjectType.Shape.Left;
+                    return Direction.Left;
                 case 2:
-                    return RpBaseHitObjectType.Shape.Down;
+                    return Direction.Down;
                 case 3:
-                    return RpBaseHitObjectType.Shape.Right;
+                    return Direction.Right;
             }
-            return RpBaseHitObjectType.Shape.Down;
+            return Direction.Down;
         }
 
         /// <summary>
@@ -62,7 +65,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 
             return singleTuple.MultiNumber + (int)singleTuple.StartTime + singleTuple.ListBaseHitObject.Count + addNumber;
 
-            //BPM，為了避免BPM 200 的譜特別簡單
+            //BPM�E�E�E�為亁E�E��E�免BPM 200 皁E�E��E�特別簡單
             var periodTime = (int)(60 / (double)(int)_singleSlideParameter.SliceConvertParameter.BPM) * 1000;
             //
             return singleTuple.MultiNumber + (int)singleTuple.StartTime % periodTime + singleTuple.ListBaseHitObject.Count;
@@ -70,7 +73,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 
         /// <summary>
         ///     產生隨機參數
-        ///     目前先保存下來
+        ///     目前�E保存下侁E
         /// </summary>
         /// <returns></returns>
         private int OLD_CalRandNumber(SingleHitObjectConvertParameter singleTuple)

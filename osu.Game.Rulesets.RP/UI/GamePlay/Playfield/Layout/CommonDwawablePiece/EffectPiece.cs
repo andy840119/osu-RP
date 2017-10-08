@@ -1,8 +1,12 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System;
+using System.Collections.Generic;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.RpEffect;
 using osu.Game.Rulesets.RP.Objects.RpEffect.Point;
-using System.Collections.Generic;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
 {
@@ -16,7 +20,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         /// <summary>
         /// Default that ProcessTime is 1000ms
         /// </summary>
-        protected Double Time = 1000;
+        protected double Time = 1000;
 
         /// <summary>
         /// The target container.s
@@ -25,11 +29,10 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
 
         public EffectPiece()
         {
-            
         }
 
         //TODO :  set the filter effect
-        public Type[] IncompatibleMods;//=> new[] { typeof(ModAutoplay), typeof(RpModRelax) };
+        public Type[] IncompatibleMods; //=> new[] { typeof(ModAutoplay), typeof(RpModRelax) };
 
         /// <summary>
         /// Sets the target container.
@@ -57,7 +60,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         /// </summary>
         private void CleanAllEffect()
         {
-            TargetContainer.Transforms.Clear();
+            //TargetContainer.Transforms.Clear();
         }
 
         /// <summary>
@@ -65,8 +68,8 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
         /// </summary>
         private void UpdateEffect()
         {
-            Double delay = 0;
-            Double lastEffectDeltaTime = 0;
+            double delay = 0;
+            double lastEffectDeltaTime = 0;
 
             List<EffectPoint> listSortedPoint = Effect.GetFilterEffectPoint(IncompatibleMods);
             do
@@ -82,8 +85,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
                 }
                 if (delay > Time)
                     break;
-            }
-            while (Effect.Loop);
+            } while (Effect.Loop);
         }
 
         private void UpdateSingleEffectPoint(EffectPoint singleEffectPoint)
@@ -91,9 +93,9 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
             if (singleEffectPoint is ScaleEffectPoint)
             {
                 ScaleEffectPoint effectPoint = singleEffectPoint as ScaleEffectPoint;
-                TargetContainer.ScaleTo(effectPoint.NewScale,effectPoint.ProcessTime,effectPoint.EasingTypes);
+                TargetContainer.ScaleTo(effectPoint.NewScale, effectPoint.ProcessTime, effectPoint.EasingTypes);
             }
-            else if(singleEffectPoint is ColorEffectPoint)
+            else if (singleEffectPoint is ColorEffectPoint)
             {
                 ColorEffectPoint effectPoint = singleEffectPoint as ColorEffectPoint;
                 TargetContainer.FadeColour(effectPoint.Color, effectPoint.ProcessTime, effectPoint.EasingTypes);
@@ -102,7 +104,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
 
         public void SetProcessTime()
         {
-
         }
     }
 }

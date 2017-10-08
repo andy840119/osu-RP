@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Mods;
@@ -60,7 +63,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.RpMod
                             new RpKeyMod4K(),
                         }
                     };
-                    yield return new RpModContainerHitObjectPressOut();
+                    yield return new RpModAutoContainerLineHoldObject();
                     yield return new RpModShapeHitObjectCoco();
                     yield return new RpModContainerHitObjectCoco();
                     yield return new MultiMod
