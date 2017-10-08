@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 using osu.Game.Rulesets.Objects.Types;
-using osu.Game.Rulesets.RP.Input;
+using osu.Game.Rulesets.RP.KeyManager;
 
 namespace osu.Game.Rulesets.RP.Objects
 {

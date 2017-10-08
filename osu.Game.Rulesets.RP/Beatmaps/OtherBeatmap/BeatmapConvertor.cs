@@ -11,6 +11,7 @@ using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.PostConvert;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Slicing;
 using osu.Game.Rulesets.RP.Objects;
+using osu.Game.Rulesets.RP.Objects.Extension;
 
 namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap
 {
@@ -92,13 +93,17 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap
         /// <returns>The converted Beatmap.</returns>
         protected override Beatmap<BaseRpObject> ConvertBeatmap(Beatmap original)
         {
-            //TODO : 參考Mania解決方案
-            return new Beatmap<BaseRpObject>()
+            
+            //TODO : ・ｽﾒ考Mania・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
+            var newBratmaps= new Beatmap<BaseRpObject>()
             {
                 BeatmapInfo = original.BeatmapInfo,
                 ControlPointInfo = original.ControlPointInfo,
                 HitObjects = convertHitObjects(original, original.BeatmapInfo?.StackLeniency ?? 0.7f),
+
             };
+            //newBratmaps.HitObjects.BindingAll();
+            return newBratmaps;
         }
 
 

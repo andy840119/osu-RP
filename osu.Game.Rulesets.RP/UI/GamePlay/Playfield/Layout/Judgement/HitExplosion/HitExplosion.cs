@@ -3,6 +3,7 @@
 
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.Judgements;
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate;
@@ -12,7 +13,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
     /// <summary>
     ///     打擊會產生的特效
     /// </summary>
-    public class HitExplosion : DrawableJudgement<RpJudgement>
+    public class HitExplosion : DrawableJudgement
     {
         /// <summary>
         ///     顯示特效
@@ -29,27 +30,32 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
             //Spacing = new Vector2(0, 2);
             //Position = (h?.Position ?? Vector2.Zero) + judgement.PositionOffset;
 
-            if (Judgement.HitExplosionPosition.Count > 0)
+            if ((Judgement as RpJudgement).HitExplosionPosition.Count > 0)
                 Position = judgement.HitExplosionPosition[0];
 
-            //根據物件去顯示成績
-            switch (Judgement.Score)
+            //TODO : 根據物件去顯示成績
+            switch ((Judgement as RpJudgement).Result)
             {
-                case RpScoreResult.Sad:
+                case HitResult.Ok:
                     _hitEffect = new SadHitEffectTemplate();
                     break;
-                case RpScoreResult.Safe:
+                case HitResult.Good:
                     _hitEffect = new SafeHitEffectTemplate();
                     break;
-                case RpScoreResult.Fine:
+                case HitResult.Great:
                     _hitEffect = new FineHitEffectTemplate();
                     break;
-                case RpScoreResult.Cool:
+                case HitResult.Perfect:
                     _hitEffect = new CoolHitEffectTemplate();
                     break;
-                case RpScoreResult.Slider:
+                case HitResult.Meh:
                     _hitEffect = new SlideHitEffectTemplate();
                     break;
+
+                default:
+                    _hitEffect = new SadHitEffectTemplate();
+                    break;
+                    
             }
 
             //

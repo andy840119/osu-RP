@@ -4,8 +4,6 @@
 using System;
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpHitObject;
-using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
@@ -23,7 +21,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         public DrawableRpHoldObject(RpHoldObject h)
             : base(h)
         {
-
         }
 
         // Since the DrawableSlider itself is just a container without a size we need to
@@ -33,6 +30,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         /// <summary>
         /// </summary>
         /// <param name="userTriggered"></param>
+        /*
         protected override void CheckJudgement(bool userTriggered)
         {
             if (!userTriggered)
@@ -64,6 +62,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
                 Judgement.Result = HitResult.Miss;
             }
         }
+        */
 
         /// <summary>
         ///     更新初始狀態

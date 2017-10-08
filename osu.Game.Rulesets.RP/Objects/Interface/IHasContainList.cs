@@ -8,6 +8,5 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
     public interface IHasContainList<T>
     {
         List<T> ListContainObject { get; set; }
-
     }
 }

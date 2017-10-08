@@ -9,6 +9,7 @@ using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.GameField;
 using osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.HitObject;
+using osu.Game.Rulesets.RP.UI.GamePlay.Playfield;
 using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor
@@ -31,12 +32,12 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor
             HitObjectModsProcessor = new HitObjectModsProcessor(listMods);
         }
 
-        internal void ProcessGameField(Playfield<BaseRpObject, RpJudgement> playfield)
+        internal void ProcessGameField(Rulesets.UI.Playfield playfield)
         {
             GameFieldModsProcessor.ProcessGameField(playfield);
         }
 
-        internal void ProcessHitObject(DrawableHitObject<BaseRpObject, RpJudgement> returnObject)
+        internal void ProcessHitObject(DrawableHitObject<BaseRpObject> returnObject)
         {
             HitObjectModsProcessor.ProcessHitObject(returnObject);
         }

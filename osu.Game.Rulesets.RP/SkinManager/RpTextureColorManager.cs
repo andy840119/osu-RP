@@ -44,7 +44,6 @@ namespace osu.Game.Rulesets.RP.SkinManager
                     return new Color4(226, 54, 177, 255);
                 case Direction.Up:
                     return new Color4(131, 226, 54, 255);
-                
             }
             return new Color4(255, 255, 255, 255);
         }

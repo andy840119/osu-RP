@@ -2,19 +2,15 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent.ContainerLineGroup;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpContainer;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpContainer.Component;
-using OpenTK;
+using osu.Game.Rulesets.RP.Objects.Drawables.Component;
+using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
     /// <summary>
     ///     匁E��RP物件
     /// </summary>
-    public class DrawableRpContainerLineGroup : DrawableBaseContainableObject<IHasTemplate> 
+    public class DrawableRpContainerLineGroup : DrawableBaseContainableObject<IHasTemplate>
     {
         /// <summary>
         /// </summary>
@@ -31,24 +27,16 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         public DrawableRpContainerLineGroup(BaseRpObject hitObject)
             : base(hitObject)
         {
-            Position = HitObject.Position;
+            Position = (HitObject as RpContainerLineGroup).Position;
         }
 
         //建構樣板物件
         protected override void ConstructObject()
         {
-            //背景
-            Components.Add(new ContainerBackground(HitObject));
-            //節拍黁E
-            Components.Add(new ContainerDecisionLine(HitObject));
-            ///開始結束黁E
-            Components.Add(new ContainerStartEnd(HitObject));
-            //按壁E
-            Components.Add(new ContainerLongPressDraw(HitObject));
-            //持E��E
-            Components.Add(new ContainerBeatLine(HitObject));
-
-            Components.Add(new ContainerGroupContainComponent(HitObject));
+            //Background
+            Components.Add(new ContainerGroupBackground());
+            //Object contain area
+            Components.Add(new ContainerGroupContainArea());
         }
 
 
@@ -87,15 +75,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
                 this.FadeOut(FadeOutTime);
                 Template.FadeOut(FadeOutTime);
             }
-        }
-
-
-        /// <summary>
-        ///     從這邊去更新狀慁E
-        /// </summary>
-        /// <param name="userTriggered"></param>
-        protected override void CheckJudgement(bool userTriggered)
-        {
         }
     }
 }

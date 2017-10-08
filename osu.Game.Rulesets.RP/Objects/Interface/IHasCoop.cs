@@ -5,6 +5,6 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
 {
     public interface IHasCoop
     {
-        Coop Coop { get; }
+        Coop Coop { get; set; }
     }
 }

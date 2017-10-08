@@ -171,10 +171,6 @@
       <Project>{48f4582b-7687-4621-9cbe-5c24197cb536}</Project>
       <Name>osu.Game.Rulesets.Mania</Name>
     </ProjectReference>
-    <ProjectReference Include="..\osu.Game.Rulesets.RP\osu.Game.Rulesets.RP.csproj">
-      <Project>{07e65aa5-5a23-4089-9024-21046e882bed}</Project>
-      <Name>osu.Game.Rulesets.RP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\osu.Game.Rulesets.Taiko\osu.Game.Rulesets.Taiko.csproj">
       <Project>{f167e17a-7de6-4af5-b920-a5112296c695}</Project>
       <Name>osu.Game.Rulesets.Taiko</Name>

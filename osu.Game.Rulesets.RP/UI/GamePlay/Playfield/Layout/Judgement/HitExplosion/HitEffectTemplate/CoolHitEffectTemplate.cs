@@ -2,6 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
@@ -17,7 +18,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         /// <summary>
         ///     目前結果
         /// </summary>
-        protected override RpScoreResult RpScoreResult => RpScoreResult.Cool;
+        protected override HitResult RpScoreResult => HitResult.Perfect;
 
         /// <summary>
         ///     黃色光環

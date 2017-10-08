@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Graphics;
 using osu.Game.Beatmaps;
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Replays;
-using osu.Game.Rulesets.RP.Input;
+using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Users;
-using OpenTK.Input;
 
 namespace osu.Game.Rulesets.RP.Replays
 {
@@ -74,13 +74,13 @@ namespace osu.Game.Rulesets.RP.Replays
                 {
                     //add start and endPoint
                     listPointTime.Add(h.StartTime);
-                    listPointTime.Add(h.StartTime + h.HitWindowFor(RpScoreResult.Cool));
+                    listPointTime.Add(h.StartTime + h.HitWindowFor(HitResult.Perfect));
                 }
                 else if (h is RpHoldObject)
                 {
                     //add start and endPoint
                     listPointTime.Add(h.StartTime);
-                    listPointTime.Add(h.StartTime + h.HitWindowFor(RpScoreResult.Cool));
+                    listPointTime.Add(h.StartTime + h.HitWindowFor(HitResult.Perfect));
                 }
             }
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Template.Component;
 using osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpContainer.Component;
@@ -17,7 +16,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent
     /// 可以放置物件的地方
     /// Base compojnent class
     /// </summary>
-    public class ContainerContainComponent<T> :  ComponentBaseContainer, ICanContainObject<T> , IComponentBase  where T :  IHasTemplate
+    public class ContainerContainComponent<T> :  ComponentBaseContainer, ICanContainObject<T> , IComponentBase  where T : DrawableBaseRpObject
     {
         public ContainerContainComponent(RpContainerLineGroup hitObject) : base(hitObject)
         {
@@ -29,7 +28,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent
 
         public void AddObject(T rpObject)
         {
-            rpObject.Template.Position = GetRowPosition();
+            rpObject.Position = GetRowPosition();
 
             //add object
             if (!ListContainObject.Contains(rpObject))

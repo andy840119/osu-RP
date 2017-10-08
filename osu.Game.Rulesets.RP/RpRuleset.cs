@@ -5,15 +5,16 @@ using System.Collections.Generic;
 using osu.Framework.Graphics;
 using osu.Framework.Input.Bindings;
 using osu.Game.Beatmaps;
+using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.RP.DifficultyCalculator;
-using osu.Game.Rulesets.RP.Input;
-using osu.Game.Rulesets.RP.Mods;
+using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Scoreing;
 using osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
 using osu.Game.Rulesets.RP.UI.Select.Info;
 using osu.Game.Rulesets.RP.UI.Select.RpMod;
+using osu.Game.Rulesets.RP.UI.Setting;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.UI;
 
@@ -71,11 +72,7 @@ namespace osu.Game.Rulesets.RP
         /// </summary>
         public override string Description => "osu!RP";
 
-        /// <summary>
-        ///     Score processor
-        /// </summary>
-        /// <returns></returns>
-        public override ScoreProcessor CreateScoreProcessor() => new RpScoreProcessor();
+        //public override SettingsSubsection CreateSettings() => new RpSettings();
 
         /// <summary>
         /// setting
@@ -83,7 +80,6 @@ namespace osu.Game.Rulesets.RP
         /// </summary>
         /// <returns></returns>
         //public override SettingsSubsection CreateSettings() => new RpSettings();
-
         /// <summary>
         /// Do not override this unless you are a legacy mode.
         /// </summary>

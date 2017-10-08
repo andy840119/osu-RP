@@ -2,7 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
-using osu.Game.Rulesets.RP.Input;
+using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects
@@ -21,7 +21,7 @@ namespace osu.Game.Rulesets.RP.Objects
         {
         }
 
-       
+
         public override bool CanHitBy(RpAction action)
         {
             //isMatch
@@ -58,12 +58,12 @@ namespace osu.Game.Rulesets.RP.Objects
 
         public override List<RpAction> GetListCompareKeys()
         {
-            List<RpAction> listKey=new List<RpAction>();
+            List<RpAction> listKey = new List<RpAction>();
 
             switch (Direction)
             {
                 case Direction.Up:
-                    if(Coop == Coop.Both || Coop == Coop.LeftOnly)
+                    if (Coop == Coop.Both || Coop == Coop.LeftOnly)
                         listKey.Add(RpAction.Left_Up);
                     if (Coop == Coop.Both || Coop == Coop.RightOnly)
                         listKey.Add(RpAction.Right_Up);

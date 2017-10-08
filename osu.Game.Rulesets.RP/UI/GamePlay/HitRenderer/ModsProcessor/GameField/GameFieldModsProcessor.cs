@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects;
+using osu.Game.Rulesets.RP.UI.GamePlay.Playfield;
 using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.GameField
@@ -18,7 +19,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.GameField
             this.listMods = listMods;
         }
 
-        internal void ProcessGameField(Playfield<BaseRpObject, RpJudgement> playfield)
+        internal void ProcessGameField(Rulesets.UI.Playfield playfield)
         {
         }
     }

@@ -6,6 +6,6 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
     public interface IHasVelocity
     {
         //Velocity
-        double Velocity { get; set; }
+        float Velocity { get; set; }
     }
 }

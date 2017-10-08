@@ -11,12 +11,10 @@ namespace osu.Game.Rulesets.RP.Judgements
 {
     public class RpJudgement : Judgement
     {
-        //public override string ResultString => Score.GetDescription();
-        //public override string MaxResultString => MaxScore.GetDescription();
 
-        public RpScoreResult MaxScore;
+        //public RpScoreResult MaxScore;
 
-        public RpScoreResult Score;
+       // public RpScoreResult Score;
         public RpComboResult Combo;
         public List<Vector2> HitExplosionPosition = new List<Vector2>();
         public int AdditionalPlusScore = 0;

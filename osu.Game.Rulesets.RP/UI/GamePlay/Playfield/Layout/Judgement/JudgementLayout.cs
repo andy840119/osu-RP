@@ -9,9 +9,9 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement
 {
     internal class JudgementLayout : BaseGamePlayLayout
     {
-        public void AddHitEffect(DrawableHitObject<BaseRpObject, RpJudgement> drawableHitObject)
+        public void AddHitEffect(RpJudgement drawableHitObject)
         {
-            var explosion = new HitExplosion.HitExplosion(drawableHitObject.Judgement);
+            var explosion = new HitExplosion.HitExplosion(drawableHitObject);
             Add(explosion);
         }
     }

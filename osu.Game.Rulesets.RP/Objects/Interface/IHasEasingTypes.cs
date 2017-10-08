@@ -5,6 +5,9 @@ using osu.Framework.Graphics;
 
 namespace osu.Game.Rulesets.RP.Objects.Interface
 {
+    /// <summary>
+    /// TODO : will chnge to part of attribute
+    /// </summary>
     public interface IHasEasingTypes
     {
         //設定移動軌跡的曲線 will be remove

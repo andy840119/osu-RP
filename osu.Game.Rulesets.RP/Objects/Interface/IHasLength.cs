@@ -5,6 +5,6 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
 {
     public interface IHasLength
     {
-        float Lenght { get; }
+        float Lenght { get; set; }
     }
 }

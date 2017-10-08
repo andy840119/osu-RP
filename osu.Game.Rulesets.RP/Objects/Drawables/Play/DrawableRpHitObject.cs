@@ -2,15 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
-using osu.Framework.Input.Bindings;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Objects.Types;
-using osu.Game.Rulesets.RP.Input;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpHitObject;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpHitObject.Component.ApproachPiece;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpHitObject.Component.Common;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpHitObject.Component.StillPiece;
-using OpenTK;
+using osu.Game.Rulesets.RP.Objects.Drawables.Component;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
@@ -29,14 +23,13 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         public DrawableRpHitObject(RpHitObject h)
             : base(h)
         {
-
         }
 
         protected override void ConstructObject()
         {
-            Components.Add(new LoadEffect(HitObject));
-            Components.Add(new ApproachCircle(HitObject));
-            Components.Add(new StillHit(HitObject));
+            Components.Add(new ApproachCircle());
+            Components.Add(new StillHit());
+            Components.Add(new LoadEffect());
         }
 
         /// <summary>

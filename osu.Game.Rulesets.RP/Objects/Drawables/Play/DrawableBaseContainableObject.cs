@@ -1,21 +1,17 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using osu.Game.Rulesets.RP.Judgements;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpContainer;
+using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
     /// <summary>
     /// Base object that can acceppt another object drag onto it
     /// </summary>
-    public abstract class DrawableBaseContainableObject<T> : DrawableBaseRpObject, ICanContainObject<T> where T : IHasTemplate
+    public abstract class DrawableBaseContainableObject<T> : DrawableBaseRpObject, ICanContainObject
     {
         //FadeInTime
         public override float FadeInTime => 300;
@@ -23,22 +19,9 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //FadeOutTime
         public override float FadeOutTime => 300;
 
-        public BindingList<T> ListContainObject
-        {
-            get
-            {
-                return (Components.Where(n => n is ICanContainObject<T>).FirstOrDefault() as ICanContainObject<T>).ListContainObject;
-            }
-            set
-            {
-                (Components.Where(n => n is ICanContainObject<T>).FirstOrDefault() as ICanContainObject<T>).ListContainObject = value;
-            }
-        }
-
         public DrawableBaseContainableObject(BaseRpObject hitObject)
             : base(hitObject)
         {
-            ListContainObject = new BindingList<T>();
         }
 
         /// <summary>

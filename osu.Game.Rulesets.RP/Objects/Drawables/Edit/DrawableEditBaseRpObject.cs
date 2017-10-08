@@ -4,20 +4,15 @@
 using System;
 using osu.Framework.Input;
 using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Rulesets.RP.Judgements;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit
 {
-    public class DrawableEditBaseRpObject : DrawableHitObject<BaseRpObject, RpJudgement>
+    public class DrawableEditBaseRpObject : DrawableHitObject<BaseRpObject>
     {
         public DrawableEditBaseRpObject(BaseRpObject hitObject)
             : base(hitObject)
         {
-        }
 
-        protected override RpJudgement CreateJudgement()
-        {
-            throw new NotImplementedException();
         }
 
         protected override void UpdateState(ArmedState state)

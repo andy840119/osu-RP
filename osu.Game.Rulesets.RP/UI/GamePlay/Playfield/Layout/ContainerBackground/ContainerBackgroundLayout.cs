@@ -4,12 +4,13 @@
 using System.Collections.Generic;
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.RP.Objects;
+using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground
 {
     /// <summary>
-    ///     ïâê”ï˙íuîwåi
+    ///     ïâê”ï˙íuîwåiö§ï–
     ///     DrawableContainer
     /// </summary>
     internal class ContainerBackgroundLayout : BaseGamePlayLayout
@@ -17,7 +18,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground
         /// <summary>
         ///     ContainerGroup
         /// </summary>
-        public List<DrawableRpContainerLineGroup> _listContainer = new List<DrawableRpContainerLineGroup>();
+        private List<DrawableRpContainerLineGroup> _listContainer = new List<DrawableRpContainerLineGroup>();
 
         public ContainerBackgroundLayout()
         {
@@ -28,7 +29,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground
         /// <summary>
         ///     ˙ùâ¡Container
         /// </summary>
-        public void AddContainer(DrawableRpContainerLineGroup drawableContainer)
+        public void AddContainerGroup(DrawableRpContainerLineGroup drawableContainer)
         {
             //ContainerGroup
             _listContainer.Add(drawableContainer);
@@ -37,10 +38,22 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground
             //ContainerLine
             foreach (var layout in drawableContainer.HitObject.ListContainObject)
             {
-                DrawableRpContainerLine layoutLine = new DrawableRpContainerLine(layout);
-                drawableContainer.AddObject(layoutLine);
+                //andy840119 : cancel from here
+                //DrawableRpContainerLine layoutLine = new DrawableRpContainerLine(layout);
+                //drawableContainer.AddObject(layoutLine);
+
                 //Add(layoutLine);
             }
+        }
+
+        /// <summary>
+        ///     ˙ùâ¡Container
+        /// </summary>
+        public void AddContainerLine(DrawableRpContainerLine drawableContainerLine)
+        {
+            DrawableRpContainerLineGroup drawableContainer = GetGroupByRpObject((drawableContainerLine.HitObject).ParentObject);
+            drawableContainer.AddObject(drawableContainerLine);
+          
         }
 
         /// <summary>
@@ -66,10 +79,10 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground
         public DrawableRpContainerLine GetContainerLineByRpObject(RpContainerLine containerLineObject)
         {
             DrawableRpContainerLineGroup targetGroup = GetGroupByRpObject(containerLineObject.ParentObject);
-            foreach (var single in targetGroup.ListContainObject)
+            foreach (var single in targetGroup.ListContainObject())
             {
-                if (single.HitObject == containerLineObject)
-                    return single;
+                if (single.Template.RpObject == containerLineObject)
+                    return single as DrawableRpContainerLine;
             }
 
             return null;

@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\osu.Game\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,58 +60,64 @@
     <Compile Include="KeyManager\RpInputManager.cs" />
     <Compile Include="Mods\RpMod2017.cs" />
     <Compile Include="Objects\Attribute\BaseRpObjectAttribute.cs" />
+    <Compile Include="Objects\Drawables\Calculator\ContainerLayoutHeightCalculator.cs" />
+    <Compile Include="Objects\Drawables\Calculator\ContainerLayoutPositionCounter.cs" />
+    <Compile Include="Objects\Drawables\Calculator\PathPrecentageCounter.cs" />
+    <Compile Include="Objects\Drawables\Component\ApproachCircle.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerGroupBackground.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerLineBackground.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerGroupContainArea.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerLineBeatLine.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerLineContainArea.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerLineDecisionLine.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerLineStartEnd.cs" />
+    <Compile Include="Objects\Drawables\Component\Extension\ContainerCalculatorExtension.cs" />
+    <Compile Include="Objects\Drawables\Component\Extension\ContainListTemplateExtension.cs" />
+    <Compile Include="Objects\Drawables\Component\Extension\TimeExtension.cs" />
+    <Compile Include="Objects\Drawables\Component\Interface\IComponentBase.cs" />
+    <Compile Include="Objects\Drawables\Component\Interface\IComponentUpdateEachFrame.cs" />
+    <Compile Include="Objects\Drawables\Component\Interface\IContainListTemplate.cs" />
+    <Compile Include="Objects\Drawables\Component\LoadEffect.cs" />
+    <Compile Include="Objects\Drawables\Component\StillHit.cs" />
     <Compile Include="Objects\Drawables\Edit\DrawableEditBaseRpObject.cs" />
-    <Compile Include="Objects\Drawables\Play\Interface\IHasTemplate.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\ContainerLineGroup\ContainerGroupContainComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\ContainerLine\ContainerHitObjectContainComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\Container\ContainerContainComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\Interface\ICanContainObject.cs" />
+    <Compile Include="Objects\Drawables\Extension\HasTemplateExtension.cs" />
+    <Compile Include="Objects\Drawables\Extension\ICanContainObjectExtension.cs" />
+    <Compile Include="Objects\Drawables\Extension\ObjectTypeExtension.cs" />
+    <Compile Include="Objects\Drawables\Interface\ICanContainObject.cs" />
+    <Compile Include="Objects\Drawables\Interface\IHasTemplate.cs" />
     <Compile Include="Objects\Drawables\Template\Template.cs" />
+    <Compile Include="Objects\Extension\HitObjectRelationBindingExtension.cs" />
     <Compile Include="Objects\Interface\IHasBPM.cs" />
     <Compile Include="Objects\Interface\IHasColor.cs" />
     <Compile Include="Objects\Interface\IHasContainList.cs" />
     <Compile Include="Objects\Interface\IHasCoop.cs" />
     <Compile Include="Objects\Interface\IHasEasingTypes.cs" />
+    <Compile Include="Objects\Interface\IHasEndTime.cs" />
     <Compile Include="Objects\Interface\IHasID.cs" />
+    <Compile Include="Objects\Interface\IHasLayerIndex.cs" />
     <Compile Include="Objects\Interface\IHasLength.cs" />
     <Compile Include="Objects\Interface\IHasMultiHit.cs" />
+    <Compile Include="Objects\Interface\IHasOppositeDirection.cs" />
     <Compile Include="Objects\Interface\IHasParent.cs" />
+    <Compile Include="Objects\Interface\IHasParentID.cs" />
     <Compile Include="Objects\Interface\IHasPreemptTime.cs" />
     <Compile Include="Objects\Interface\IHasRotation.cs" />
     <Compile Include="Objects\Interface\IHasScale.cs" />
     <Compile Include="Objects\Interface\IHasDirection.cs" />
     <Compile Include="Objects\Interface\IHasSpecial.cs" />
+    <Compile Include="Objects\Interface\IHasStartTime.cs" />
     <Compile Include="Objects\Interface\IHasVelocity.cs" />
     <Compile Include="Replays\RpAutoGenerator.cs" />
     <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\GameField\GameFieldModsProcessor.cs" />
     <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\HitObject\HitObjectModsProcessor.cs" />
     <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\ModsProcessor.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\Interface\IChangeableContainerComponent.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\ConnectionLine.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\Common\ShapePiece\BaseHitObjectShapePiece.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\ApproachPiece\ApproachCircle.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\StillPiece\StillHit.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\StillPiece\StillHold.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\StillPiece\StillContainerLineHold.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\Slider.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableBaseContainableObject.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpContainerLine.cs" />
-    <Compile Include="Objects\Drawables\Template\Interface\IBaseEditableTemplate.cs" />
-    <Compile Include="Objects\Drawables\Template\Interface\IContainerEditableTemplate.cs" />
-    <Compile Include="Objects\Drawables\Template\Interface\IRpHitObjectEditableTemplate.cs" />
     <Compile Include="Mods\RpMod.cs" />
     <Compile Include="Objects\BaseRpObject.cs" />
-    <Compile Include="Objects\Drawables\Template\Calculator\ContainerLayoutHeightCalculator.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentBase.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\Container\BaseContainerComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\Container\ContainerBackgroundComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\ContainerLineGroup\ContainerBeatLineComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\ContainerLineGroup\ContainerDecisionLineComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\ContainerLine\ContainerLongPressDrawComponent.cs" />
-    <Compile Include="Objects\Drawables\Template\ContainerComponent\ContainerLineGroup\ContainerStartEndComponent.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\RectanglePiece.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\Common\LoadEffect.cs" />
-    <Compile Include="Objects\Drawables\Template\Calculator\ContainerLayoutPositionCounter.cs" />
     <Compile Include="Replays\RpReplayFrame.cs" />
     <Compile Include="Replays\RpReplayInputHandler.cs" />
     <Compile Include="SkinManager\RpObjectValueManager.cs" />
@@ -123,7 +129,6 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\RpHitMulitpleObjectConnectionLine.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableBaseRpObject.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpContainerLineGroup.cs" />
-    <Compile Include="Objects\Drawables\Template\Calculator\PathPrecentageCounter.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\BaseHitEffectTemplate.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\CoolHitEffectTemplate.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\FineHitEffectTemplate.cs" />
@@ -137,9 +142,6 @@
     <Compile Include="UI\Setting\RpSettings.cs" />
     <Compile Include="Beatmaps\RPBeatmap\RpBeatmapProcessor.cs" />
     <Compile Include="RpRuleset.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\ApproachPiece\BaseMovePicec.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\Common\ShapePiece\HitObjectAnyShapePiece.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\StillPiece\BaseStillPiece.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpContainerLineHoldObject.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableBaseRpHitableObject.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\Pointer.cs" />
@@ -148,10 +150,8 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\FlashPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\GlowPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitExplosion.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\Common\ComboNumberPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\RingPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\Triangles.cs" />
-    <Compile Include="Objects\Drawables\Template\HitObjectComponent\Common\SliderBody.cs" />
     <Compile Include="Parser\RpHitObjectParser.cs" />
     <Compile Include="UI\GamePlay\KeyCounter\RpKeyCounterKeyboard.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\ContainerBackground\ContainerBackgroundLayout.cs" />
@@ -160,7 +160,6 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\KeySound\KeySoundLayout.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\HitObjectConnector.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjects\HitObjectLayout.cs" />
-    <Compile Include="Scoreing\Result\RpScore.cs" />
     <Compile Include="Scoreing\RpScoreProcessor.cs" />
     <Compile Include="Objects\RpHitObject.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpHitObject.cs" />
@@ -190,18 +189,10 @@
     <Compile Include="Beatmaps\OtherBeatmap\ContainerGegenerator\ContainerPosition\LinePositionDefinition.cs" />
     <Compile Include="Beatmaps\OtherBeatmap\HitObjectGegenerator\PreAnalyse\AnaylseCombo.cs" />
     <Compile Include="Beatmaps\OtherBeatmap\ContainerGegenerator\Generator\ContainerGenerator.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentUpdateEachFrame.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentWavable.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentHasStartTime.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentHasEndTime.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentHasScale.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentHasBpm.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentDragable.cs" />
     <Compile Include="Objects\RpEffect\RpEffect.cs" />
     <Compile Include="Objects\RpEffect\Point\EffectPoint.cs" />
     <Compile Include="Objects\RpEffect\Point\ScaleEffectPoint.cs" />
     <Compile Include="Objects\RpEffect\Point\ColorEffectPoint.cs" />
-    <Compile Include="Objects\Drawables\Template\Component\Interface\IComponentAcceptEffect.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\EffectPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\HitEffectPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\BpmEffectPiece.cs" />
@@ -249,6 +240,7 @@
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Hold\Start\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\End\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\Start\" />
+    <Folder Include="UI\GamePlay\Playfield\Externsion\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\Play\RP\HitEffect\Cool\RP.png" />
@@ -376,6 +368,10 @@
     <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj">
       <Project>{c76bf5b3-985e-4d39-95fe-97c9c879b83a}</Project>
       <Name>osu.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\osu.Game.Rulesets.Osu\osu.Game.Rulesets.Osu.csproj">
+      <Project>{c92a607b-1fdd-4954-9f92-03ff547d9080}</Project>
+      <Name>osu.Game.Rulesets.Osu</Name>
     </ProjectReference>
     <ProjectReference Include="..\osu.Game\osu.Game.csproj">
       <Project>{0d3fbf8a-7464-4cf7-8c90-3e7886df2d4d}</Project>

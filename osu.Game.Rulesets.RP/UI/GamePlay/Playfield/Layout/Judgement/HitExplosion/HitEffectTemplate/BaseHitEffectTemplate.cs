@@ -2,7 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics.Containers;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play;
+using osu.Game.Rulesets.Objects.Drawables;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate
 {
@@ -14,7 +14,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         /// <summary>
         ///     目前結果
         /// </summary>
-        protected abstract RpScoreResult RpScoreResult { get; }
+        protected abstract HitResult RpScoreResult { get; }
 
         //開始特效
         public virtual void StartEffect()

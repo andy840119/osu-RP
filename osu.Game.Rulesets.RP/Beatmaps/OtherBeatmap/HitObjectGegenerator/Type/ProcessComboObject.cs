@@ -17,12 +17,12 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 
         private bool convert;
 
-        //上一個群絁E��物件
+        //上一個群絁E��物件
         private SingleHitObjectConvertParameter _lastHitObjectTuple;
 
         internal void Process(SingleHitObjectConvertParameter singleTuple, int nowIndex)
         {
-            //上一個群絁E��物件
+            //上一個群絁E��物件
             _lastHitObjectTuple = _singleSlideParameter.HitObjectConvertParameter.ListSingleHitObjectConvertParameter[nowIndex - 1];
 
             if (FisrtConbo)
@@ -74,7 +74,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
                     case Direction.Down:
                         convert = true;
                         break;
-                    case Direction.Left: //因為左邊真皁E��夠難打，乾脁E��要讓宁E�E現好亁E
+                    case Direction.Left: //因為左邊真皁E��夠難打，乾脁E��要讓宁E�E現好亁E
                         //_lastHitObjectTuple.ListBaseHitObject[0].Shape = Shape.Right;
                         convert = false;
                         break;

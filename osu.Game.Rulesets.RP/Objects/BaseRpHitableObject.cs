@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using osu.Game.Audio;
-using osu.Game.Rulesets.RP.Input;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play;
+using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects
@@ -17,6 +17,8 @@ namespace osu.Game.Rulesets.RP.Objects
     {
         //parent object
         public RpContainerLine ParentObject { get; set; }
+
+        public int ParentID { get; set; }
 
         //relative to parent object time
         public double RelativeToParentStartTime { get; set; }
@@ -66,7 +68,11 @@ namespace osu.Game.Rulesets.RP.Objects
         public RpMultiHit RpMultiHit { get; set; }
 
         //co-op or not
-        public Coop Coop => ParentObject.Coop;
+        public Coop Coop
+        {
+            get { return ParentObject.Coop; }
+            set { }
+        }
 
         //if converted for osu!beatmap,set to Convert
         public Convert Convert = Convert.Original;
@@ -98,30 +104,38 @@ namespace osu.Game.Rulesets.RP.Objects
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public double HitWindowFor(RpScoreResult result)
+        public double HitWindowFor(HitResult result)
         {
             switch (result)
             {
+                case HitResult.Meh:
+                    return 250;
+                case HitResult.Ok:
+                    return 200;
+                case HitResult.Good:
+                    return 180;
+                case HitResult.Great:
+                    return 150;
+                case HitResult.Perfect:
+                    return 100;
                 default:
                     return 300;
-                case RpScoreResult.Safe:
-                    return 200;
-                case RpScoreResult.Fine:
-                    return 180;
-                case RpScoreResult.Cool:
-                    return 160;
             }
         }
 
-        public RpScoreResult ScoreResultForOffset(double offset)
+        public HitResult ScoreResultForOffset(double offset)
         {
-            if (offset < HitWindowFor(RpScoreResult.Cool))
-                return RpScoreResult.Cool;
-            if (offset < HitWindowFor(RpScoreResult.Fine))
-                return RpScoreResult.Fine;
-            if (offset < HitWindowFor(RpScoreResult.Safe))
-                return RpScoreResult.Safe;
-            return RpScoreResult.Sad;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Perfect))
+                return HitResult.Perfect;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Great))
+                return HitResult.Great;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Good))
+                return HitResult.Good;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Ok))
+                return HitResult.Ok;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Meh))
+                return HitResult.Meh;
+            return HitResult.Miss;
         }
     }
 
@@ -137,8 +151,8 @@ namespace osu.Game.Rulesets.RP.Objects
     [Flags]
     public enum Shape
     {
-        Unknown=0, //Unknown
-        Hit = 1,//Hit
+        Unknown = 0, //Unknown
+        Hit = 1, //Hit
         Hold = 2, //Hold
         ContainerPress = 4 //containerPress
     }

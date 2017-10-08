@@ -18,7 +18,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.HitObject
             this.listMods = listMods;
         }
 
-        internal void ProcessHitObject(DrawableHitObject<BaseRpObject, RpJudgement> returnObject)
+        internal void ProcessHitObject(DrawableHitObject<BaseRpObject> returnObject)
         {
         }
     }

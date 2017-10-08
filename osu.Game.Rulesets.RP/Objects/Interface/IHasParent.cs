@@ -3,9 +3,9 @@
 
 namespace osu.Game.Rulesets.RP.Objects.Interface
 {
-    public interface IHasParent<T>
+    public interface IHasParent<T> : IHasParentID
     {
-        T ParentObject { get; }
+        T ParentObject { get; set; }
 
         double RelativeToParentStartTime { get; set; }
     }

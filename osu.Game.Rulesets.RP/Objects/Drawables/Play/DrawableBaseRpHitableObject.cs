@@ -5,15 +5,15 @@ using System;
 using System.ComponentModel;
 using osu.Framework.Input.Bindings;
 using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Rulesets.RP.Input;
 using osu.Game.Rulesets.RP.Judgements;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpHitObject.Component.Common;
+using osu.Game.Rulesets.RP.KeyManager;
+using osu.Game.Rulesets.RP.Objects.Drawables.Component;
+using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
     //DrawableBaseRpHitableObject
-    public abstract class DrawableBaseRpHitableObject : DrawableBaseRpObject, IKeyBindingHandler<RpAction> , IHasTemplate
+    public abstract class DrawableBaseRpHitableObject : DrawableBaseRpObject, IKeyBindingHandler<RpAction>, IHasTemplate
     {
         // HitObject
         public new BaseRpHitableObject HitObject
@@ -30,17 +30,15 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             //    Judgement = CreateJudgement();
         }
 
-        protected override RpJudgement CreateJudgement() => new RpJudgement { MaxScore = RpScoreResult.Cool };
-
         protected override void ConstructObject()
         {
-            Components.Add(new LoadEffect(HitObject));
+            Components.Add(new LoadEffect());
         }
 
         //press down event
         protected virtual void OnKeyPressDown()
         {
-            //((PositionalJudgementInfo)Judgement).PositionOffset = Vector2.Zero; //todo: set to correct value
+
             UpdateJudgement(true);
             //Debug.Print(Judgement.Result + " " + RpHitObject.StartTime + " " + Position.X + "," + Position.Y);
         }
@@ -60,27 +58,22 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         }
 
         //CheckJudgement
-        protected override void CheckJudgement(bool userTriggered)
+        protected override void CheckForJudgements(bool userTriggered, double timeOffset)
         {
             if (!userTriggered)
             {
-                if (Judgement.TimeOffset > HitObject.HitWindowFor(RpScoreResult.Safe))
-                    Judgement.Result = HitResult.Miss;
+                if (timeOffset > HitObject.HitWindowFor(HitResult.Meh))
+                {
+                    AddJudgement(new RpJudgement { Result = HitResult.Miss });
+                    return;
+                }
                 return;
             }
 
-            double hitOffset = Math.Abs(Judgement.TimeOffset);
-
-            var rpInfo = Judgement;
-            rpInfo.HitExplosionPosition.Add(Position);
-
-            if (hitOffset < HitObject.HitWindowFor(RpScoreResult.Safe))
+            AddJudgement(new RpJudgement()
             {
-                Judgement.Result = HitResult.Hit;
-                Judgement.Score = HitObject.ScoreResultForOffset(hitOffset);
-            }
-            else
-                Judgement.Result = HitResult.Miss;
+                Result = HitObject.ScoreResultForOffset(timeOffset),
+            });
         }
 
         public bool OnPressed(RpAction action)
@@ -91,7 +84,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             {
                 var pressDelay = Math.Abs(Time.Current - HitObject.StartTime);
                 //Hit at the time
-                if (pressDelay < HitObject.HitWindowFor(RpScoreResult.Safe))
+                if (pressDelay < HitObject.HitWindowFor(HitResult.Meh))
                 {
                     OnKeyPressDown();
                     return true;
@@ -109,7 +102,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             {
                 var pressDelay = Math.Abs(Time.Current - HitObject.StartTime);
                 //Hit at the time
-                if (pressDelay < HitObject.HitWindowFor(RpScoreResult.Safe))
+                if (pressDelay < HitObject.HitWindowFor((HitResult.Meh)))
                 {
                     OnKeyPressDown();
                     return true;
@@ -121,6 +114,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 
         //get all the key Hitted?
         private RpInputManager rpActionInputManager;
+
         internal RpInputManager RpActionInputManager => rpActionInputManager ?? (rpActionInputManager = GetContainingInputManager() as RpInputManager);
     }
 
@@ -133,6 +127,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
     }
 
     //RpScoreResult
+    //TODO : now use anymore
+    /*
     public enum RpScoreResult
     {
         [Description(@"Sad")] Sad,
@@ -141,4 +137,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         [Description(@"Cool")] Cool,
         [Description(@"Slider")] Slider
     }
+    */
 }

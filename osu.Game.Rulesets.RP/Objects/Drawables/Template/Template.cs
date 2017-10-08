@@ -1,22 +1,20 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.MathUtils;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.Calculator;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.Component;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpContainer.Component;
+using osu.Game.Rulesets.RP.Objects.Drawables.Calculator;
+using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
+using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Template
 {
     public class Template : Container
-    { 
+    {
         //RpObject
         public BaseRpObject RpObject;
 
@@ -31,35 +29,26 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Template
             RpObject = rpObject;
             Components = components;
 
-            PathPrecentageCounter = new PathPrecentageCounter(rpObject);
+            PathPrecentageCounter = new PathPrecentageCounter();
 
-            //set all attribute form object to drawable component
-            SetAppTypeByInterface();
+           
+        }
+
+        public void Initial()
+        {
             //initial all component template will use
             InitialComponent();
+            //set all attribute form object to drawable component
+            SetAppTypeByInterface();
+            
             //adding all component into template
             InitialChild();
         }
 
-       
+
         protected void SetAppTypeByInterface()
         {
-            foreach (var type in RpObject.GetType().GetInterfaces())
-            {
-                foreach (var singleObject in Components)
-                {
-                    var singleObjectInterfaces = singleObject.GetType().GetInterfaces();
-                    for (int i = 0; i < singleObjectInterfaces.Length; i++)
-                    {
-                        //如果是一樣的Interface
-                        //就把值丟進去
-                        if (singleObjectInterfaces[i].ToString() == type.ToString())
-                        {
-                            singleObjectInterfaces[i] = type;
-                        }
-                    }
-                }
-            }
+            this.UpdateObjectToDrawable();
         }
 
         //initial all component template will use
@@ -78,17 +67,17 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Template
         }
 
         //update on each frame
-        public void UpdateEachFrame(double startTime,double endTime,double currentTime)
+        public void UpdateEachFrame(double startTime, double endTime, double currentTime)
         {
             //start progress
-            var startProgress = PathPrecentageCounter.CalculatePrecentage(startTime - currentTime);
+            var startProgress = PathPrecentageCounter.CalculatePrecentage(startTime - currentTime, 1);
             //end progress
-            var endProgress = PathPrecentageCounter.CalculatePrecentage(endTime - currentTime);
+            var endProgress = PathPrecentageCounter.CalculatePrecentage(endTime - currentTime, 1);
 
             //set range between 0 to 1
             startProgress = MathHelper.Clamp(startProgress, 0, 1);
             endProgress = MathHelper.Clamp(endProgress, 0, 1);
-            
+
             //update all 
             foreach (IComponentUpdateEachFrame single in Components.Where(n => n is IComponentUpdateEachFrame))
             {
@@ -103,9 +92,9 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Template
         public void UpdateTemplate(double currentTime)
         {
             //start progress
-            var startProgress = PathPrecentageCounter.CalculatePrecentage(RpObject.StartTime - currentTime + DelayTime);
+            var startProgress = PathPrecentageCounter.CalculatePrecentage(RpObject.StartTime - currentTime + DelayTime, 1);
             //end progress
-            var endProgress = PathPrecentageCounter.CalculatePrecentage(RpObject.StartTime - currentTime + DelayTime);
+            var endProgress = PathPrecentageCounter.CalculatePrecentage(RpObject.StartTime - currentTime + DelayTime, 1);
 
             //影響程度
             var CurveEasingTypesPrecentage = 0;

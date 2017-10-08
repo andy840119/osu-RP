@@ -3,6 +3,7 @@
 
 using System.Linq;
 using osu.Framework.Graphics;
+using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects;
@@ -13,6 +14,7 @@ using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjectsConnector;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.KeySound;
+using osu.Game.Rulesets.UI;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
@@ -120,6 +122,8 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             });
         }
 
+        private int total = 0;
+
         /// <summary>
         ///     Add the DrawableHitObject
         /// </summary>
@@ -132,16 +136,21 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
                 //Aviod container is in front of hit object
                 hitObject.Depth = (float)hitObject.HitObject.StartTime + 10000;
                 //・ｽ・ｽ・ｽ・ｽ・ｽw・ｽi・ｽ・ｽ・ｽ・ｽ
-                containerBackgroundLayout.AddContainer(hitObject as DrawableRpContainerLineGroup);
+                containerBackgroundLayout.AddContainerGroup(hitObject as DrawableRpContainerLineGroup);
                 //
                 //keySoundLayout.Add(containerBackgroundLayout.CreateProxy());
             }
-            else
+            else if (hitObject is DrawableRpContainerLine)
+            {
+                containerBackgroundLayout.AddContainerLine(hitObject as DrawableRpContainerLine);
+            }
+            else if (hitObject is DrawableBaseRpHitableObject)
             {
                 hitObject.Depth = (float)hitObject.HitObject.StartTime;
                 //・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
                 _rpObjectLayout.AddDrawObject(hitObject as DrawableBaseRpHitableObject);
             }
+            total ++ ;
 
             base.Add(hitObject);
         }
@@ -149,6 +158,8 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
 
         public override void PostProcess()
         {
+            int totalHit = total;
+
             //TODO : Children >> Objects
             var listHitObject = HitObjects.Objects.Where(d => d is DrawableBaseRpHitableObject).OrderBy(h => ((DrawableBaseRpObject)h).HitObject.StartTime);
             //order by time
@@ -161,9 +172,12 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
         /// </summary>
         /// <param name="h"></param>
         /// <param name="j"></param>
-        public override void OnJudgement(DrawableHitObject<BaseRpObject, RpJudgement> drawableHitObject)
+        public override void OnJudgement(DrawableHitObject drawableHitObject, Judgement judgement)
         {
-            _judgementLayer.AddHitEffect(drawableHitObject);
+            var rpJudgement = (RpJudgement)judgement;
+            //var osuObject = (RpHitObject)rpJudgement.HitObject;
+
+            _judgementLayer.AddHitEffect(rpJudgement);
         }
     }
 }

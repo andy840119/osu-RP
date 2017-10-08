@@ -5,6 +5,6 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
 {
     public interface IHasRotation
     {
-        float Rotation { get; }
+        float Rotation { get; set; }
     }
 }

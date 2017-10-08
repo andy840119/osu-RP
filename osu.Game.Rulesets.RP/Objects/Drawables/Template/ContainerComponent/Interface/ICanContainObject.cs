@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent.Interface
 {
-    public interface ICanContainObject<T> where T : IHasTemplate
+    public interface ICanContainObject<T> where T : DrawableBaseRpObject
     {
         BindingList<T> ListContainObject { get; set; }
 

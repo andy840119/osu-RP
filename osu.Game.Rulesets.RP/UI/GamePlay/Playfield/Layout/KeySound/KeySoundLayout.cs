@@ -6,8 +6,8 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Input;
-using osu.Game.Rulesets.RP.Input;
 using osu.Framework.Input.Bindings;
+using osu.Game.Rulesets.RP.KeyManager;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.KeySound
 {
@@ -15,7 +15,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.KeySound
     ///     放置顯示在打擊物件之前的東西
     ///     例如DecisionLine
     /// </summary>
-    internal class KeySoundLayout : BaseGamePlayLayout , IKeyBindingHandler<RpAction>
+    internal class KeySoundLayout : BaseGamePlayLayout, IKeyBindingHandler<RpAction>
     {
         //TODO : 增加聲音
         protected List<SampleChannel> ShapeSample = new List<SampleChannel>();
@@ -24,7 +24,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.KeySound
 
         public KeySoundLayout()
         {
-            
         }
 
         public bool OnPressed(RpAction action)
@@ -53,11 +52,10 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.KeySound
         [BackgroundDependencyLoader]
         private void load(AudioManager audio)
         {
-            for(int i=0;i<10;i++)
+            for (int i = 0; i < 10; i++)
                 ShapeSample.Add(audio.Sample.Get($@"RPKey/Key-Shape"));
             ShapeSample[4] = audio.Sample.Get($@"RPKey/Key-ContainerHold");
             ShapeSample[9] = audio.Sample.Get($@"RPKey/Key-ContainerHold");
         }
-
     }
 }

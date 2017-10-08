@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using osu.Framework.Input;
 using osu.Game.Rulesets.Replays;
-using osu.Game.Rulesets.RP.Input;
+using osu.Game.Rulesets.RP.KeyManager;
 
 namespace osu.Game.Rulesets.RP.Replays
 {
@@ -18,7 +18,6 @@ namespace osu.Game.Rulesets.RP.Replays
 
         public override List<InputState> GetPendingStates()
         {
-        
             //get RpReplayFrame
             var correntFrame = (RpReplayFrame)CurrentFrame;
 

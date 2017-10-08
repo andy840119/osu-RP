@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using OpenTK.Graphics;
@@ -59,9 +60,28 @@ namespace osu.Game.Rulesets.RP.SkinManager
             return "";
         }
 
-        public static string GetRPHitEffect(RpScoreResult result, string resource)
+        public static string GetRPHitEffect(HitResult result, string resource)
         {
             return RP_HIT_EFFECT_FOLDER + result + @"/" + resource;
+        }
+
+        public static string GetStringFromHitResult(HitResult result)
+        {
+            switch (result)
+            {
+                case HitResult.Meh:
+                    return "Sad";
+                case HitResult.Ok:
+                    return "Sad";
+                case HitResult.Good:
+                    return "Safe";
+                case HitResult.Great:
+                    return "Fine";
+                case HitResult.Perfect:
+                    return "Cool";
+                default:
+                    return "Sad";
+            }
         }
 
         public static string GetDecisionLineTexture()
@@ -94,9 +114,10 @@ namespace osu.Game.Rulesets.RP.SkinManager
         /// </summary>
         /// <param name="baseHitObject"></param>
         /// <returns></returns>
-        public static string GetStartObjectImageNameByType(BaseRpHitableObject baseHitObject)
+        public static string GetStartObjectImageNameByType(ObjectType type, Special special, Direction direction)
         {
-            return GetObjectImagePathByType(baseHitObject, false) + GetImageNameByType(baseHitObject);
+            string path = GetObjectImagePathByType(type, special, false) + GetImageNameByDirection(direction);
+            return path;
         }
 
         /// <summary>
@@ -181,10 +202,7 @@ namespace osu.Game.Rulesets.RP.SkinManager
 
 
             //如果是黃金模式(家分模式)
-            if (baseHitObject.Special == Special.Normal)
-                fileName = @"Normal/" + fileName;
-            else
-                fileName = @"Special/" + fileName;
+            fileName = GetObjectImagePathBySpecial(baseHitObject.Special) + fileName;
 
             //不同落下模式
             //if (baseHitObject.ApproachType == ApproachType.ApproachCircle)
@@ -193,6 +211,65 @@ namespace osu.Game.Rulesets.RP.SkinManager
             //    fileName = @"Square/" + fileName;
 
             return RP_OBJECT_FOLDER + fileName;
+        }
+
+        /// <summary>
+        ///     根據型態取得物件圖片路徑
+        /// </summary>
+        /// <param name="baseHitObject"></param>
+        /// <returns></returns>
+        private static string GetObjectImagePathByType(ObjectType type, Special special, bool end = false)
+        {
+            var fileName = "";
+
+            //物件是開頭還是尾巴
+            if (end)
+                fileName = @"End/" + fileName;
+            else
+                fileName = @"Start/" + fileName;
+
+            //根據模式去命名資料夾
+            fileName = GetPathByObjectType(type) + fileName;
+
+
+            //如果是黃金模式(家分模式)
+            fileName = GetObjectImagePathBySpecial(special) + fileName;
+
+            //不同落下模式
+            //if (baseHitObject.ApproachType == ApproachType.ApproachCircle)
+            fileName = @"Circle/" + fileName;
+            //else
+            //    fileName = @"Square/" + fileName;
+
+            return RP_OBJECT_FOLDER + fileName;
+        }
+
+        private static string GetObjectImagePathBySpecial(Special special)
+        {
+            if (special == Special.Normal)
+                return @"Normal/";
+            else
+                return @"Special/";
+        }
+
+        private static string GetPathByObjectType(ObjectType type)
+        {
+            switch (type)
+            {
+                case ObjectType.Undefined:
+                    return @"Undefined/";
+                case ObjectType.Hit:
+                    return @"Hit/";
+                case ObjectType.Hold:
+                    return @"Hold/";
+                case ObjectType.ContainerGroup:
+                    return @"ContainerGroup/";
+                case ObjectType.ContainerLine:
+                    return @"ContainerLine/";
+                case ObjectType.ContainerHold:
+                    return @"ContainerHold/";
+            }
+            return "";
         }
 
         /// <summary>
@@ -205,7 +282,7 @@ namespace osu.Game.Rulesets.RP.SkinManager
         {
             string fileName = null;
 
-            if ((baseHitObject as RpHitObject) != null)
+            if (baseHitObject as RpHitObject != null)
             {
                 switch ((baseHitObject as RpHitObject).Direction)
                 {
@@ -237,6 +314,23 @@ namespace osu.Game.Rulesets.RP.SkinManager
                 }
             }
             return fileName;
+        }
+
+        private static string GetImageNameByDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return @"Up";
+                case Direction.Down:
+                    return @"Down";
+                case Direction.Left:
+                    return @"Left";
+                case Direction.Right:
+                    return @"Right";
+                default:
+                    return @"RP_Unknown";
+            }
         }
     }
 }

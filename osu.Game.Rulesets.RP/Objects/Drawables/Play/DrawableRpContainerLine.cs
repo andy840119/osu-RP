@@ -4,13 +4,8 @@
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.ContainerComponent.ContainerLine;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpContainer;
-using osu.Game.Rulesets.RP.Objects.Drawables.Template.RpContainer.Component;
-using osu.Game.Rulesets.RP.SkinManager;
-using OpenTK;
+using osu.Game.Rulesets.RP.Objects.Drawables.Component;
+using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
@@ -36,32 +31,19 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //建構樣板物件
         protected override void ConstructObject()
         {
-             ContainerBackground _rpRectanglePiece;
-
-             ContainerBackground _linePiece;
-
-            //背景物件
-            _linePiece = new ContainerBackground(HitObject.ParentObject)
-            {
-                Origin = Anchor.CentreRight,
-                Scale = new Vector2(1.0f, 0f),
-                Colour = RpTextureColorManager.GetCoopJudgementLineColor(HitObject.Coop)
-            };
-
-            //背景物件
-            _rpRectanglePiece = new ContainerBackground(HitObject.ParentObject)
-            {
-                Scale = new Vector2(1.0f, 0f),
-                Alpha = 0.5f,
-                Colour = RpTextureColorManager.GetCoopLayoutColor(HitObject.Coop)
-            };
-
             //背景
-            Components.Add(_rpRectanglePiece);
-            Components.Add(_linePiece);
+            Components.Add(new ContainerLineBackground());
+            Components.Add(new ContainerLineBeatLine());
+            Components.Add(new ContainerLineContainArea());
+            Components.Add(new ContainerLineDecisionLine());
+        }
 
-            //放置子物件
-            Components.Add(new ContainerHitObjectContainComponent(HitObject.ParentObject));
+        /// <summary>
+        ///     更新初始狀慁E
+        /// </summary>
+        protected override void UpdateInitialState()
+        {
+            base.UpdateInitialState();
         }
 
         /// <summary>
@@ -89,6 +71,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         }
 
         /// <summary>
+        ///
         /// </summary>
         /// <returns></returns>
         protected override RpJudgement CreateJudgement()
@@ -97,24 +80,16 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         }
 
         /// <summary>
-        ///     從這邊去更新狀慁E
-        /// </summary>
-        /// <param name="userTriggered"></param>
-        protected override void CheckJudgement(bool userTriggered)
-        {
-        }
-
-        /// <summary>
         ///     更新
         /// </summary>
         /// <param name="state"></param>
-        protected override void UpdateCurrentState(ArmedState state)
-        {
-            this.Delay(HitObject.Duration + PreemptTime + FadeOutTime);
+        //protected override void UpdateCurrentState(ArmedState state)
+        //{
+        //    this.Delay(HitObject.Duration + PreemptTime + FadeOutTime);
 
-            if (state == ArmedState.Hit)
-            {
-            }
-        }
+        //    if (state == ArmedState.Hit)
+        //    {
+        //    }
+        //}
     }
 }

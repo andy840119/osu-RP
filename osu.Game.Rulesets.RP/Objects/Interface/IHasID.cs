@@ -5,6 +5,6 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
 {
     public interface IHasID
     {
-        int ID { get; }
+        int ID { get; set; }
     }
 }

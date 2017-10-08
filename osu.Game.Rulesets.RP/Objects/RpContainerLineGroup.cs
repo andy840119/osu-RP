@@ -6,6 +6,7 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using OpenTK;
 using OpenTK.Graphics;
+using IHasEndTime = osu.Game.Rulesets.RP.Objects.Interface.IHasEndTime;
 
 namespace osu.Game.Rulesets.RP.Objects
 {
@@ -21,7 +22,11 @@ namespace osu.Game.Rulesets.RP.Objects
         public double EndTime { get; set; }
 
         //Duration
-        public double Duration => EndTime - StartTime;
+        public double Duration
+        {
+            get => EndTime - StartTime;
+            set { }
+        }
 
         //position
         public Vector2 Position { get; set; }
@@ -39,7 +44,11 @@ namespace osu.Game.Rulesets.RP.Objects
         public Color4 Color { get; set; }
 
         //length
-        public float Lenght => 512;
+        public float Lenght
+        {
+            get { return 512; }
+            set { }
+        }
 
         //list Contain Object
         public List<RpContainerLine> ListContainObject { get; set; }

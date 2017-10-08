@@ -12,7 +12,7 @@ namespace osu.Game.Rulesets.RP.Objects
     /// <summary>
     ///     all RpObject should inherit it
     /// </summary>
-    public abstract class BaseRpObject : HitObject, IHasBPM, IHasVelocity, IHasPreemptTime
+    public abstract class BaseRpObject : HitObject, IHasBPM, IHasVelocity, IHasPreemptTime, IHasStartTime
     {
         //BPM
         public virtual double BPM { get; set; }
@@ -27,7 +27,7 @@ namespace osu.Game.Rulesets.RP.Objects
         public virtual ObjectType ObjectType => ObjectType.Undefined;
 
         //Velocity
-        public double Velocity { get; set; }
+        public virtual float Velocity { get; set; }
 
         //Construct
         protected BaseRpObject(double startTime)
@@ -50,13 +50,11 @@ namespace osu.Game.Rulesets.RP.Objects
     public enum ObjectType
     {
         Undefined = 1,
-        HitObject = 2,
         Hit = 16,
         Hold = 32,
         ContainerGroup = 4,
         ContainerLine = 8,
         ContainerHold = 64,
-        NewCombo = 128
     }
 
     //Convert

@@ -179,10 +179,6 @@
       <Project>{0d3fbf8a-7464-4cf7-8c90-3e7886df2d4d}</Project>
       <Name>osu.Game</Name>
     </ProjectReference>
-    <ProjectReference Include="..\osu.Game.Rulesets.RP\osu.Game.Rulesets.RP.csproj">
-      <Project>{07E65AA5-5A23-4089-9024-21046E882BED}</Project>
-      <Name>osu.Game.Rulesets.RP</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RpAutomatedVisualTestGame.cs" />
