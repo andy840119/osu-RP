@@ -70,14 +70,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        protected override RpJudgement CreateJudgement()
-        {
-            return new RpJudgement();
-        }
 
         /// <summary>
         ///     更新

@@ -27,7 +27,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
             var list = (listTemplate as Container).Children.ToList();
             if (list.Count == 0)
             {
-                list.Add(template.Template);
+                list.Add(template.Template.CreateProxy());
                 (listTemplate as Container).Children = list.ToArray();//TODO : impliment
             }
             else
