@@ -32,12 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenTK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\OpenTK.3.0.0-git00009\lib\net20\OpenTK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="OpenTK">
-      <HintPath>..\packages\ppy.OpenTK.3.0\lib\net45\OpenTK.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Beatmaps\OtherBeatmap\ContainerGegenerator\CoopDecide\CoopDecider.cs" />
@@ -60,8 +65,6 @@
     <Compile Include="KeyManager\RpInputManager.cs" />
     <Compile Include="Mods\RpMod2017.cs" />
     <Compile Include="Objects\Attribute\BaseRpObjectAttribute.cs" />
-    <Compile Include="Objects\Drawables\Calculator\ContainerLayoutHeightCalculator.cs" />
-    <Compile Include="Objects\Drawables\Calculator\ContainerLayoutPositionCounter.cs" />
     <Compile Include="Objects\Drawables\Calculator\PathPrecentageCounter.cs" />
     <Compile Include="Objects\Drawables\Component\ApproachCircle.cs" />
     <Compile Include="Objects\Drawables\Component\ContainerGroupBackground.cs" />
@@ -368,10 +371,6 @@
     <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj">
       <Project>{c76bf5b3-985e-4d39-95fe-97c9c879b83a}</Project>
       <Name>osu.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\osu.Game.Rulesets.Osu\osu.Game.Rulesets.Osu.csproj">
-      <Project>{c92a607b-1fdd-4954-9f92-03ff547d9080}</Project>
-      <Name>osu.Game.Rulesets.Osu</Name>
     </ProjectReference>
     <ProjectReference Include="..\osu.Game\osu.Game.csproj">
       <Project>{0d3fbf8a-7464-4cf7-8c90-3e7886df2d4d}</Project>

@@ -60,10 +60,12 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //建構
         protected void InitialChildObject()
         {
+
+            
+
             if (RpObject as IHasParentID == null)
             {
                 this.AddTemplateToChild();
-
             }
             else
             {
@@ -75,7 +77,14 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         {
             FinishTransforms();
 
-            using (BeginAbsoluteSequence(HitObject.StartTime - PreemptTime, true))
+            var relativeStartTime = (HitObject is IHasParentID) ? (HitObject as IHasParentID).RelativeToParentStartTime : HitObject.StartTime;
+
+            if ((HitObject is IHasParentID))
+            {
+                int a = 0;
+            }
+
+            using (BeginAbsoluteSequence(HitObject.StartTime - PreemptTime, false))
             {
                 UpdateInitialState();
 
@@ -119,6 +128,28 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             base.Update();
             //更新物件位置
             Template.UpdateTemplate(Time.Current);
+        }
+
+        //CheckJudgement
+        protected override void CheckForJudgements(bool userTriggered, double timeOffset)
+        {
+            //TODO : 修正
+            //if (!userTriggered)
+            //{
+            //    if (timeOffset >1000)
+            //    {
+            //        AddJudgement(new RpJudgement { Result = HitResult.None });
+            //        return;
+            //    }
+            //    return;
+            //}
+
+            return;
+
+            AddJudgement(new RpJudgement()
+            {
+                Result = HitResult.None,
+            });
         }
 
         private RpInputManager osuActionInputManager;

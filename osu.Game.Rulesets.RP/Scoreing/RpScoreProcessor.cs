@@ -6,7 +6,6 @@ using osu.Framework.Extensions;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Rulesets.Osu.Judgements;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
@@ -38,7 +37,7 @@ namespace osu.Game.Rulesets.RP.Scoreing
 
             foreach (var obj in beatmap.HitObjects)
             {
-                AddJudgement(new OsuJudgement { Result = HitResult.Great });
+                AddJudgement(new RpJudgement { Result = HitResult.Great });
             }
         }
 

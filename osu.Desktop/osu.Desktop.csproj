@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
-    <ProjectGuid>{2A66DD92-ADB1-4994-89E2-C94E04ACDA0D}</ProjectGuid>
+    <ProjectGuid>{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>WinExe</OutputType>
@@ -22,7 +22,7 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <SignAssembly>false</SignAssembly>
     <TargetZone>LocalIntranet</TargetZone>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -158,6 +158,7 @@
     <None Include="..\osu.licenseheader">
       <Link>osu.licenseheader</Link>
     </None>
+    <None Include="app.config" />
     <None Include="OpenTK.dll.config" />
     <None Include="osu!.res" />
     <None Include="packages.config" />
@@ -191,10 +192,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\osu-framework\osu.Framework.Desktop\osu.Framework.Desktop.csproj">
-      <Project>{65dc628f-a640-4111-ab35-3a5652bc1e17}</Project>
-      <Name>osu.Framework.Desktop</Name>
-    </ProjectReference>
     <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj">
       <Project>{c76bf5b3-985e-4d39-95fe-97c9c879b83a}</Project>
       <Name>osu.Framework</Name>
@@ -229,10 +226,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OsuGameDesktop.cs" />
-    <Compile Include="Overlays\VersionManager.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Beatmaps\IO\LegacyFilesystemReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

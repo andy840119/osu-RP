@@ -11,7 +11,6 @@ using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.PostConvert;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Slicing;
 using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.Extension;
 
 namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap
 {

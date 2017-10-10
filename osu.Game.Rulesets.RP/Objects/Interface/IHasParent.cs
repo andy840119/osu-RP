@@ -7,6 +7,6 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
     {
         T ParentObject { get; set; }
 
-        double RelativeToParentStartTime { get; set; }
+        
     }
 }

@@ -7,6 +7,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {
@@ -29,9 +30,11 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
                 {
                     StillHitPicec = new ImagePicec(RpTexturePathManager.GetStartObjectImageNameByType(ObjectType.Hit, Special.Normal, Direction))
                     {
+
                     },
                 };
                 StillHitPicec.Alpha = 0;
+                StillHitPicec.Scale = new Vector2(0.5f);
             }
         }
 

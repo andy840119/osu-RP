@@ -5,5 +5,7 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
     public interface IHasParentID
     {
         int ParentID { get; set; }
+
+        double RelativeToParentStartTime { get; set; }
     }
 }

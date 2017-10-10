@@ -1,4 +1,4 @@
-// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Linq;
@@ -135,7 +135,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             {
                 //Aviod container is in front of hit object
                 hitObject.Depth = (float)hitObject.HitObject.StartTime + 10000;
-                //�E��E��E��E��E�w�E�i�E��E��E��E�
+                //・ｽ・ｽ・ｽ・ｽ・ｽw・ｽi・ｽ・ｽ・ｽ・ｽ
                 containerBackgroundLayout.AddContainerGroup(hitObject as DrawableRpContainerLineGroup);
                 //
                 //keySoundLayout.Add(containerBackgroundLayout.CreateProxy());
@@ -147,12 +147,15 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             else if (hitObject is DrawableBaseRpHitableObject)
             {
                 hitObject.Depth = (float)hitObject.HitObject.StartTime;
-                //�E��E��E��E��E��E��E��E�
+                //・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
                 _rpObjectLayout.AddDrawObject(hitObject as DrawableBaseRpHitableObject);
             }
             total ++ ;
 
-            base.Add(hitObject);
+            //美新增 一個Group，就會在底層新增一個物件
+            //簡單來說，會有一個Container 去包住一組group裡面的所有權組ˋ
+            sariofqjiof
+            //base.Add(hitObject);
         }
 
 
