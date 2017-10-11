@@ -91,11 +91,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
                     createDrawable();
                 }
             }
-    }
-
-        public void Initial()
-        {
-           
         }
 
         private void createDrawable()

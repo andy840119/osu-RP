@@ -55,11 +55,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             ListTemplate = new List<IHasTemplate>();
         }
 
-        public void Initial()
-        {
-           
-        }
-
         private void createDrawable()
         {
             _rpRectangleComponent = new RectanglePiece(2000, this.TotalHeight())

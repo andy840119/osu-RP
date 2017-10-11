@@ -38,19 +38,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             }
         }
 
-        public StillHit()
-        {
-
-        }
-
-        /// <summary>
-        ///     initial
-        /// </summary>
-        public void Initial()
-        {
-            
-        }
-
         /// <summary>
         ///     fade in
         /// </summary>

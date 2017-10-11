@@ -2,7 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component;
+using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
@@ -10,7 +12,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
     /// <summary>
     ///     匁E��RP物件
     /// </summary>
-    public class DrawableRpContainerLineGroup : DrawableBaseContainableObject<IHasTemplate>
+    public class DrawableRpContainerLineGroup : DrawableBaseContainableObject<IHasTemplate> , IHasParentDrawable
     {
         /// <summary>
         /// </summary>
@@ -18,6 +20,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         {
             get { return (RpContainerLineGroup)base.HitObject; }
         }
+
+        public Container ParentGroupContainer { get; set; }
 
         private bool _startFadeont;
 
@@ -27,7 +31,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         public DrawableRpContainerLineGroup(BaseRpObject hitObject)
             : base(hitObject)
         {
-            Position = (HitObject as RpContainerLineGroup).Position;
+            //Position = (HitObject as RpContainerLineGroup).Position;
         }
 
         //建構樣板物件
@@ -73,7 +77,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             {
                 _startFadeont = true;
                 this.FadeOut(FadeOutTime);
-                Template.FadeOut(FadeOutTime);
+                this.FadeOutComponents(FadeOutTime);
             }
         }
     }

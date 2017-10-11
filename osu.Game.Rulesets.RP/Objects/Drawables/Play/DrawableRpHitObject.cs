@@ -55,47 +55,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         {
             base.Update();
         }
-
-        /// <summary>
-        ///     結果，有打到或是miss
-        /// </summary>
-        /// <param name="state"></param>
-        protected override void UpdateCurrentState(ArmedState state)
-        {
-            double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
-
-            using (Template.BeginDelayedSequence(duration))
-                Template.FadeOut(400);
-
-            //glow.FadeOut(400);
-
-            switch (state)
-            {
-                case ArmedState.Idle:
-                    using (BeginDelayedSequence(duration + PreemptTime))
-                        this.FadeOut(PreemptTime);
-                    Expire(true);
-                    break;
-                case ArmedState.Miss:
-                    this.FadeOut(FadeOutTime / 5);
-                    break;
-                case ArmedState.Hit:
-
-                    const double flash_in = 40;
-
-
-                    using (BeginDelayedSequence(flash_in, true))
-                    {
-                        Template.FadeOut(flash_in);
-                    }
-                    //播放打擊的聲音
-                    PlaySamples();
-                    Expire();
-                    break;
-            }
-
-            //
-            //_template.FadeOut();
-        }
     }
 }

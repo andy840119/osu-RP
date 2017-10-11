@@ -81,7 +81,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground
             DrawableRpContainerLineGroup targetGroup = GetGroupByRpObject(containerLineObject.ParentObject);
             foreach (var single in targetGroup.ListContainObject())
             {
-                if (single.Template.RpObject == containerLineObject)
+                if (single.RpObject == containerLineObject)
                     return single as DrawableRpContainerLine;
             }
 

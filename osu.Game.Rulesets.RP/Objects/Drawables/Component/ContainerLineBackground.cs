@@ -40,12 +40,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         public int LayerIndex { get; set; } 
 
-
-        public void Initial()
-        {
-            
-        }
-
         private void createDrawable()
         {
             _rpRectangleComponent = new RectanglePiece(2000, this.SingleLayerHeight())

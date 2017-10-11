@@ -13,7 +13,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
     //DrawableBaseRpHitableObject
-    public abstract class DrawableBaseRpHitableObject : DrawableBaseRpObject, IKeyBindingHandler<RpAction>, IHasTemplate
+    public abstract class DrawableBaseRpHitableObject : DrawableBaseRpObject, IKeyBindingHandler<RpAction>
     {
         // HitObject
         public new BaseRpHitableObject HitObject

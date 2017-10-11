@@ -87,8 +87,8 @@
     <Compile Include="Objects\Drawables\Extension\ICanContainObjectExtension.cs" />
     <Compile Include="Objects\Drawables\Extension\ObjectTypeExtension.cs" />
     <Compile Include="Objects\Drawables\Interface\ICanContainObject.cs" />
+    <Compile Include="Objects\Drawables\Interface\IHasParentDrawable.cs" />
     <Compile Include="Objects\Drawables\Interface\IHasTemplate.cs" />
-    <Compile Include="Objects\Drawables\Template\Template.cs" />
     <Compile Include="Objects\Extension\HitObjectRelationBindingExtension.cs" />
     <Compile Include="Objects\Interface\IHasBPM.cs" />
     <Compile Include="Objects\Interface\IHasColor.cs" />
@@ -114,6 +114,8 @@
     <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\GameField\GameFieldModsProcessor.cs" />
     <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\HitObject\HitObjectModsProcessor.cs" />
     <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\ModsProcessor.cs" />
+    <Compile Include="UI\GamePlay\Playfield\Externsion\GameFieldExtension.cs" />
+    <Compile Include="UI\GamePlay\Playfield\Interface\IHasGameField.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\ConnectionLine.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\Slider.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableBaseContainableObject.cs" />
@@ -243,7 +245,6 @@
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Hold\Start\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\End\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\Start\" />
-    <Folder Include="UI\GamePlay\Playfield\Externsion\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\Play\RP\HitEffect\Cool\RP.png" />

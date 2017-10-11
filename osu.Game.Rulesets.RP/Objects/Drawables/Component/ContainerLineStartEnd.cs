@@ -110,11 +110,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             }
         }
 
-        public void Initial()
-        {
-            
-        }
-
         private void movingDrawable()
         {
             if (_containerStartDecisionLineComponent == null)

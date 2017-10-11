@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.KeyManager;
@@ -20,6 +21,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
     {
         public List<IComponentBase> Components { get; set; }
         public BaseRpObject RpObject => HitObject;
+        public Container DrawableObject => this;
 
         //FadeInTime
         public virtual float FadeInTime => 200;
@@ -28,11 +30,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         public virtual float FadeOutTime => 300;
 
         public virtual float PreemptTime => HitObject.PreemptTime;
-
-        /// <summary>
-        ///     樣板，把物件綁上去就對了
-        /// </summary>
-        public Template.Template Template { get; set; }
 
         public DrawableBaseRpObject(BaseRpObject hitObject)
             : base(hitObject)
@@ -60,12 +57,13 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //建構
         protected void InitialChildObject()
         {
+            this.InitialTemplate();
 
+            return;
             
-
             if (RpObject as IHasParentID == null)
             {
-                this.AddTemplateToChild();
+               
             }
             else
             {
@@ -77,14 +75,14 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         {
             FinishTransforms();
 
-            var relativeStartTime = (HitObject is IHasParentID) ? (HitObject as IHasParentID).RelativeToParentStartTime : HitObject.StartTime;
+            //var relativeStartTime = (HitObject is IHasParentID) ? (HitObject as IHasParentID).RelativeToParentStartTime : HitObject.StartTime;
 
-            if ((HitObject is IHasParentID))
-            {
-                int a = 0;
-            }
+            //if ((HitObject is IHasParentID))
+            //{
+            //    int a = 0;
+            //}
 
-            using (BeginAbsoluteSequence(HitObject.StartTime - PreemptTime, false))
+            using (BeginAbsoluteSequence(HitObject.StartTime - PreemptTime, true))
             {
                 UpdateInitialState();
 
@@ -108,7 +106,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         {
             this.FadeIn(FadeInTime);
             //Fadein
-            Template.FadeIn(FadeInTime);
+            this.FadeInComponents(FadeInTime);
         }
 
         /// <summary>
@@ -127,7 +125,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         {
             base.Update();
             //更新物件位置
-            Template.UpdateTemplate(Time.Current);
+            this.UpdateTemplate(Time.Current);
         }
 
         //CheckJudgement

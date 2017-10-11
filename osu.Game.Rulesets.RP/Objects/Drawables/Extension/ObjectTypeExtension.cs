@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
 {
@@ -16,7 +17,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
     /// </summary>
     public static class ObjectTypeExtension
     {
-        public static void UpdateObjectToDrawable(this Template.Template template)
+        public static void UpdateObjectToDrawable(this IHasTemplate template)
         {
             foreach (var type in template.RpObject.GetType().GetInterfaces())
             {
@@ -24,7 +25,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
             }
         }
 
-        public static void UpdateTypeToDrawable(this Template.Template template, Type type)
+        public static void UpdateTypeToDrawable(this IHasTemplate template, Type type)
         {
             foreach (var singleDrawableObject in template.Components)
             {

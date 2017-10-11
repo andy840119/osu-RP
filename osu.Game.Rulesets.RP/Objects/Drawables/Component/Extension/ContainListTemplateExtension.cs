@@ -20,28 +20,28 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
   
             //TODO : get better
             //remove from origin drawable
-            template.RemoveTemplateFromChild();//TODO : impliment
+            //template.RemoveTemplateFromChild();//TODO : impliment
 
             //add to drawable
 
             var list = (listTemplate as Container).Children.ToList();
             if (list.Count == 0)
             {
-                list.Add(template.Template);
+                list.Add(template.DrawableObject.CreateProxy());
                 (listTemplate as Container).Children = list.ToArray();//TODO : impliment
             }
             else
             {
                 //TODO : connot add
-                (listTemplate as Container).Add((template.Template));
+                (listTemplate as Container).Add((template.DrawableObject.CreateProxy()));
             }
         }
 
         public static void RemoveTemplate(this IContainListTemplate listTemplate, IHasTemplate template)
         {
             //remove from drawable
-            template.AddTemplateToChild();
-            (listTemplate as Container).Children.ToList().Remove(template.Template);
+            //template.AddTemplateToChild();
+            (listTemplate as Container).Children.ToList().Remove(template.DrawableObject);
             //Add to list
             listTemplate.ListTemplate.Remove(template);
         }

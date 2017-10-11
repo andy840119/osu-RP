@@ -40,13 +40,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         }
 
         /// <summary>
-        ///     初始化顯示
-        /// </summary>
-        public void Initial()
-        {
-        }
-
-        /// <summary>
         ///     開始特效
         /// </summary>
         public void FadeIn(double time = 0)

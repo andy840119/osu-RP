@@ -19,7 +19,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         public void Add(IHasTemplate template)
         {
             this.AddTemplate(template);
-            template.Template.Position = (template.Template.RpObject as IHasLayerIndex).PositionOfLayer();
+            template.DrawableObject.Position = (template.RpObject as IHasLayerIndex).PositionOfLayer();
         }
 
         public void Remove(IHasTemplate template)
@@ -30,11 +30,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         public ContainerGroupContainArea()
         {
             ListTemplate=new List<IHasTemplate>();
-        }
-
-        public void Initial()
-        {
-
         }
 
         public void FadeIn(double time = 0)

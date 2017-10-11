@@ -10,10 +10,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface
     /// </summary>
     public interface IComponentBase : IContainer
     {
-        /// <summary>
-        ///     initial
-        /// </summary>
-        void Initial();
 
         /// <summary>
         ///     fade in

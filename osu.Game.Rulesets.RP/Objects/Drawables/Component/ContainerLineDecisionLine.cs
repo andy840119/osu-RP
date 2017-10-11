@@ -122,12 +122,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             _containerDecisionLineComponent.MoveTo(targetPosition, Duration);
         }
 
-
-        public void Initial()
-        {
-           
-        }
-
         private void createDrawable()
         {
             //指標

@@ -24,8 +24,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         {
             this.AddTemplate(template);
             //時間位置
-            var position = this.PositionOfTime(template.Template.RpObject.StartTime - StartTime);
-            template.Template.Position = position;
+            var position = this.PositionOfTime(template.RpObject.StartTime - StartTime);
+            template.DrawableObject.Position = position;
         }
 
         public void Remove(IHasTemplate template)
@@ -38,9 +38,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             ListTemplate = new List<IHasTemplate>();
         }
 
-        public void Initial()
-        {
-        }
 
         public void FadeIn(double time = 0)
         {
