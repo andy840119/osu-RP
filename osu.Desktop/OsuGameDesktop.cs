@@ -17,7 +17,7 @@ using osu.Game.Screens.Menu;
 
 namespace osu.Desktop
 {
-    public class OsuGameDesktop : OsuGame
+    internal class OsuGameDesktop : OsuGame
     {
         private VersionManager versionManager;
 

@@ -1,18 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game", "osu.Game\osu.Game.csproj", "{2A66DD92-ADB1-4994-89E2-C94E04ACDA0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework", "osu-framework\osu.Framework\osu.Framework.csproj", "{C76BF5B3-985E-4D39-95FE-97C9C879B83A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Resources", "osu-resources\osu.Game.Resources\osu.Game.Resources.csproj", "{D9A367C9-4C1A-489F-9B05-A0CEA2B53B58}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Tests", "osu.Game.Tests\osu.Game.Tests.csproj", "{54377672-20B1-40AF-8087-5CF73BF3953A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{07E65AA5-5A23-4089-9024-21046E882BED} = {07E65AA5-5A23-4089-9024-21046E882BED}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Rulesets.Osu", "osu.Game.Rulesets.Osu\osu.Game.Rulesets.Osu.csproj", "{C92A607B-1FDD-4954-9F92-03FF547D9080}"
 EndProject
@@ -24,11 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Rulesets.Mania", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Desktop.Deploy", "osu.Desktop.Deploy\osu.Desktop.Deploy.csproj", "{BAEA2F74-0315-4667-84E0-ACAC0B4BF785}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Rulesets.RP", "osu.Game.Rulesets.RP\osu.Game.Rulesets.RP.csproj", "{07E65AA5-5A23-4089-9024-21046E882BED}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Desktop", "osu.Desktop\osu.Desktop.csproj", "{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Tests", "osu.Game.Tests\osu.Game.Tests.csproj", "{54377672-20B1-40AF-8087-5CF73BF3953A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Desktop", "osu.Desktop\osu.Desktop.csproj", "{419659FD-72EA-4678-9EB8-B22A746CED70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Rulesets.RP", "osu.Game.Rulesets.RP\osu.Game.Rulesets.RP.csproj", "{07E65AA5-5A23-4089-9024-21046E882BED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,12 +50,6 @@ Global
 		{D9A367C9-4C1A-489F-9B05-A0CEA2B53B58}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9A367C9-4C1A-489F-9B05-A0CEA2B53B58}.VisualTests|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9A367C9-4C1A-489F-9B05-A0CEA2B53B58}.VisualTests|Any CPU.Build.0 = Debug|Any CPU
-		{54377672-20B1-40AF-8087-5CF73BF3953A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54377672-20B1-40AF-8087-5CF73BF3953A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54377672-20B1-40AF-8087-5CF73BF3953A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54377672-20B1-40AF-8087-5CF73BF3953A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54377672-20B1-40AF-8087-5CF73BF3953A}.VisualTests|Any CPU.ActiveCfg = Release|Any CPU
-		{54377672-20B1-40AF-8087-5CF73BF3953A}.VisualTests|Any CPU.Build.0 = Release|Any CPU
 		{C92A607B-1FDD-4954-9F92-03FF547D9080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C92A607B-1FDD-4954-9F92-03FF547D9080}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C92A607B-1FDD-4954-9F92-03FF547D9080}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,20 +77,6 @@ Global
 		{BAEA2F74-0315-4667-84E0-ACAC0B4BF785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BAEA2F74-0315-4667-84E0-ACAC0B4BF785}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAEA2F74-0315-4667-84E0-ACAC0B4BF785}.VisualTests|Any CPU.ActiveCfg = Debug|Any CPU
-<<<<<<< HEAD
-		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07E65AA5-5A23-4089-9024-21046E882BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07E65AA5-5A23-4089-9024-21046E882BED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07E65AA5-5A23-4089-9024-21046E882BED}.VisualTests|Any CPU.ActiveCfg = Release|Any CPU
-		{07E65AA5-5A23-4089-9024-21046E882BED}.VisualTests|Any CPU.Build.0 = Release|Any CPU
-		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.VisualTests|Any CPU.ActiveCfg = Release|Any CPU
-		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.VisualTests|Any CPU.Build.0 = Release|Any CPU
-=======
 		{54377672-20B1-40AF-8087-5CF73BF3953A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{54377672-20B1-40AF-8087-5CF73BF3953A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54377672-20B1-40AF-8087-5CF73BF3953A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -114,22 +89,46 @@ Global
 		{419659FD-72EA-4678-9EB8-B22A746CED70}.Release|Any CPU.Build.0 = Release|Any CPU
 		{419659FD-72EA-4678-9EB8-B22A746CED70}.VisualTests|Any CPU.ActiveCfg = Debug|Any CPU
 		{419659FD-72EA-4678-9EB8-B22A746CED70}.VisualTests|Any CPU.Build.0 = Debug|Any CPU
->>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
+		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07E65AA5-5A23-4089-9024-21046E882BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07E65AA5-5A23-4089-9024-21046E882BED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07E65AA5-5A23-4089-9024-21046E882BED}.VisualTests|Any CPU.ActiveCfg = Release|Any CPU
+		{07E65AA5-5A23-4089-9024-21046E882BED}.VisualTests|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4872FAD7-3F7F-4377-9945-B3C3AF485EBB}
+		SolutionGuid = {F9EAAFFC-A71F-478A-8B3B-8E211544E6C7}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.EolMarker = Windows
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
 		$1.scope = text/x-csharp
-		$1.FileWidth = 80
-		$1.TabsToSpaces = True
 		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchSection = True
+		$2.NewLinesForBracesInProperties = True
+		$2.NewLinesForBracesInAccessors = True
+		$2.NewLinesForBracesInAnonymousMethods = True
+		$2.NewLinesForBracesInControlBlocks = True
+		$2.NewLinesForBracesInAnonymousTypes = True
+		$2.NewLinesForBracesInObjectCollectionArrayInitializers = True
+		$2.NewLinesForBracesInLambdaExpressionBody = True
+		$2.NewLineForElse = True
+		$2.NewLineForCatch = True
+		$2.NewLineForFinally = True
+		$2.NewLineForMembersInObjectInit = True
+		$2.NewLineForMembersInAnonymousTypes = True
+		$2.NewLineForClausesInQuery = True
+		$2.SpacingAfterMethodDeclarationName = False
+		$2.SpaceAfterMethodCallName = False
+		$2.SpaceBeforeOpenSquareBracket = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
 	EndGlobalSection
 EndGlobal
