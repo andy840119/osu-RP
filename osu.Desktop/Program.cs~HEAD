@@ -4,11 +4,11 @@
 using System;
 using System.IO;
 using System.Linq;
-using osu.Framework;
-using osu.Framework.Platform;
 using osu.Game.IPC;
+using DesktopGameHost = osu.Framework.Platform.DesktopGameHost;
+using Host = osu.Framework.Host;
 
-namespace osu.Game
+namespace osu.Desktop
 {
     public static class Program
     {
@@ -37,10 +37,10 @@ namespace osu.Game
                     switch (args.FirstOrDefault() ?? string.Empty)
                     {
                         case "--tests":
-                            host.Run(new OsuTestBrowser());
+                            //host.Run(new OsuTestBrowser());
                             break;
                         default:
-                            host.Run(new OsuGameDesktop(args));
+                            host.Run(new Game.OsuGameDesktop(args));
                             break;
                     }
 

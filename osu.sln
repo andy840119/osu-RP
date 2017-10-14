@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Rulesets.RP", "osu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Desktop", "osu.Desktop\osu.Desktop.csproj", "{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Desktop", "osu.Desktop\osu.Desktop.csproj", "{419659FD-72EA-4678-9EB8-B22A746CED70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,7 @@ Global
 		{BAEA2F74-0315-4667-84E0-ACAC0B4BF785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BAEA2F74-0315-4667-84E0-ACAC0B4BF785}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAEA2F74-0315-4667-84E0-ACAC0B4BF785}.VisualTests|Any CPU.ActiveCfg = Debug|Any CPU
+<<<<<<< HEAD
 		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07E65AA5-5A23-4089-9024-21046E882BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -98,6 +101,20 @@ Global
 		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.VisualTests|Any CPU.ActiveCfg = Release|Any CPU
 		{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}.VisualTests|Any CPU.Build.0 = Release|Any CPU
+=======
+		{54377672-20B1-40AF-8087-5CF73BF3953A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54377672-20B1-40AF-8087-5CF73BF3953A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54377672-20B1-40AF-8087-5CF73BF3953A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54377672-20B1-40AF-8087-5CF73BF3953A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54377672-20B1-40AF-8087-5CF73BF3953A}.VisualTests|Any CPU.ActiveCfg = Release|Any CPU
+		{54377672-20B1-40AF-8087-5CF73BF3953A}.VisualTests|Any CPU.Build.0 = Release|Any CPU
+		{419659FD-72EA-4678-9EB8-B22A746CED70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{419659FD-72EA-4678-9EB8-B22A746CED70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{419659FD-72EA-4678-9EB8-B22A746CED70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{419659FD-72EA-4678-9EB8-B22A746CED70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{419659FD-72EA-4678-9EB8-B22A746CED70}.VisualTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{419659FD-72EA-4678-9EB8-B22A746CED70}.VisualTests|Any CPU.Build.0 = Debug|Any CPU
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

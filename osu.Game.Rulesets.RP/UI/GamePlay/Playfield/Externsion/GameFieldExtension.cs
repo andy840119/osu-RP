@@ -10,6 +10,7 @@ using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Interface;
+using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 {
@@ -114,6 +115,11 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
                 }
             }
             
+        }
+
+        public static Vector2 FindObjectPosition(this IHasGameField field, DrawableBaseRpObject drawableRpHitObject)
+        {
+            return new Vector2(0,0);
         }
     }
 }

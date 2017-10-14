@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
+<<<<<<< HEAD
     <ProjectGuid>{A37A86AF-FF96-4489-9E58-C5068BAC0BB0}</ProjectGuid>
+=======
+    <ProjectGuid>{419659FD-72EA-4678-9EB8-B22A746CED70}</ProjectGuid>
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>WinExe</OutputType>
@@ -90,6 +94,24 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+<<<<<<< HEAD
+=======
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'VisualTests|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WarningLevel>0</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>6</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <StartArguments>--tests</StartArguments>
+  </PropertyGroup>
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
   <ItemGroup>
     <Reference Include="DeltaCompressionDotNet, Version=1.1.0.0, Culture=neutral, PublicKeyToken=1d14d6e5194e7f4a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.dll</HintPath>
@@ -121,6 +143,7 @@
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="NuGet.Squirrel, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+<<<<<<< HEAD
       <HintPath>$(SolutionDir)\packages\squirrel.windows.1.7.5\lib\Net45\NuGet.Squirrel.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -130,19 +153,36 @@
     </Reference>
     <Reference Include="SharpCompress, Version=0.17.1.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\SharpCompress.0.17.1\lib\net45\SharpCompress.dll</HintPath>
+=======
+      <HintPath>..\packages\squirrel.windows.1.7.8\lib\Net45\NuGet.Squirrel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.0.0-git00009\lib\net20\OpenTK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpCompress, Version=0.18.1.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpCompress.0.18.1\lib\net45\SharpCompress.dll</HintPath>
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
       <Private>True</Private>
     </Reference>
     <Reference Include="Splat, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Splat.2.0.0\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
     </Reference>
+<<<<<<< HEAD
     <Reference Include="Squirrel, Version=1.7.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\squirrel.windows.1.7.5\lib\Net45\Squirrel.dll</HintPath>
+=======
+    <Reference Include="Squirrel, Version=1.7.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\squirrel.windows.1.7.8\lib\Net45\Squirrel.dll</HintPath>
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+<<<<<<< HEAD
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
       <Private>True</Private>
@@ -152,6 +192,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+=======
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +234,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Compile Include="OsuGameDesktop.cs" />
+    <Compile Include="OsuTestBrowser.cs" />
+    <Compile Include="Overlays\VersionManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="lazer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
     <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj">
       <Project>{c76bf5b3-985e-4d39-95fe-97c9c879b83a}</Project>
       <Name>osu.Framework</Name>
@@ -200,10 +255,13 @@
       <Project>{d9a367c9-4c1a-489f-9b05-a0cea2b53b58}</Project>
       <Name>osu.Game.Resources</Name>
     </ProjectReference>
+<<<<<<< HEAD
     <ProjectReference Include="..\osu.Game.Rulesets.Osu\osu.Game.Rulesets.Osu.csproj">
       <Project>{c92a607b-1fdd-4954-9f92-03ff547d9080}</Project>
       <Name>osu.Game.Rulesets.Osu</Name>
     </ProjectReference>
+=======
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
     <ProjectReference Include="..\osu.Game.Rulesets.Catch\osu.Game.Rulesets.Catch.csproj">
       <Project>{58f6c80c-1253-4a0e-a465-b8c85ebeadf3}</Project>
       <Name>osu.Game.Rulesets.Catch</Name>
@@ -212,15 +270,22 @@
       <Project>{48f4582b-7687-4621-9cbe-5c24197cb536}</Project>
       <Name>osu.Game.Rulesets.Mania</Name>
     </ProjectReference>
+<<<<<<< HEAD
     <ProjectReference Include="..\osu.Game.Rulesets.RP\osu.Game.Rulesets.RP.csproj">
       <Project>{07e65aa5-5a23-4089-9024-21046e882bed}</Project>
       <Name>osu.Game.Rulesets.RP</Name>
+=======
+    <ProjectReference Include="..\osu.Game.Rulesets.Osu\osu.Game.Rulesets.Osu.csproj">
+      <Project>{c92a607b-1fdd-4954-9f92-03ff547d9080}</Project>
+      <Name>osu.Game.Rulesets.Osu</Name>
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
     </ProjectReference>
     <ProjectReference Include="..\osu.Game.Rulesets.Taiko\osu.Game.Rulesets.Taiko.csproj">
       <Project>{f167e17a-7de6-4af5-b920-a5112296c695}</Project>
       <Name>osu.Game.Rulesets.Taiko</Name>
     </ProjectReference>
     <ProjectReference Include="..\osu.Game\osu.Game.csproj">
+<<<<<<< HEAD
       <Project>{0d3fbf8a-7464-4cf7-8c90-3e7886df2d4d}</Project>
       <Name>osu.Game</Name>
     </ProjectReference>
@@ -232,6 +297,12 @@
   <ItemGroup>
     <Content Include="lazer.ico" />
   </ItemGroup>
+=======
+      <Project>{2a66dd92-adb1-4994-89e2-c94e04acda0d}</Project>
+      <Name>osu.Game</Name>
+    </ProjectReference>
+  </ItemGroup>
+>>>>>>> ec7cc5e473446de5fd698a0e5f1b73ade2c39b62
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

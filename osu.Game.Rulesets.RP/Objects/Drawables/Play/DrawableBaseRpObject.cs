@@ -40,7 +40,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             Components = new List<IComponentBase>();
 
             Origin = Anchor.Centre;
-            Position = new Vector2(100, 100);
+            //Position = new Vector2(100, 100);
 
             //initial component
             ConstructObject();
@@ -58,17 +58,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         protected void InitialChildObject()
         {
             this.InitialTemplate();
-
-            return;
-            
-            if (RpObject as IHasParentID == null)
-            {
-               
-            }
-            else
-            {
-                
-            }
         }
 
         protected override void UpdateState(ArmedState state)

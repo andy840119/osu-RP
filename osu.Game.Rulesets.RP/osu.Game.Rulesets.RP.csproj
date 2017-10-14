@@ -89,7 +89,7 @@
     <Compile Include="Objects\Drawables\Interface\ICanContainObject.cs" />
     <Compile Include="Objects\Drawables\Interface\IHasParentDrawable.cs" />
     <Compile Include="Objects\Drawables\Interface\IHasTemplate.cs" />
-    <Compile Include="Objects\Extension\HitObjectRelationBindingExtension.cs" />
+    <Compile Include="UI\GamePlay\Playfield\Externsion\HitObjectRelationBindingExtension.cs" />
     <Compile Include="Objects\Interface\IHasBPM.cs" />
     <Compile Include="Objects\Interface\IHasColor.cs" />
     <Compile Include="Objects\Interface\IHasContainList.cs" />
@@ -159,12 +159,10 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\Triangles.cs" />
     <Compile Include="Parser\RpHitObjectParser.cs" />
     <Compile Include="UI\GamePlay\KeyCounter\RpKeyCounterKeyboard.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\ContainerBackground\ContainerBackgroundLayout.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\BaseGamePlayLayout.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\JudgementLayout.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\KeySound\KeySoundLayout.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\HitObjectConnector.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\HitObjects\HitObjectLayout.cs" />
     <Compile Include="Scoreing\RpScoreProcessor.cs" />
     <Compile Include="Objects\RpHitObject.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpHitObject.cs" />
@@ -218,6 +216,7 @@
     <Folder Include="Beatmaps\OtherBeatmap\HitObjectGegenerator\ObjectMovingPath\EndPosition\" />
     <Folder Include="Beatmaps\OtherBeatmap\HitObjectGegenerator\ObjectMovingPath\PathPosition\" />
     <Folder Include="Mods\ModsElement\" />
+    <Folder Include="Objects\Extension\" />
     <Folder Include="Textures\Play\RP\Number\ComboCounter\" />
     <Folder Include="Textures\Play\RP\Number\Combo\" />
     <Folder Include="Textures\Play\RP\Number\Score\" />

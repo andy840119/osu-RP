@@ -8,17 +8,13 @@ using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
-using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Interface;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CoopHint;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjectsConnector;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.KeySound;
-using osu.Game.Rulesets.UI;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
@@ -35,17 +31,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
         /// Show the co-op backgrounf
         /// </summary>
         private readonly CoopHintLayout _coopHintLayout;
-
-        /// <summary>
-        ///     RpContainer Object's layout
-        /// </summary>
-        private readonly ContainerBackgroundLayout containerBackgroundLayout;
-
-        /// <summary>
-        ///     RpHitObject's Layout
-        ///     It only store on the list, not added to the Drawable Child
-        /// </summary>
-        private readonly HitObjectLayout _rpObjectLayout;
 
         /// <summary>
         ///     Draw the line connected to mulit Hit Object
@@ -102,17 +87,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
                     RelativeSizeAxes = Axes.Both,
                     Depth = 3
                 },
-                containerBackgroundLayout = new ContainerBackgroundLayout
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = 2
-                },
-                _rpObjectLayout = new HitObjectLayout
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = 1,
-                    ContainerBackgroundLayout = containerBackgroundLayout
-                },
                 _hitObjectConnector = new HitObjectConnector
                 {
                     RelativeSizeAxes = Axes.Both,
@@ -132,7 +106,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             });
         }
 
-        private int total = 0;
+        
 
         /// <summary>
         ///     Add the DrawableHitObject
@@ -140,44 +114,13 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
         /// <param name="hitObject"></param>
         public override void Add(DrawableHitObject hitObject)
         {
+            hitObject.Depth = (float)hitObject.HitObject.StartTime;
             this.AddDrawableRpObject(hitObject);
-
-            return;
-            
-
-            //IDrawableHitObjectWithProxiedApproach c = hitObject as IDrawableHitObjectWithProxiedApproach;
-            if (hitObject is DrawableRpContainerLineGroup)
-            {
-                //Aviod container is in front of hit object
-                hitObject.Depth = (float)hitObject.HitObject.StartTime + 10000;
-                //・ｽ・ｽ・ｽ・ｽ・ｽw・ｽi・ｽ・ｽ・ｽ・ｽ
-                containerBackgroundLayout.AddContainerGroup(hitObject as DrawableRpContainerLineGroup);
-                //
-                //keySoundLayout.Add(containerBackgroundLayout.CreateProxy());
-            }
-            else if (hitObject is DrawableRpContainerLine)
-            {
-                containerBackgroundLayout.AddContainerLine(hitObject as DrawableRpContainerLine);
-            }
-            else if (hitObject is DrawableBaseRpHitableObject)
-            {
-                hitObject.Depth = (float)hitObject.HitObject.StartTime;
-                //・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
-                _rpObjectLayout.AddDrawObject(hitObject as DrawableBaseRpHitableObject);
-            }
-            total ++ ;
-
-            //美新增 一個Group，就會在底層新增一個物件
-            //簡單來說，會有一個Container 去包住一組group裡面的所有權組ˋ
-            //sariofqjiof
-            //base.Add(hitObject);
         }
 
 
         public override void PostProcess()
         {
-            int totalHit = total;
-
             foreach (var singleGroup in ListGroupContainer)
             {
                 base.Add(singleGroup);
@@ -198,8 +141,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
         public override void OnJudgement(DrawableHitObject drawableHitObject, Judgement judgement)
         {
             var rpJudgement = (RpJudgement)judgement;
-            //var osuObject = (RpHitObject)rpJudgement.HitObject;
-
+            //update position
             _judgementLayer.AddHitEffect(rpJudgement);
         }
 

@@ -77,52 +77,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
                 single.FadeOut(time);
             }
         }
-
-        /*
-        /// <summary>
-        /// AddTemplateToChild
-        /// TODO : remove
-        /// </summary>
-        /// <param name="drawableObject"></param>
-        private static void AddTemplateToChild(this IHasTemplate drawableObject)
-        {
-            if(drawableObject!=null)
-                drawableObject.Dispose();
-            drawableObject.Template = null;
-
-            //要重新new 一個
-            drawableObject.Template = new Template.Template(drawableObject.RpObject, drawableObject.Components);
-
-            //TODO : add or remove only template
-            (drawableObject as Container).Children = new Drawable[]
-            {
-                drawableObject.Template
-            };
-        }
-
-        /// <summary>
-        /// RemoveTemplateFromChild
-        /// </summary>
-        /// <param name="drawableObject"></param>
-        private static void RemoveTemplateFromChild(this IHasTemplate drawableObject)
-        {
-            //TODO : add or remove only template
-            (drawableObject as Container).Children = new Drawable[]
-            {
-                //drawableObject.Template
-            };
-
-            // (drawableObject as Container).Children.ToList().Remove(drawableObject.Template);
-
-            if (drawableObject.Template != null)
-                drawableObject.Template.Dispose();
-            drawableObject.Template = null;
-
-            //要重新new 一個
-            drawableObject.Template = new Template.Template(drawableObject.RpObject, drawableObject.Components);
-            drawableObject.Template.Initial();
-        }
-        */
-
     }
 }
