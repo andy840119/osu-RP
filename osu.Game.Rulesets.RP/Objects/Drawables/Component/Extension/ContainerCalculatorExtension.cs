@@ -51,7 +51,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
 
         public static float XPositionOfTime(this IHasVelocity velocity, double time)
         {
-            float positionX = (float)time / 1000 * velocity.Velocity * MULTIPLE;
+            float positionX = (float)time * velocity.Velocity * MULTIPLE;
             //positionX = positionX % Width;
             //inverse
             //position_x = -position_x + screenWidth + 10;

@@ -27,7 +27,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         private double _duration;
         private double _bgm;
         private float _velocity;
-        private float _reemptTime;
+        private float _preemptTime;
 
 
         public double StartTime
@@ -35,11 +35,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _startTime;
             set
             {
-                if (_startTime != value)
-                {
-                    _startTime = value;
-                    RecalculatePositionMoving();
-                }
+                _startTime = value;
+                RecalculatePositionMoving();
             }
         }
 
@@ -48,11 +45,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _endTime;
             set
             {
-                if (_endTime != value)
-                {
-                    _endTime = value;
-                    RecalculatePositionMoving();
-                }
+                _endTime = value;
+                RecalculatePositionMoving();
             }
         }
 
@@ -61,11 +55,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _duration;
             set
             {
-                if (_duration != value)
-                {
-                    _duration = value;
-                    RecalculatePositionMoving();
-                }
+                _duration = value;
+                RecalculatePositionMoving();
             }
         }
 
@@ -74,11 +65,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _bgm;
             set
             {
-                if (_bgm != value)
-                {
-                    _bgm = value;
-                    RecalculatePositionMoving();
-                }
+                _bgm = value;
+                RecalculatePositionMoving();
             }
         }
 
@@ -87,24 +75,18 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _velocity;
             set
             {
-                if (_velocity != value)
-                {
-                    _velocity = value;
-                    RecalculatePositionMoving();
-                }
+                _velocity = value;
+                RecalculatePositionMoving();
             }
         }
 
         public float PreemptTime
         {
-            get => _velocity;
+            get => _preemptTime;
             set
             {
-                if (_velocity != value)
-                {
-                    _velocity = value;
-                    RecalculatePositionMoving();
-                }
+                _preemptTime = value;
+                RecalculatePositionMoving();
             }
         }
 

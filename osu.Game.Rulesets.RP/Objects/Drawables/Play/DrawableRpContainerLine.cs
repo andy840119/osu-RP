@@ -1,16 +1,18 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using System.Linq;
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
+using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
-    public class DrawableRpContainerLine : DrawableBaseContainableObject<IHasTemplate>
+    public class DrawableRpContainerLine : DrawableBaseRpObject, ICanContainObject
     {
         /// <summary>
         /// </summary>
@@ -63,12 +65,12 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             base.Update();
 
             //如果時間趁E��就執衁E
-            if (HitObject.EndTime < Time.Current && !_startFadeont)
-            {
-                _startFadeont = true;
-                this.FadeOut(FadeOutTime);
-                this.FadeOutComponents(FadeOutTime);
-            }
+            //if (HitObject.EndTime < Time.Current && !_startFadeont)
+            //{
+            //    _startFadeont = true;
+            //    this.FadeOut(FadeOutTime);
+            //    this.FadeOutComponents(FadeOutTime);
+            //}
         }
 
 
@@ -84,5 +86,32 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //    {
         //    }
         //}
+
+        protected override void UpdateCurrentState(ArmedState state)
+        {
+            //TODO :  修正
+            double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
+
+            switch (state)
+            {
+                case ArmedState.Idle:
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+
+                    Expire(true);
+                    break;
+                case ArmedState.Miss:
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+                    //通知judgement
+                    UpdateJudgement(true);
+                    Expire(true);
+                    break;
+                case ArmedState.Hit:
+
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+
+                    Expire(true);
+                    break;
+            }
+        }
     }
 }

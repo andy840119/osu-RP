@@ -1,18 +1,21 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using System.Linq;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
+using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
     /// <summary>
     ///     匁E��RP物件
     /// </summary>
-    public class DrawableRpContainerLineGroup : DrawableBaseContainableObject<IHasTemplate> , IHasParentDrawable
+    public class DrawableRpContainerLineGroup : DrawableBaseRpObject, IHasParentDrawable,ICanContainObject
     {
         /// <summary>
         /// </summary>
@@ -57,11 +60,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         /// </summary>
         protected override void UpdatePreemptState()
         {
-            //BaseRpObjectTemplate single = (BaseRpObjectTemplate)Template;
-            //FadeIn(FadeInTime);
-            //開始特效
-            //Template.FadeIn(FadeInTime);
-
             base.UpdatePreemptState();
         }
 
@@ -73,11 +71,39 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             base.Update();
 
             //如果時間趁E��就執衁E
-            if (HitObject.EndTime < Time.Current && !_startFadeont)
+            //if (HitObject.EndTime < Time.Current && !_startFadeont)
+            //{
+            //    _startFadeont = true;
+            //    this.FadeOut(FadeOutTime);
+            //    this.FadeOutComponents(FadeOutTime);
+            //}
+        }
+
+        protected override void UpdateCurrentState(ArmedState state)
+        {
+            //TODO :  修正
+            double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
+
+            switch (state)
             {
-                _startFadeont = true;
-                this.FadeOut(FadeOutTime);
-                this.FadeOutComponents(FadeOutTime);
+                case ArmedState.Idle:
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+
+                    Expire(true);
+                    break;
+                case ArmedState.Miss:
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+
+                    //通知judgement
+                    UpdateJudgement(true);
+                    Expire(true);
+                    break;
+                case ArmedState.Hit:
+
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+
+                    Expire(true);
+                    break;
             }
         }
     }

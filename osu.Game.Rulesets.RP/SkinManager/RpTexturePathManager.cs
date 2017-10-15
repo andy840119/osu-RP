@@ -62,7 +62,7 @@ namespace osu.Game.Rulesets.RP.SkinManager
 
         public static string GetRPHitEffect(HitResult result, string resource)
         {
-            return RP_HIT_EFFECT_FOLDER + result + @"/" + resource;
+            return RP_HIT_EFFECT_FOLDER + GetStringFromHitResult(result) + @"/" + resource;
         }
 
         public static string GetStringFromHitResult(HitResult result)

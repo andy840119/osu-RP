@@ -22,9 +22,9 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         private double _startTime;
         private double _endTime;
-        private double _duration;
-        private double _bgm;
-        private float _velocity;
+        private double _duration = 1000;
+        private double _bgm = 180;
+        private float _velocity = 1;
 
 
 
@@ -33,11 +33,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get=> _startTime;
             set
             {
-                if (_startTime != value)
-                {
-                    _startTime = value;
-                    createDrawable();
-                }
+                _startTime = value;
+                createDrawable();
             }
         }
 
@@ -46,11 +43,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get=> _endTime;
             set
             {
-                if (_endTime != value)
-                {
-                    _endTime = value;
-                    createDrawable();
-                }
+                _endTime = value;
+                createDrawable();
             }
         }
 
@@ -59,11 +53,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _duration;
             set
             {
-                if (_duration != value)
-                {
-                    _duration = value;
-                    createDrawable();
-                }
+                _duration = value;
+                createDrawable();
             }
         }
 
@@ -72,11 +63,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _bgm;
             set
             {
-                if (_bgm != value)
-                {
-                    _bgm = value;
-                    createDrawable();
-                }
+                _bgm = value;
+                createDrawable();
             }
         }
 
@@ -85,11 +73,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _velocity;
             set
             {
-                if (_velocity != value)
-                {
-                    _velocity = value;
-                    createDrawable();
-                }
+                _velocity = value;
+                createDrawable();
             }
         }
 

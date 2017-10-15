@@ -87,50 +87,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         {
             base.Update();
         }
-
-        //UpdateState
-        protected override void UpdateState(ArmedState state)
-        {
-            if (!IsLoaded) return;
-
-            base.UpdateState(state);
-
-            //glow.FadeOut(400);
-
-            switch (state)
-            {
-                case ArmedState.Idle:
-                    this.Delay(HitObject.Duration + PreemptTime);
-                    this.FadeOut(FadeOutTime);
-                    break;
-                case ArmedState.Miss:
-                    this.FadeOut(FadeOutTime / 5);
-                    break;
-                case ArmedState.Hit:
-                    const double flash_in = 40;
-
-                    //flash.FadeTo(0.8f, flash_in);
-                    //flash.Delay(flash_in);
-                    //flash.FadeOut(100);
-
-                    //explode.FadeIn(flash_in);
-
-                    this.Delay(flash_in);
-
-                    //after the flash, we can hide some elements that were behind it
-                    //ring.FadeOut();
-                    //_detectPress.FadeOut();
-                    //number.FadeOut();
-
-                    this.FadeOut(800);
-                    this.ScaleTo(Scale * 1.5f, 400, Easing.OutQuad);
-                    //播放打擊的聲音
-                    PlaySamples();
-                    break;
-            }
-
-            //
-            //_template.FadeOut();
-        }
     }
 }

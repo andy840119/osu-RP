@@ -3,8 +3,10 @@
 
 using System;
 using System.ComponentModel;
+using osu.Framework.Graphics;
 using osu.Framework.Input.Bindings;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component;
@@ -76,7 +78,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             });
         }
 
-        public bool OnPressed(RpAction action)
+        public virtual bool OnPressed(RpAction action)
         {
             bool press = HitObject.CanHitBy(action);
 
@@ -94,7 +96,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             return false;
         }
 
-        public bool OnReleased(RpAction action)
+        public virtual bool OnReleased(RpAction action)
         {
             bool release = HitObject.CanHitBy(action);
 
@@ -110,6 +112,34 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             }
 
             return false;
+        }
+
+        protected override void UpdateCurrentState(ArmedState state)
+        {
+            //TODO :  èCê≥
+            double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
+
+            switch (state)
+            {
+                case ArmedState.Idle:
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+                    Expire(true);
+                    break;
+                case ArmedState.Miss:
+                    this.FadeOut(FadeOutTime / 5);
+                    Expire();
+                    break;
+                case ArmedState.Hit:
+
+                    const double flash_in = 40;
+                    using (BeginDelayedSequence(flash_in, true))
+                    {
+                        this.FadeOut(FadeOutTime);
+                    }
+
+                    Expire();
+                    break;
+            }
         }
 
         //get all the key Hitted?

@@ -118,7 +118,6 @@
     <Compile Include="UI\GamePlay\Playfield\Interface\IHasGameField.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\ConnectionLine.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\Slider.cs" />
-    <Compile Include="Objects\Drawables\Play\DrawableBaseContainableObject.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpContainerLine.cs" />
     <Compile Include="Mods\RpMod.cs" />
     <Compile Include="Objects\BaseRpObject.cs" />

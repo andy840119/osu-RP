@@ -11,7 +11,7 @@ using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {
-    public class StillHit : Container, IHasDirection, IComponentBase
+    public class StillHit : Container, IHasDirection,IHasCoop, IComponentBase
     {
         /// <summary>
         ///    Still piece
@@ -20,22 +20,44 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         private Direction _dircetion;
 
+        private Coop _coop;
+
+        public Coop Coop
+        {
+            get { return _coop; }
+            set
+            {
+                _coop = value;
+                if (StillHitPicec == null)
+                {
+                    CreaterDrawable();
+                }
+                StillHitPicec.Colour = RpTextureColorManager.GetCoopHitObjectColor(_coop);
+            }
+        }
+
         public Direction Direction
         {
             get { return _dircetion; }
             set
             {
                 _dircetion = value;
-                Children = new Drawable[]
-                {
+                CreaterDrawable();
+            }
+        }
+
+        void CreaterDrawable()
+        {
+            Children = new Drawable[]
+               {
                     StillHitPicec = new ImagePicec(RpTexturePathManager.GetStartObjectImageNameByType(ObjectType.Hit, Special.Normal, Direction))
                     {
 
                     },
-                };
-                StillHitPicec.Alpha = 0;
-                StillHitPicec.Scale = new Vector2(0.5f);
-            }
+               };
+            StillHitPicec.Alpha = 0;
+            StillHitPicec.Scale = new Vector2(0.5f);
+            StillHitPicec.Colour = RpTextureColorManager.GetCoopHitObjectColor(_coop);
         }
 
         /// <summary>

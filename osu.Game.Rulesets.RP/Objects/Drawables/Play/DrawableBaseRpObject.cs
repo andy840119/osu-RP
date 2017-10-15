@@ -11,8 +11,6 @@ using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
-using osu.Game.Rulesets.RP.Objects.Interface;
-using OpenTK;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
@@ -104,7 +102,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         /// <param name="state"></param>
         protected virtual void UpdateCurrentState(ArmedState state)
         {
-           
+            this.FadeOutComponents(FadeOutTime);
         }
 
         /// <summary>
@@ -120,26 +118,13 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //CheckJudgement
         protected override void CheckForJudgements(bool userTriggered, double timeOffset)
         {
-            //TODO : 修正
-            //if (!userTriggered)
-            //{
-            //    if (timeOffset >1000)
-            //    {
-            //        AddJudgement(new RpJudgement { Result = HitResult.None });
-            //        return;
-            //    }
-            //    return;
-            //}
-
-            return;
-
+            //TODO : 如果需要修正
             AddJudgement(new RpJudgement()
             {
-                Result = HitResult.None,
+                Result = HitResult.Good,
             });
-        }
 
-        private RpInputManager osuActionInputManager;
-        internal RpInputManager OsuActionInputManager => osuActionInputManager ?? (osuActionInputManager = GetContainingInputManager() as RpInputManager);
+            
+        }
     }
 }
