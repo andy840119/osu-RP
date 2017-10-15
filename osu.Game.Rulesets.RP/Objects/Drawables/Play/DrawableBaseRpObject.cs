@@ -122,6 +122,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             AddJudgement(new RpJudgement()
             {
                 Result = HitResult.Good,
+                RpObject=this,
             });
 
             

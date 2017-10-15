@@ -62,6 +62,7 @@
     <Compile Include="Beatmaps\OtherBeatmap\Slicing\VolocityCalculator\ContainerVolocityCalculator.cs" />
     <Compile Include="DifficultyCalculator\RpDifficultyCalculator.cs" />
     <Compile Include="DifficultyCalculator\RpHitObjectDifficulty.cs" />
+    <Compile Include="Extension\Vector2Extension.cs" />
     <Compile Include="KeyManager\RpInputManager.cs" />
     <Compile Include="Mods\RpMod2017.cs" />
     <Compile Include="Objects\Attribute\BaseRpObjectAttribute.cs" />

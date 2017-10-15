@@ -12,11 +12,14 @@ namespace osu.Game.Rulesets.RP.Judgements
     public class RpJudgement : Judgement
     {
 
+        public DrawableBaseRpObject RpObject;
         //public RpScoreResult MaxScore;
 
        // public RpScoreResult Score;
         public RpComboResult Combo;
+        //TODO : will be remove
         public List<Vector2> HitExplosionPosition = new List<Vector2>();
+        public Vector2 Position = new Vector2();
         public int AdditionalPlusScore = 0;
     }
 }

@@ -66,7 +66,11 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             {
                 if (timeOffset > HitObject.HitWindowFor(HitResult.Meh))
                 {
-                    AddJudgement(new RpJudgement { Result = HitResult.Miss });
+                    AddJudgement(new RpJudgement
+                    {
+                        Result = HitResult.Miss,
+                        RpObject = this,
+                    });
                     return;
                 }
                 return;
@@ -75,6 +79,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             AddJudgement(new RpJudgement()
             {
                 Result = HitObject.ScoreResultForOffset(timeOffset),
+                RpObject = this,
             });
         }
 

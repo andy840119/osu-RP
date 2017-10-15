@@ -11,6 +11,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Interface;
 using OpenTK;
+using osu.Game.Rulesets.RP.Extension;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 {
@@ -117,9 +118,40 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
             
         }
 
+        /// <summary>
+        /// get actual position by object
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="drawableRpHitObject"></param>
+        /// <returns></returns>
         public static Vector2 FindObjectPosition(this IHasGameField field, DrawableBaseRpObject drawableRpHitObject)
         {
-            return new Vector2(0,0);
+            if (drawableRpHitObject is DrawableRpContainerLineGroup group)
+            {
+                return group.ParentGroupContainer.Position;
+            }
+            else if (drawableRpHitObject is DrawableRpContainerLine line)
+            {
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, line.HitObject.ParentObject).ParentGroupContainer;
+                return grpupContainer.Position + line.Position.Rotate(grpupContainer.Rotation);
+            }
+            else if (drawableRpHitObject is DrawableRpContainerLineHoldObject lineHold)
+            {
+                //TODO : implement
+                return new Vector2(0, 0);
+            }
+            else if (drawableRpHitObject is DrawableRpHitObject hit)
+            {
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hit.HitObject.ParentObject.ParentObject).ParentGroupContainer;
+                return grpupContainer.Position + hit.Position.Rotate(grpupContainer.Rotation);
+            }
+            else if (drawableRpHitObject is DrawableRpHoldObject hold)
+            {
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hold.HitObject.ParentObject.ParentObject).ParentGroupContainer;
+                return grpupContainer.Position + hold.Position.Rotate(grpupContainer.Rotation);
+            }
+
+            return new Vector2(0, 0);
         }
     }
 }

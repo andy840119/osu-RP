@@ -28,11 +28,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             set
             {
                 _coop = value;
-                if (StillHitPicec == null)
-                {
-                    CreaterDrawable();
-                }
-                StillHitPicec.Colour = RpTextureColorManager.GetCoopHitObjectColor(_coop);
+                //TODO : 
             }
         }
 
@@ -57,7 +53,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
                };
             StillHitPicec.Alpha = 0;
             StillHitPicec.Scale = new Vector2(0.5f);
-            StillHitPicec.Colour = RpTextureColorManager.GetCoopHitObjectColor(_coop);
+            StillHitPicec.Colour = RpTextureColorManager.GetKeyLayoutButtonDirection(Direction);
         }
 
         /// <summary>

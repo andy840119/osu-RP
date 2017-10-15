@@ -30,8 +30,10 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
             //Spacing = new Vector2(0, 2);
             //Position = (h?.Position ?? Vector2.Zero) + judgement.PositionOffset;
 
-            if ((Judgement as RpJudgement).HitExplosionPosition.Count > 0)
-                Position = judgement.HitExplosionPosition[0];
+
+            //if ((Judgement as RpJudgement).HitExplosionPosition.Count > 0)
+            //    Position = judgement.HitExplosionPosition[0];
+            Position = judgement.Position;
 
             //TODO : 根據物件去顯示成績
             switch ((Judgement as RpJudgement).Result)

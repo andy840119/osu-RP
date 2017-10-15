@@ -141,6 +141,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
         public override void OnJudgement(DrawableHitObject drawableHitObject, Judgement judgement)
         {
             var rpJudgement = (RpJudgement)judgement;
+            rpJudgement.Position = this.FindObjectPosition(rpJudgement.RpObject);
             //update position
             _judgementLayer.AddHitEffect(rpJudgement);
         }
