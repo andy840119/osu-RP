@@ -37,7 +37,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     FillMode = FillMode.Fit,
-                    Scale = new Vector2(1)
+                    Scale = new Vector2(0.8f)
                 }
             };
         }

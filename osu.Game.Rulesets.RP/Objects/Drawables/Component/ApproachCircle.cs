@@ -51,6 +51,10 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         /// </summary>
         public void FadeIn(double time = 0)
         {
+            _approachHitPicec.Delay(PreemptTime / 5 * 4).Then().FadeTo(1, PreemptTime / 5 * 4).ScaleTo(0.5f, PreemptTime / 5 * 1);
+
+            return;
+
             _approachHitPicec.Delay(PreemptTime / 5 * 4);
             _approachHitPicec.FadeTo(1, PreemptTime / 5 * 4);
             //ApproachHitPicec.FadeIn(Math.Min(BaseHitObject.FadeInTime * 2, BaseHitObject.PreemptTime));

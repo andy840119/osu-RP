@@ -12,6 +12,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 using OpenTK.Graphics;
+using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
@@ -102,7 +103,46 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         /// <param name="state"></param>
         protected virtual void UpdateCurrentState(ArmedState state)
         {
-            this.FadeOutComponents(FadeOutTime);
+            //TODO :  修正
+            double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
+
+            switch (state)
+            {
+                case ArmedState.Miss:
+                    //this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+                    //this.FadeOutComponents(FadeOutTime);
+
+                    //通知judgement
+                    UpdateJudgement(true);
+                    Expire(true);
+                    break;
+
+                default: 
+
+                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
+                    //this.FadeOutComponents(FadeOutTime);
+
+                    using (BeginDelayedSequence(duration + PreemptTime, true))
+                    {
+                        this.FadeOutComponents(FadeOutTime);
+                    }
+
+                    //Expire(true);
+                    break;
+            }
+        }
+
+        //CheckJudgement
+        protected override void CheckForJudgements(bool userTriggered, double timeOffset)
+        {
+            //TODO : 如果需要修正
+            AddJudgement(new RpJudgement()
+            {
+                Result = HitResult.Good,
+                RpObject = this,
+            });
+
+
         }
 
         /// <summary>
@@ -115,17 +155,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             this.UpdateTemplate(Time.Current);
         }
 
-        //CheckJudgement
-        protected override void CheckForJudgements(bool userTriggered, double timeOffset)
-        {
-            //TODO : 如果需要修正
-            AddJudgement(new RpJudgement()
-            {
-                Result = HitResult.Good,
-                RpObject=this,
-            });
-
-            
-        }
+        
     }
 }

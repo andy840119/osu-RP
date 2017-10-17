@@ -26,8 +26,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 
         public Container ParentGroupContainer { get; set; }
 
-        private bool _startFadeont;
-
         /// <summary>
         /// </summary>
         /// <param name="hitObject"></param>
@@ -77,34 +75,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             //    this.FadeOut(FadeOutTime);
             //    this.FadeOutComponents(FadeOutTime);
             //}
-        }
-
-        protected override void UpdateCurrentState(ArmedState state)
-        {
-            //TODO :  修正
-            double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
-
-            switch (state)
-            {
-                case ArmedState.Idle:
-                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
-
-                    Expire(true);
-                    break;
-                case ArmedState.Miss:
-                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
-
-                    //通知judgement
-                    UpdateJudgement(true);
-                    Expire(true);
-                    break;
-                case ArmedState.Hit:
-
-                    this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
-
-                    Expire(true);
-                    break;
-            }
         }
     }
 }

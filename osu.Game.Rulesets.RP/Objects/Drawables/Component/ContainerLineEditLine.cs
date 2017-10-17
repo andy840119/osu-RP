@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
@@ -13,7 +10,7 @@ using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {
-    public class ContainerLineDecisionLine : Container, IHasBPM,IHasStartTime, IHasVelocity, IHasPreemptTime, IHasCoop, IHasEndTime, IComponentBase
+    public class ContainerLineEditLine : Container, IHasBPM, IHasStartTime, IHasVelocity, IHasPreemptTime, IHasCoop, IHasEndTime, IComponentBase
     {
         /// <summary>
         ///     判定線
@@ -98,10 +95,10 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         {
             if (_containerDecisionLineComponent == null)
                 createDrawable();
-            
-            _containerDecisionLineComponent.Position = this.PositionOfTime(0);
+
+            _containerDecisionLineComponent.Position = this.PositionOfTime(-PreemptTime);
             var targetPosition = this.PositionOfTime(Duration);
-            _containerDecisionLineComponent.MoveTo(targetPosition, Duration);
+            _containerDecisionLineComponent.MoveTo(targetPosition, PreemptTime + Duration);
         }
 
         private void createDrawable()
@@ -131,6 +128,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             _containerDecisionLineComponent.Alpha = 0;
         }
 
-        
+
     }
 }

@@ -8,6 +8,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {
@@ -28,6 +29,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         private double _endTime;
         private double _duration;
         private float _velocity;
+        private float _preemptTime;
         private int _layerIndex;
 
 
@@ -36,11 +38,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _startTime;
             set
             {
-                if (_startTime != value)
-                {
-                    _startTime = value;
-                    movingDrawable();
-                }
+                _startTime = value;
+                movingDrawable();
             }
         }
 
@@ -49,11 +48,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _endTime;
             set
             {
-                if (_endTime != value)
-                {
-                    _endTime = value;
-                    movingDrawable();
-                }
+                _endTime = value;
+                movingDrawable();
             }
         }
 
@@ -62,11 +58,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _duration;
             set
             {
-                if (_duration != value)
-                {
-                    _duration = value;
-                    movingDrawable();
-                }
+                _duration = value;
+                movingDrawable();
             }
         }
 
@@ -75,24 +68,18 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _velocity;
             set
             {
-                if (_velocity != value)
-                {
-                    _velocity = value;
-                    movingDrawable();
-                }
+                _velocity = value;
+                movingDrawable();
             }
         }
 
         public float PreemptTime
         {
-            get => _velocity;
+            get => _preemptTime;
             set
             {
-                if (_velocity != value)
-                {
-                    _velocity = value;
-                    movingDrawable();
-                }
+                _preemptTime = value;
+                movingDrawable();
             }
         }
 
@@ -101,12 +88,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             get => _layerIndex;
             set
             {
-                if (_layerIndex != value)
-                {
-                    _layerIndex = value;
-
-                    movingDrawable();
-                }
+                _layerIndex = value;
+                movingDrawable();
             }
         }
 
@@ -122,20 +105,22 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         private void createDrawable()
         {
-            int layerCount = 1;
             //開始點
-            _containerStartDecisionLineComponent = new RectanglePiece(100, 100)
+            _containerStartDecisionLineComponent = new RectanglePiece(5, 50)
             {
-                Scale = new Vector2(0.002f, 0.2f * layerCount),
+                //Scale = new Vector2(0.002f, 0.2f * layerCount),
                 //Position = CalculatePosition(0)
-                Position = this.PositionOfTime(0)
-            };
+                //Position = this.PositionOfTime(0)
+                Colour= new Color4(226, 66, 54, 255),
+        };
+
             //結束物件
-            _containerEndDecisionLineComponent = new RectanglePiece(100, 100)
+            _containerEndDecisionLineComponent = new RectanglePiece(5, 50)
             {
-                Scale = new Vector2(0.002f, 0.2f * layerCount),
+                //Scale = new Vector2(0.002f, 0.2f * layerCount),
                 //Position = CalculatePosition((HitObject as RpContainerLineGroup).EndTime - HitObject.StartTime)
-                Position = this.PositionOfTime(Duration)
+                //Position = this.PositionOfTime(Duration)
+                Colour = new Color4(226, 66, 54, 255),
             };
 
             //修改高度

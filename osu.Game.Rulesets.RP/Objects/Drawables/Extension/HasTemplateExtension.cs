@@ -61,21 +61,32 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         }
 
         //Fade in
-        public static void FadeInComponents(this IHasTemplate drawableObject,double time = 0)
+        public static IHasTemplate FadeInComponents(this IHasTemplate drawableObject,double time = 0)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {
                 single.FadeIn(time);
             }
+            return drawableObject;
+        }
+
+        public static IHasTemplate ComponentDelay(this IHasTemplate drawableObject, double time = 0)
+        {
+            foreach (IComponentBase single in drawableObject.Components)
+            {
+                single.Delay(time);
+            }
+            return drawableObject;
         }
 
         //fade out
-        public static void FadeOutComponents(this IHasTemplate drawableObject,double time = 0)
+        public static IHasTemplate FadeOutComponents(this IHasTemplate drawableObject,double time = 0)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {
                 single.FadeOut(time);
             }
+            return drawableObject;
         }
     }
 }

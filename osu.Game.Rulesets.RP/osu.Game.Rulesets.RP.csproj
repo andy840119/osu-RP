@@ -64,7 +64,7 @@
     <Compile Include="DifficultyCalculator\RpHitObjectDifficulty.cs" />
     <Compile Include="Extension\Vector2Extension.cs" />
     <Compile Include="KeyManager\RpInputManager.cs" />
-    <Compile Include="Mods\RpMod2017.cs" />
+    <Compile Include="Mods\2017\RpMod2017.cs" />
     <Compile Include="Objects\Attribute\BaseRpObjectAttribute.cs" />
     <Compile Include="Objects\Drawables\Calculator\PathPrecentageCounter.cs" />
     <Compile Include="Objects\Drawables\Component\ApproachCircle.cs" />
@@ -73,7 +73,8 @@
     <Compile Include="Objects\Drawables\Component\ContainerGroupContainArea.cs" />
     <Compile Include="Objects\Drawables\Component\ContainerLineBeatLine.cs" />
     <Compile Include="Objects\Drawables\Component\ContainerLineContainArea.cs" />
-    <Compile Include="Objects\Drawables\Component\ContainerLineDecisionLine.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerLineEditLine.cs" />
+    <Compile Include="Objects\Drawables\Component\ContainerLineJudgementLine.cs" />
     <Compile Include="Objects\Drawables\Component\ContainerLineStartEnd.cs" />
     <Compile Include="Objects\Drawables\Component\Extension\ContainerCalculatorExtension.cs" />
     <Compile Include="Objects\Drawables\Component\Extension\ContainListTemplateExtension.cs" />
@@ -112,9 +113,9 @@
     <Compile Include="Objects\Interface\IHasStartTime.cs" />
     <Compile Include="Objects\Interface\IHasVelocity.cs" />
     <Compile Include="Replays\RpAutoGenerator.cs" />
-    <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\GameField\GameFieldModsProcessor.cs" />
-    <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\HitObject\HitObjectModsProcessor.cs" />
-    <Compile Include="UI\GamePlay\HitRenderer\ModsProcessor\ModsProcessor.cs" />
+    <Compile Include="UI\GamePlay\RulesetContainer\ModsProcessor\GameField\GameFieldModsProcessor.cs" />
+    <Compile Include="UI\GamePlay\RulesetContainer\ModsProcessor\HitObject\HitObjectModsProcessor.cs" />
+    <Compile Include="UI\GamePlay\RulesetContainer\ModsProcessor\ModsProcessor.cs" />
     <Compile Include="UI\GamePlay\Playfield\Externsion\GameFieldExtension.cs" />
     <Compile Include="UI\GamePlay\Playfield\Interface\IHasGameField.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\ConnectionLine.cs" />
@@ -171,7 +172,7 @@
     <Compile Include="Objects\RpContainerLineHoldObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkinManager\RpTexturePathManager.cs" />
-    <Compile Include="UI\GamePlay\HitRenderer\RpRulesetContainer.cs" />
+    <Compile Include="UI\GamePlay\RulesetContainer\RpRulesetContainer.cs" />
     <Compile Include="UI\GamePlay\Playfield\RpPlayfield.cs" />
     <Compile Include="UI\Select\Detail\RpBeatmapDetails.cs" />
     <Compile Include="UI\Select\Detail\RpBeatmapDetailsBar.cs" />
@@ -215,7 +216,6 @@
   <ItemGroup>
     <Folder Include="Beatmaps\OtherBeatmap\HitObjectGegenerator\ObjectMovingPath\EndPosition\" />
     <Folder Include="Beatmaps\OtherBeatmap\HitObjectGegenerator\ObjectMovingPath\PathPosition\" />
-    <Folder Include="Mods\ModsElement\" />
     <Folder Include="Objects\Extension\" />
     <Folder Include="Textures\Play\RP\Number\ComboCounter\" />
     <Folder Include="Textures\Play\RP\Number\Combo\" />

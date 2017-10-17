@@ -12,13 +12,13 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
     /// </summary>
     public static class ContainerCalculatorExtension
     {
-        private static float LAYOUT_HEIGHT = 40;
+        public static float LAYOUT_HEIGHT = 40;
 
-        private static float LAYOUT_INTERVAL_HEIGHT = 10;
+        public static float LAYOUT_INTERVAL_HEIGHT = 10;
 
-        private static float CONTAINER_TO_FIRST_LAYOUT_HEIGHT = 5;
+        public static float CONTAINER_TO_FIRST_LAYOUT_HEIGHT = 5;
 
-        private static float MULTIPLE = 0.2f;
+        public static float MULTIPLE = 0.25f;
 
         /// <summary>
         /// Height of single Layer

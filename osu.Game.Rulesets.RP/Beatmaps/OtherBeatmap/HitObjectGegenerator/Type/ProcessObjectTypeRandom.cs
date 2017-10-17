@@ -9,7 +9,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 {
     internal class ProcessObjectTypeRandom
     {
-        //å–®ä¸€ä¸€æ®µçšEï¿½Eï¿½ï¿½Eï¿½ä»¶
+        //å–®ä¸€ä¸€æ®µçšEE½EE½E½EE½ä»¶
         private ConvertParameter _singleSlideParameter;
 
 
@@ -64,7 +64,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 
             return singleTuple.MultiNumber + (int)singleTuple.StartTime + singleTuple.ListBaseHitObject.Count + addNumber;
 
-            //BPMï¿½Eï¿½Eï¿½Eï¿½ç‚ºäºEï¿½Eï¿½ï¿½Eï¿½å…BPM 200 çšEï¿½Eï¿½ï¿½Eï¿½ç‰¹åˆ¥ç°¡å–®
+            //BPME½EE½EE½EE½ç‚ºäºEE½EE½E½EE½å…BPM 200 çšEE½EE½E½EE½ç‰¹åˆ¥ç°¡å–®
             var periodTime = (int)(60 / (double)(int)_singleSlideParameter.SliceConvertParameter.BPM) * 1000;
             //
             return singleTuple.MultiNumber + (int)singleTuple.StartTime % periodTime + singleTuple.ListBaseHitObject.Count;
