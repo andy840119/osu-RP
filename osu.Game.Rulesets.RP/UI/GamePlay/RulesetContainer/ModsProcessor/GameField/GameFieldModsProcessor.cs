@@ -2,6 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
+using osu.Game.Rulesets.Mods;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.RulesetContainer.ModsProcessor.GameField
 {

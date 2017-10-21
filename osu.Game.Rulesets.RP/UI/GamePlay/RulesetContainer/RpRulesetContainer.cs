@@ -14,10 +14,10 @@ using osu.Game.Rulesets.RP.Replays;
 using osu.Game.Rulesets.RP.Scoreing;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield;
 using osu.Game.Rulesets.Scoring;
-using osu.Game.Rulesets.UI;
 using OpenTK;
+using osu.Game.Rulesets.UI;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer
+namespace osu.Game.Rulesets.RP.UI.GamePlay.RulesetContainer
 {
     public class RpRulesetContainer : RulesetContainer<BaseRpObject>
     {
@@ -26,8 +26,8 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer
         public RpRulesetContainer(Ruleset ruleset, WorkingBeatmap beatmap, bool isForCurrentRuleset)
             : base(ruleset, beatmap, isForCurrentRuleset)
         {
-            _modProcessor = new ModsProcessor.ModsProcessor(beatmap.Mods.Value);
-            _modProcessor.ProcessGameField(Playfield);
+            //_modProcessor = new ModsProcessor.ModsProcessor(beatmap.Mods.Value);
+            //_modProcessor.ProcessGameField(Playfield);
         }
 
         /// <summary>

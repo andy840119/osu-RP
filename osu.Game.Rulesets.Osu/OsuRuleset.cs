@@ -118,7 +118,7 @@ namespace osu.Game.Rulesets.Osu
 
         public override SettingsSubsection CreateSettings() => new OsuSettings();
 
-        public override int LegacyID => 1111;
+        public override int LegacyID => 0;
 
         public OsuRuleset(RulesetInfo rulesetInfo)
             : base(rulesetInfo)

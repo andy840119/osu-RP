@@ -5,6 +5,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Platform;
+using osu.Game.Configuration;
 using osu.Game.Overlays.Settings;
 
 namespace osu.Game.Rulesets.RP.UI.Setting
@@ -17,19 +18,19 @@ namespace osu.Game.Rulesets.RP.UI.Setting
         protected override string Header => "Rp!";
 
         [BackgroundDependencyLoader]
-        private void load(RpConfigManager config)
+        private void load(OsuConfigManager config)
         {
             Children = new Drawable[]
             {
                 new SettingsCheckbox
                 {
                     LabelText = "Testing Setting 001",
-                    Bindable = config.GetBindable<bool>(RpSetting.SettingTesting001)
+                    //Bindable = config.GetBindable<bool>(RpSetting.SettingTesting001)
                 },
                 new SettingsCheckbox
                 {
                     LabelText = "Testing Setting 002",
-                    Bindable = config.GetBindable<bool>(RpSetting.SettingTesting002)
+                    //Bindable = config.GetBindable<bool>(RpSetting.SettingTesting002)
                 },
             };
         }

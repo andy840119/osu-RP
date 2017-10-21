@@ -5,7 +5,7 @@ using osu.Framework.Graphics;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate;
+using osu.Game.Rulesets.RP.Objects.Drawables.RpDrawableJudgement;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement
 {
