@@ -2,31 +2,28 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
-using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play;
+using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
 using OpenTK;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate
+namespace osu.Game.Rulesets.RP.Objects.Drawables.RpDrawableJudgement
 {
-    public class SafeHitEffectTemplate : BaseHitEffectTemplate
+    public class SafeDrawableJudgement : DrawableJudgement
     {
-        /// <summary>
-        ///     目前結果
-        /// </summary>
-        protected override HitResult RpScoreResult => HitResult.Good;
 
         /// <summary>
         ///     有音樂形狀那個icon
         /// </summary>
         private readonly ImagePicec _noonpuPicec;
 
-        public SafeHitEffectTemplate()
+        public SafeDrawableJudgement(RpJudgement judgement) : base(judgement)
         {
+
+            Origin = Anchor.Centre;
             Children = new Drawable[]
             {
-                _noonpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "RP"))
+                _noonpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Good, "RP"))
                 {
                     //Colour = osuObject.Colour,
                     Scale = new Vector2(1, 1),
@@ -35,7 +32,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
             };
         }
 
-        public override void StartEffect()
+        protected override void LoadComplete()
         {
             //透明度
             _noonpuPicec.FadeTo(0.8f, 0);

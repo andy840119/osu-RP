@@ -2,12 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
-using osu.Game.Rulesets.Mods;
-using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.HitRenderer.ModsProcessor.HitObject
+namespace osu.Game.Rulesets.RP.UI.GamePlay.RulesetContainer.ModsProcessor.HitObject
 {
     public class HitObjectModsProcessor
     {

@@ -135,12 +135,11 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\RpHitMulitpleObjectConnectionLine.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableBaseRpObject.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpContainerLineGroup.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\BaseHitEffectTemplate.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\CoolHitEffectTemplate.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\FineHitEffectTemplate.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\SadHitEffectTemplate.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\SafeHitEffectTemplate.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitEffectTemplate\SlideHitEffectTemplate.cs" />
+    <Compile Include="Objects\Drawables\RpDrawableJudgement\CoolDrawableJudgement.cs" />
+    <Compile Include="Objects\Drawables\RpDrawableJudgement\FineDrawableJudgement.cs" />
+    <Compile Include="Objects\Drawables\RpDrawableJudgement\SadDrawableJudgement.cs" />
+    <Compile Include="Objects\Drawables\RpDrawableJudgement\SafeDrawableJudgement.cs" />
+    <Compile Include="Objects\Drawables\RpDrawableJudgement\SlideDrawableJudgement.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\BarPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\ImagePicec.cs" />
     <Compile Include="Objects\RpContainerLineGroup.cs" />
@@ -155,7 +154,6 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\ExplodePiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\FlashPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\GlowPiece.cs" />
-    <Compile Include="UI\GamePlay\Playfield\Layout\Judgement\HitExplosion\HitExplosion.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\RingPiece.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\CommonDwawablePiece\Triangles.cs" />
     <Compile Include="Parser\RpHitObjectParser.cs" />

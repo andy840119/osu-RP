@@ -2,7 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
+using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
@@ -10,13 +12,8 @@ using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate
 {
-    public class FineHitEffectTemplate : BaseHitEffectTemplate
+    public class FineDrawableJudgement : DrawableJudgement
     {
-        /// <summary>
-        ///     目前結果
-        /// </summary>
-        protected override HitResult RpScoreResult => HitResult.Good;
-
         /// <summary>
         ///     白色十字
         /// </summary>
@@ -32,23 +29,25 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         /// </summary>
         private readonly ImagePicec _onpuPicec;
 
-        public FineHitEffectTemplate()
+        public FineDrawableJudgement(RpJudgement judgement) : base(judgement)
         {
+            Origin = Anchor.Centre;
+
             Children = new Drawable[]
             {
-                _crossPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Down"))
+                _crossPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Good, "Down"))
                 {
                     //Colour = osuObject.Colour,
                     Position = new Vector2(0, 0),
                     Scale = new Vector2(1, 1)
                 },
-                _effectPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Slide_effect"))
+                _effectPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Good, "Slide_effect"))
                 {
                     //Colour = osuObject.Colour,
                     Position = new Vector2(0, 0),
                     Scale = new Vector2(1, 1)
                 },
-                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "RP"))
+                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Good, "RP"))
                 {
                     //Colour = osuObject.Colour,
                     Position = new Vector2(0, 0),
@@ -57,7 +56,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
             };
         }
 
-        public override void StartEffect()
+        protected override void LoadComplete()
         {
             //透明度
             _crossPicec.FadeTo(0.7f, 0);

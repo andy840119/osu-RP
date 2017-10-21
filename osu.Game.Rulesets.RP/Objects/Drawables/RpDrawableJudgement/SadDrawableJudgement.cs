@@ -2,7 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
+using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
@@ -10,12 +12,8 @@ using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate
 {
-    public class SadHitEffectTemplate : BaseHitEffectTemplate
+    public class SadDrawableJudgement : DrawableJudgement
     {
-        /// <summary>
-        ///     目前結果
-        /// </summary>
-        protected override HitResult RpScoreResult => HitResult.Ok;
 
 
         /// <summary>
@@ -28,25 +26,25 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         /// </summary>
         private readonly ImagePicec _noonpuPicec;
 
-        public SadHitEffectTemplate()
+        public SadDrawableJudgement(RpJudgement judgement) : base(judgement)
         {
             //string diffusePicecPath = SkinManager.RPSkinManager.GetRPHitEffect(RPScoreResult, "Diffuse");
-
+            Origin = Anchor.Centre;
 
             Children = new Drawable[]
             {
-                _diffusePicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Diffuse"))
+                _diffusePicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Ok, "Diffuse"))
                 {
                     Position = new Vector2(0, 0)
                 },
-                _noonpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "RP"))
+                _noonpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Ok, "RP"))
                 {
                     Position = new Vector2(0, 0)
                 }
             };
         }
 
-        public override void StartEffect()
+        protected override void LoadComplete()
         {
             //透明度
             _diffusePicec.FadeTo(0.7f, 0);

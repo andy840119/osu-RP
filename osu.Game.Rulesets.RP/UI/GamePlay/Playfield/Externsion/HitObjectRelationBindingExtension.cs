@@ -2,8 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
+using osu.Game.Rulesets.RP.Objects;
 
-namespace osu.Game.Rulesets.RP.Objects.Extension
+namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 {
     public static class HitObjectRelationBindingExtension
     {

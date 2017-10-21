@@ -26,8 +26,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         /// </summary>
         public LoadEffect()
         {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
+            //Anchor = Anchor.Centre;
+            //Origin = Anchor.Centre;
 
             Children = new Drawable[]
             {
@@ -44,7 +44,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         /// </summary>
         public void FadeIn(double time = 0)
         {
-            _effectPicec.FadeTo(0.9f, 0);
+            _effectPicec.FadeTo(0.9f, 0);//.ScaleTo(2.5f, 100).FadeTo(0.7f, 150).FadeTo(0, 200);
             _effectPicec.ScaleTo(2.5f, 100);
             _effectPicec.FadeTo(0.7f, 150);
             _effectPicec.FadeTo(0, 200);

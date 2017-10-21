@@ -2,7 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
+using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
@@ -13,13 +15,8 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
     /// <summary>
     ///     如果是Cool的打擊特效
     /// </summary>
-    public class CoolHitEffectTemplate : BaseHitEffectTemplate
+    public class CoolDrawableJudgement : DrawableJudgement
     {
-        /// <summary>
-        ///     目前結果
-        /// </summary>
-        protected override HitResult RpScoreResult => HitResult.Perfect;
-
         /// <summary>
         ///     黃色光環
         /// </summary>
@@ -35,20 +32,22 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         /// </summary>
         private readonly ImagePicec _onpuPicec;
 
-        public CoolHitEffectTemplate()
+        public CoolDrawableJudgement(RpJudgement judgement) : base(judgement)
         {
+            Origin = Anchor.Centre;
+
             Children = new Drawable[]
             {
-                _flarePicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Flare"))
+                _flarePicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Perfect, "Flare"))
                 {
                     Position = new Vector2(0, 0)
                 },
-                _loopPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Loop"))
+                _loopPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Perfect, "Loop"))
                 {
                     //Colour = osuObject.Colour,
                     Position = new Vector2(0, 0)
                 },
-                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "RP"))
+                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Perfect, "RP"))
                 {
                     //Colour = osuObject.Colour,
                     Position = new Vector2(0, 0)
@@ -59,7 +58,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         private float multi = 1;
 
         //開始特效
-        public override void StartEffect()
+        protected override void LoadComplete()
         {
             //透明度
             _loopPicec.FadeTo(0.7f, 0);

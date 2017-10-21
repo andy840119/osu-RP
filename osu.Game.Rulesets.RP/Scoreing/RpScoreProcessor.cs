@@ -33,7 +33,7 @@ namespace osu.Game.Rulesets.RP.Scoreing
 
         protected override void SimulateAutoplay(Beatmap<BaseRpObject> beatmap)
         {
-            hpDrainRate = beatmap.BeatmapInfo.Difficulty.DrainRate;
+            hpDrainRate = beatmap.BeatmapInfo.BaseDifficulty.DrainRate;
 
             foreach (var obj in beatmap.HitObjects)
             {

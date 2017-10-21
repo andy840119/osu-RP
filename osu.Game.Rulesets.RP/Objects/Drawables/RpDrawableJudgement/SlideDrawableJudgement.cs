@@ -2,20 +2,15 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Graphics;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play;
+using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.SkinManager;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
 using OpenTK;
-using osu.Game.Rulesets.Objects.Drawables;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosion.HitEffectTemplate
+namespace osu.Game.Rulesets.RP.Objects.Drawables.RpDrawableJudgement
 {
-    public class SlideHitEffectTemplate : BaseHitEffectTemplate
+    public class SlideDrawableJudgement : DrawableJudgement
     {
-        /// <summary>
-        ///     目前結果
-        /// </summary>
-        protected override HitResult RpScoreResult => HitResult.Meh;
 
         /// <summary>
         ///     白色十字
@@ -27,22 +22,24 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement.HitExplosi
         /// </summary>
         private readonly ImagePicec _onpuPicec;
 
-        public SlideHitEffectTemplate()
+        public SlideDrawableJudgement(RpJudgement judgement) : base(judgement)
         {
+            Origin = Anchor.Centre;
+
             Children = new Drawable[]
             {
-                _effectPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "Slide_effect"))
+                _effectPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Meh, "Slide_effect"))
                 {
                     Position = new Vector2(0, 0)
                 },
-                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(RpScoreResult, "RP"))
+                _onpuPicec = new ImagePicec(RpTexturePathManager.GetRPHitEffect(HitResult.Meh, "RP"))
                 {
                     Position = new Vector2(0, 0)
                 }
             };
         }
 
-        public override void StartEffect()
+        protected override void LoadComplete()
         {
             //透明度
             _effectPicec.FadeTo(1.0f, 0);
