@@ -127,7 +127,7 @@ namespace osu.Game.Rulesets.RP.Replays
         {
             foreach (var container in listHitObjects)
             {
-                int offset = 10;
+                //int offset = 10;
                 if (container is IHasEndTime)
                 {
                     if (container.StartTime <= time && ((IHasEndTime)container).EndTime >= time)

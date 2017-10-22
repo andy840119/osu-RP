@@ -34,6 +34,9 @@ namespace osu.Desktop
                 }
                 else
                 {
+#if DEBUG
+                     host.Run(new OsuTestBrowser());
+#else
                     switch (args.FirstOrDefault() ?? string.Empty)
                     {
                         case "--tests":
@@ -43,6 +46,7 @@ namespace osu.Desktop
                             host.Run(new OsuGameDesktop(args));
                             break;
                     }
+#endif
 
                 }
                 return 0;

@@ -76,7 +76,6 @@ namespace osu.Game.Rulesets.RP
 
         /// <summary>
         /// setting
-        ///  TODO : Not work yet 
         /// </summary>
         /// <returns></returns>
         public override SettingsSubsection CreateSettings() => new RpSettings();
