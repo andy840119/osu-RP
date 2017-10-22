@@ -203,6 +203,8 @@
     <Compile Include="Objects\RpEffect\Point\PositionEffectPoint.cs" />
     <Compile Include="Objects\RpEffect\Point\RotationEffectPoint.cs" />
     <Compile Include="Judgements\RpJudgement.cs" />
+    <Compile Include="Objects\Drawables\Edit\Extension\RightClickExtension.cs" />
+    <Compile Include="Objects\Drawables\Edit\Extension\InterfaceToMenuItemExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\osu.licenseheader">
@@ -243,6 +245,7 @@
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Hold\Start\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\End\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\Start\" />
+    <Folder Include="Objects\Drawables\Edit\Extension\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\Play\RP\HitEffect\Cool\RP.png" />
@@ -372,7 +375,7 @@
       <Name>osu.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\osu.Game\osu.Game.csproj">
-      <Project>{0d3fbf8a-7464-4cf7-8c90-3e7886df2d4d}</Project>
+      <Project>{2A66DD92-ADB1-4994-89E2-C94E04ACDA0D}</Project>
       <Name>osu.Game</Name>
     </ProjectReference>
   </ItemGroup>
