@@ -100,7 +100,7 @@ namespace osu.Game.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(AudioManager audio, OsuColour colours)
         {
-            sample = audio.Sample.Get(@"Sliderbar/sliderbar");
+            sample = audio.Sample.Get(@"UI/sliderbar-notch");
             AccentColour = colours.Pink;
         }
 
@@ -166,7 +166,7 @@ namespace osu.Game.Graphics.UserInterface
 
         protected override void UpdateValue(float value)
         {
-            Nub.MoveToX(RangePadding + UsableWidth * value, 250, EasingTypes.OutQuint);
+            Nub.MoveToX(RangePadding + UsableWidth * value, 250, Easing.OutQuint);
         }
     }
 }

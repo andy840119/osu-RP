@@ -4,7 +4,6 @@
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES30;
-using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Batches;
@@ -16,6 +15,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Game.Beatmaps;
 using osu.Game.Graphics;
 using System;
+using osu.Framework.Allocation;
 
 namespace osu.Game.Screens.Menu
 {
@@ -44,7 +44,7 @@ namespace osu.Game.Screens.Menu
         private const float visualiser_rounds = 5;
 
         /// <summary>
-        /// How much should each bar go down each milisecond (based on a full bar)
+        /// How much should each bar go down each milisecond (based on a full bar).
         /// </summary>
         private const float decay_per_milisecond = 0.0024f;
 
@@ -52,6 +52,11 @@ namespace osu.Game.Screens.Menu
         /// Number of milliseconds between each amplitude update.
         /// </summary>
         private const float time_between_updates = 50;
+
+        /// <summary>
+        /// The minimum amplitude to show a bar.
+        /// </summary>
+        private const float amplitude_dead_zone = 1f / bar_length;
 
         private int indexOffset;
 
@@ -68,35 +73,37 @@ namespace osu.Game.Screens.Menu
         {
             texture = Texture.WhitePixel;
             AccentColour = new Color4(1, 1, 1, 0.2f);
-            BlendingMode = BlendingMode.Additive;
+            Blending = BlendingMode.Additive;
         }
 
-        [BackgroundDependencyLoader(true)]
-        private void load(ShaderManager shaders, OsuGame game)
+        [BackgroundDependencyLoader]
+        private void load(ShaderManager shaders, OsuGameBase game)
         {
-            if (game?.Beatmap != null)
-                beatmap.BindTo(game.Beatmap);
-            shader = shaders?.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE_ROUNDED);
+            beatmap.BindTo(game.Beatmap);
+            shader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE_ROUNDED);
         }
 
         private void updateAmplitudes()
         {
-            float[] temporalAmplitudes = beatmap.Value?.Track?.CurrentAmplitudes.FrequencyAmplitudes ?? new float[256];
+            var track = beatmap.Value.Track;
 
-            var effect = beatmap.Value?.Beatmap.ControlPointInfo.EffectPointAt(beatmap.Value.Track?.CurrentTime ?? Time.Current);
+            float[] temporalAmplitudes = track?.CurrentAmplitudes.FrequencyAmplitudes ?? new float[256];
+
+            var effect = beatmap.Value.Beatmap.ControlPointInfo.EffectPointAt(track?.CurrentTime ?? Time.Current);
 
             for (int i = 0; i < bars_per_visualiser; i++)
             {
-                int index = (i + indexOffset) % bars_per_visualiser;
-                if (beatmap?.Value?.Track?.IsRunning ?? false)
+                if (track?.IsRunning ?? false)
                 {
-                    if (temporalAmplitudes[index] > frequencyAmplitudes[i])
-                        frequencyAmplitudes[i] = temporalAmplitudes[index] * (effect?.KiaiMode == true ? 1 : 0.5f);
+                    float targetAmplitude = temporalAmplitudes[(i + indexOffset) % bars_per_visualiser] * (effect?.KiaiMode == true ? 1 : 0.5f);
+                    if (targetAmplitude > frequencyAmplitudes[i])
+                        frequencyAmplitudes[i] = targetAmplitude;
                 }
                 else
                 {
-                    if (frequencyAmplitudes[(i + index_change) % bars_per_visualiser] > frequencyAmplitudes[i])
-                        frequencyAmplitudes[i] = frequencyAmplitudes[(i + index_change) % bars_per_visualiser];
+                    int index = (i + index_change) % bars_per_visualiser;
+                    if (frequencyAmplitudes[index] > frequencyAmplitudes[i])
+                        frequencyAmplitudes[i] = frequencyAmplitudes[index];
                 }
             }
 
@@ -117,7 +124,7 @@ namespace osu.Game.Screens.Menu
             float decayFactor = (float)Time.Elapsed * decay_per_milisecond;
             for (int i = 0; i < bars_per_visualiser; i++)
             {
-                //0.03% of extra bar length to make it a little faster when bar is almost at it's minimum
+                //3% of extra bar length to make it a little faster when bar is almost at it's minimum
                 frequencyAmplitudes[i] -= decayFactor * (frequencyAmplitudes[i] + 0.03f);
                 if (frequencyAmplitudes[i] < 0)
                     frequencyAmplitudes[i] = 0;
@@ -129,6 +136,7 @@ namespace osu.Game.Screens.Menu
         protected override DrawNode CreateDrawNode() => new VisualisationDrawNode();
 
         private readonly VisualiserSharedData sharedData = new VisualiserSharedData();
+
         protected override void ApplyDrawNode(DrawNode node)
         {
             base.ApplyDrawNode(node);
@@ -177,23 +185,26 @@ namespace osu.Game.Screens.Menu
                     {
                         for (int i = 0; i < bars_per_visualiser; i++)
                         {
+                            if (AudioData[i] < amplitude_dead_zone)
+                                continue;
+
                             float rotation = MathHelper.DegreesToRadians(i / (float)bars_per_visualiser * 360 + j * 360 / visualiser_rounds);
                             float rotationCos = (float)Math.Cos(rotation);
                             float rotationSin = (float)Math.Sin(rotation);
                             //taking the cos and sin to the 0..1 range
                             var barPosition = new Vector2(rotationCos / 2 + 0.5f, rotationSin / 2 + 0.5f) * Size;
 
-                            var barSize = new Vector2(Size * (float)Math.Sqrt(2 * (1 - Math.Cos(MathHelper.DegreesToRadians(360f / bars_per_visualiser)))) / 2f, bar_length * AudioData[i % bars_per_visualiser]);
+                            var barSize = new Vector2(Size * (float)Math.Sqrt(2 * (1 - Math.Cos(MathHelper.DegreesToRadians(360f / bars_per_visualiser)))) / 2f, bar_length * AudioData[i]);
                             //The distance between the position and the sides of the bar.
                             var bottomOffset = new Vector2(-rotationSin * barSize.X / 2, rotationCos * barSize.X / 2);
                             //The distance between the bottom side of the bar and the top side.
                             var amplitudeOffset = new Vector2(rotationCos * barSize.Y, rotationSin * barSize.Y);
 
                             var rectangle = new Quad(
-                                (barPosition - bottomOffset) * DrawInfo.Matrix,
-                                (barPosition - bottomOffset + amplitudeOffset) * DrawInfo.Matrix,
-                                (barPosition + bottomOffset) * DrawInfo.Matrix,
-                                (barPosition + bottomOffset + amplitudeOffset) * DrawInfo.Matrix
+                                Vector2Extensions.Transform(barPosition - bottomOffset, DrawInfo.Matrix),
+                                Vector2Extensions.Transform(barPosition - bottomOffset + amplitudeOffset, DrawInfo.Matrix),
+                                Vector2Extensions.Transform(barPosition + bottomOffset, DrawInfo.Matrix),
+                                Vector2Extensions.Transform(barPosition + bottomOffset + amplitudeOffset, DrawInfo.Matrix)
                             );
 
                             Texture.DrawQuad(

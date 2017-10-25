@@ -1,90 +1,98 @@
-﻿//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using System;
+using System.Collections.Generic;
 using osu.Game.Audio;
-using osu.Game.Rulesets.Objects.Types;
-using osu.Game.Rulesets.RP.Objects.type;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects.Drawables;
+using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.RP.KeyManager;
+using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects
 {
     /// <summary>
     ///     all the hittable object will inherit it
     /// </summary>
-    public abstract class BaseRpHitableObject : BaseRpObject , IHasPosition
+    public abstract class BaseRpHitableObject : BaseRpObject, IHasParent<RpContainerLine>, IHasCoop, IHasMultiHit, IHasSpecial
     {
-        public override double EndTime => StartTime;
+        //parent object
+        public RpContainerLine ParentObject { get; set; }
 
-        public override double Duration => EndTime - StartTime;
+        public int ParentID { get; set; }
 
-        public float X => Position.X;
+        //relative to parent object time
+        public double RelativeToParentStartTime { get; set; }
 
-        public float Y => Position.Y;
-
-        //Judge the point
-        public double hit50 = 200;
-        public double hit100 = 180;
-        public double hit300 = 160;
-
-        /// <summary>
-        ///     the index of container ,will mapping on  HitRanderer
-        /// </summary>
-        public int ContainerIndex = 0;
-
-        /// <summary>
-        ///     the layout fo the index ,will mapping on  HitRanderer
-        /// </summary>
-        public int LayoutIndex = 0;
-
-        /// <summary>
-        ///     if mult ,set the draw line priority
-        /// </summary>
-        public int DrawLinePriority = 0;
-
-        /// <summary>
-        ///     set the shape type
-        /// </summary>
-        public RpBaseHitObjectType.Shape Shape = RpBaseHitObjectType.Shape.Right;
-
-        /// <summary>
-        ///     normal or special
-        /// </summary>
-        public RpBaseObjectType.Special Special = RpBaseObjectType.Special.Normal;
-
-        /// <summary>
-        ///     if converted for osu!beatmap,set to auto
-        /// </summary>
-        public RpBaseObjectType.CurveGenerate CurveGenerate = RpBaseObjectType.CurveGenerate.Auto;
-
-        /// <summary>
-        ///     sligle or multi
-        /// </summary>
-        public RpBaseHitObjectType.Multi Multi = RpBaseHitObjectType.Multi.SingleClick;
-
-        /// <summary>
-        ///     co-op or not
-        /// </summary>
-        public RpBaseHitObjectType.Coop Coop = RpBaseHitObjectType.Coop.Both;
-
-        /// <summary>
-        ///     if converted for osu!beatmap,set to Convert
-        /// </summary>
-        public RpBaseObjectType.Convert Convert = RpBaseObjectType.Convert.Original;
-
-        /// <summary>
-        ///     用不同落下方式當判定點
-        /// </summary>
-        public RpBaseHitObjectType.ApproachType ApproachType = RpBaseHitObjectType.ApproachType.ApproachCircle;
-
-        public BaseRpHitableObject()
+        //StartTime = RelativeToParentStartTime + ParentObject.StartTime
+        public override double StartTime //{ get; set; }
         {
+            get
+            {
+                if (ParentObject == null)
+                    return RelativeToParentStartTime;
+                return ParentObject.StartTime + RelativeToParentStartTime;
+            }
+            set
+            {
+                if (ParentObject == null)
+                {
+                    RelativeToParentStartTime = value;
+                }
+                else
+                {
+                    RelativeToParentStartTime = value - ParentObject.StartTime;
+                }
+            }
+        }
+
+        //the index of container, will mapping on  HitRanderer
+        public int RelativeContainerLineGroupIndex => ParentObject.ParentObject.ID;
+
+        //the layout fo the index ,will mapping on HitRanderer
+        public int RelativeContainerLineIndex => ParentObject.ID;
+
+        //can be trigger by what key 
+        public abstract bool CanHitBy(RpAction action);
+
+        //get list compare keys
+        public abstract List<RpAction> GetListCompareKeys();
+
+        //normal or special
+        public Special Special { get; set; }
+
+        //sligle or multi
+        public RpMultiHit RpMultiHit { get; set; }
+
+        //co-op or not
+        public Coop Coop
+        {
+            get { return ParentObject.Coop; }
+            set { }
+        }
+
+        //if converted for osu!beatmap,set to Convert
+        public Convert Convert = Convert.Original;
+
+        public BaseRpHitableObject(RpContainerLine parent, double startTime)
+            : base(startTime)
+        {
+            Special = Special.Normal;
+            RpMultiHit = RpMultiHit.SingleClick;
+            ParentObject = parent;
+            //Need to readd in here
+            StartTime = startTime;
             Samples.Add(
                 new SampleInfo
                 {
-                    Bank = "whistle",
-                    Name = "soft"
+                    Bank = "soft",
+                    Name = "hitwhistle"
                 }
             );
+        }
+
+        protected override void InitialDefaultValue()
+        {
+            base.InitialDefaultValue();
         }
 
         /// <summary>
@@ -92,38 +100,54 @@ namespace osu.Game.Rulesets.RP.Objects
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public double HitWindowFor(RpScoreResult result)
+        public double HitWindowFor(HitResult result)
         {
             switch (result)
             {
+                case HitResult.Meh:
+                    return 250;
+                case HitResult.Ok:
+                    return 200;
+                case HitResult.Good:
+                    return 180;
+                case HitResult.Great:
+                    return 150;
+                case HitResult.Perfect:
+                    return 100;
                 default:
                     return 300;
-                case RpScoreResult.Safe:
-                    return 150;
-                case RpScoreResult.Fine:
-                    return 80;
-                case RpScoreResult.Cool:
-                    return 30;
             }
         }
 
-        public RpScoreResult ScoreResultForOffset(double offset)
+        public HitResult ScoreResultForOffset(double offset)
         {
-            if (offset < HitWindowFor(RpScoreResult.Cool))
-                return RpScoreResult.Cool;
-            if (offset < HitWindowFor(RpScoreResult.Fine))
-                return RpScoreResult.Fine;
-            if (offset < HitWindowFor(RpScoreResult.Safe))
-                return RpScoreResult.Safe;
-            return RpScoreResult.Sad;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Perfect))
+                return HitResult.Perfect;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Great))
+                return HitResult.Great;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Good))
+                return HitResult.Good;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Ok))
+                return HitResult.Ok;
+            if (Math.Abs(offset) < HitWindowFor(HitResult.Meh))
+                return HitResult.Meh;
+            return HitResult.Miss;
         }
+    }
 
-        /// <summary>
-        ///     初始化預設物件
-        /// </summary>
-        public override void InitialDefaultValue()
-        {
-            ObjectType = RpBaseObjectType.ObjectType.HitObject;
-        }
+    //Special
+    [Flags]
+    public enum Special
+    {
+        Normal = 0,
+        Gold = 1
+    }
+
+    //RpMultiHit , not impliment yet
+    [Flags]
+    public enum RpMultiHit
+    {
+        SingleClick,
+        Multi
     }
 }

@@ -3,13 +3,13 @@
 
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Parameter;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Parameter;
-using osu.Game.Rulesets.RP.Objects.type;
+using osu.Game.Rulesets.RP.Objects;
 
 namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 {
     internal class ProcessObjectTypeRandom
     {
-        //å–®ä¸€ä¸€æ®µçš„ç‰©ä»¶
+        //å–®ä¸€ä¸€æ®µçšEE½EE½E½EE½ä»¶
         private ConvertParameter _singleSlideParameter;
 
 
@@ -22,28 +22,30 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
         internal void Process(SingleHitObjectConvertParameter singleTuple)
         {
             for (var i = 0; i < singleTuple.ListBaseHitObject.Count; i++)
-                singleTuple.ListBaseHitObject[i].Shape = CalRandomShape(singleTuple, i);
+            {
+                (singleTuple.ListBaseHitObject[i] as RpHitObject).Direction = CalRandomShape(singleTuple, i);
+            }
         }
 
         /// <summary>
         ///     è¨ˆç®—éš¨æ©Ÿå½¢ç‹€
         /// </summary>
         /// <returns></returns>
-        private RpBaseHitObjectType.Shape CalRandomShape(SingleHitObjectConvertParameter singleTuple, int index)
+        private Direction CalRandomShape(SingleHitObjectConvertParameter singleTuple, int index)
         {
             var randNum = CalRandNumber(singleTuple, index);
             switch (randNum % 4)
             {
                 case 0:
-                    return RpBaseHitObjectType.Shape.Up;
+                    return Direction.Up;
                 case 1:
-                    return RpBaseHitObjectType.Shape.Left;
+                    return Direction.Left;
                 case 2:
-                    return RpBaseHitObjectType.Shape.Down;
+                    return Direction.Down;
                 case 3:
-                    return RpBaseHitObjectType.Shape.Right;
+                    return Direction.Right;
             }
-            return RpBaseHitObjectType.Shape.Down;
+            return Direction.Down;
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 
             return singleTuple.MultiNumber + (int)singleTuple.StartTime + singleTuple.ListBaseHitObject.Count + addNumber;
 
-            //BPMï¼Œç‚ºäº†é¿å…BPM 200 çš„è­œç‰¹åˆ¥ç°¡å–®
+            //BPME½EE½EE½EE½ç‚ºäºEE½EE½E½EE½å…BPM 200 çšEE½EE½E½EE½ç‰¹åˆ¥ç°¡å–®
             var periodTime = (int)(60 / (double)(int)_singleSlideParameter.SliceConvertParameter.BPM) * 1000;
             //
             return singleTuple.MultiNumber + (int)singleTuple.StartTime % periodTime + singleTuple.ListBaseHitObject.Count;
@@ -70,7 +72,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
 
         /// <summary>
         ///     ç”¢ç”Ÿéš¨æ©Ÿåƒæ•¸
-        ///     ç›®å‰å…ˆä¿å­˜ä¸‹ä¾†
+        ///     ç›®å‰ï¿½Eä¿å­˜ä¸‹ä¾E
         /// </summary>
         /// <returns></returns>
         private int OLD_CalRandNumber(SingleHitObjectConvertParameter singleTuple)

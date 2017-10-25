@@ -2,6 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.UserInterface;
 using osu.Game.Graphics.UserInterface;
@@ -17,10 +18,20 @@ namespace osu.Game.Overlays.Settings
         where T : struct, IEquatable<T>
         where U : SliderBar<T>, new()
     {
-        protected override Drawable CreateControl() => new U()
+        protected override Drawable CreateControl() => new U
         {
             Margin = new MarginPadding { Top = 5, Bottom = 5 },
             RelativeSizeAxes = Axes.X
         };
+
+        public float KeyboardStep;
+
+        [BackgroundDependencyLoader]
+        private void load()
+        {
+            var slider = Control as U;
+            if (slider != null)
+                slider.KeyboardStep = KeyboardStep;
+        }
     }
 }

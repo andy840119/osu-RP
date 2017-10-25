@@ -11,6 +11,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input;
 using osu.Game.Configuration;
 using System;
+using System.Diagnostics;
 using osu.Framework.Graphics.Textures;
 
 namespace osu.Game.Graphics.Cursor
@@ -19,22 +20,34 @@ namespace osu.Game.Graphics.Cursor
     {
         protected override Drawable CreateCursor() => new Cursor();
 
+        private Bindable<bool> cursorRotate;
         private bool dragging;
+
+        private bool startRotation;
 
         protected override bool OnMouseMove(InputState state)
         {
-            if (dragging)
+            if (cursorRotate && dragging)
             {
-                Vector2 offset = state.Mouse.Position - state.Mouse.PositionMouseDown ?? state.Mouse.Delta;
-                float degrees = (float)MathHelper.RadiansToDegrees(Math.Atan2(-offset.X, offset.Y)) + 24.3f;
+                Debug.Assert(state.Mouse.PositionMouseDown != null);
 
-                // Always rotate in the direction of least distance
-                float diff = (degrees - ActiveCursor.Rotation) % 360;
-                if (diff < -180) diff += 360;
-                if (diff > 180) diff -= 360;
-                degrees = ActiveCursor.Rotation + diff;
+                // don't start rotating until we're moved a minimum distance away from the mouse down location,
+                // else it can have an annoying effect.
+                startRotation |= Vector2Extensions.Distance(state.Mouse.Position, state.Mouse.PositionMouseDown.Value) > 30;
 
-                ActiveCursor.RotateTo(degrees, 600, EasingTypes.OutQuint);
+                if (startRotation)
+                {
+                    Vector2 offset = state.Mouse.Position - state.Mouse.PositionMouseDown.Value;
+                    float degrees = (float)MathHelper.RadiansToDegrees(Math.Atan2(-offset.X, offset.Y)) + 24.3f;
+
+                    // Always rotate in the direction of least distance
+                    float diff = (degrees - ActiveCursor.Rotation) % 360;
+                    if (diff < -180) diff += 360;
+                    if (diff > 180) diff -= 360;
+                    degrees = ActiveCursor.Rotation + diff;
+
+                    ActiveCursor.RotateTo(degrees, 600, Easing.OutQuint);
+                }
             }
 
             return base.OnMouseMove(state);
@@ -49,10 +62,10 @@ namespace osu.Game.Graphics.Cursor
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
         {
             ActiveCursor.Scale = new Vector2(1);
-            ActiveCursor.ScaleTo(0.90f, 800, EasingTypes.OutQuint);
+            ActiveCursor.ScaleTo(0.90f, 800, Easing.OutQuint);
 
             ((Cursor)ActiveCursor).AdditiveLayer.Alpha = 0;
-            ((Cursor)ActiveCursor).AdditiveLayer.FadeInFromZero(800, EasingTypes.OutQuint);
+            ((Cursor)ActiveCursor).AdditiveLayer.FadeInFromZero(800, Easing.OutQuint);
             return base.OnMouseDown(state, args);
         }
 
@@ -61,10 +74,11 @@ namespace osu.Game.Graphics.Cursor
             if (!state.Mouse.HasMainButtonPressed)
             {
                 dragging = false;
+                startRotation = false;
 
-                ((Cursor)ActiveCursor).AdditiveLayer.FadeOut(500, EasingTypes.OutQuint);
-                ActiveCursor.RotateTo(0, 600 * (1 + Math.Abs(ActiveCursor.Rotation / 720)), EasingTypes.OutElasticHalf);
-                ActiveCursor.ScaleTo(1, 500, EasingTypes.OutElastic);
+                ((Cursor)ActiveCursor).AdditiveLayer.FadeOut(500, Easing.OutQuint);
+                ActiveCursor.RotateTo(0, 600 * (1 + Math.Abs(ActiveCursor.Rotation / 720)), Easing.OutElasticHalf);
+                ActiveCursor.ScaleTo(1, 500, Easing.OutElastic);
             }
 
             return base.OnMouseUp(state, args);
@@ -72,21 +86,27 @@ namespace osu.Game.Graphics.Cursor
 
         protected override bool OnClick(InputState state)
         {
-            ((Cursor)ActiveCursor).AdditiveLayer.FadeOutFromOne(500, EasingTypes.OutQuint);
+            ((Cursor)ActiveCursor).AdditiveLayer.FadeOutFromOne(500, Easing.OutQuint);
 
             return base.OnClick(state);
         }
 
         protected override void PopIn()
         {
-            ActiveCursor.FadeTo(1, 250, EasingTypes.OutQuint);
-            ActiveCursor.ScaleTo(1, 400, EasingTypes.OutQuint);
+            ActiveCursor.FadeTo(1, 250, Easing.OutQuint);
+            ActiveCursor.ScaleTo(1, 400, Easing.OutQuint);
         }
 
         protected override void PopOut()
         {
-            ActiveCursor.FadeTo(0, 900, EasingTypes.OutQuint);
-            ActiveCursor.ScaleTo(0, 500, EasingTypes.In);
+            ActiveCursor.FadeTo(0, 900, Easing.OutQuint);
+            ActiveCursor.ScaleTo(0, 500, Easing.In);
+        }
+
+        [BackgroundDependencyLoader]
+        private void load(OsuConfigManager config)
+        {
+            cursorRotate = config.GetBindable<bool>(OsuSetting.CursorRotation);
         }
 
         public class Cursor : Container
@@ -118,7 +138,7 @@ namespace osu.Game.Graphics.Cursor
                             },
                             AdditiveLayer = new Sprite
                             {
-                                BlendingMode = BlendingMode.Additive,
+                                Blending = BlendingMode.Additive,
                                 Colour = colour.Pink,
                                 Alpha = 0,
                                 Texture = textures.Get(@"Cursor/menu-cursor-additive"),

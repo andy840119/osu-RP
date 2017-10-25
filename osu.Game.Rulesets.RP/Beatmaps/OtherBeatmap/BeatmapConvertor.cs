@@ -1,7 +1,9 @@
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
-using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator;
@@ -17,22 +19,21 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap
     /// </summary>
     public class BeatmapConvertor : BeatmapConverter<BaseRpObject>
     {
-        //???E?E??E?
+        //
         private readonly SliceProcessor sliceProcessor = new SliceProcessor();
 
-        //??????Container
+        //
         private readonly ContainerProcessor containerProcessor = new ContainerProcessor();
 
-        //??????????????????
+        //
         private readonly HitObjectProcessor hitObjectProcessor = new HitObjectProcessor();
 
-        //???????????????RP??????
+        //
         private readonly PostConvertor postConvertor = new PostConvertor();
 
 
-        protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasEndTime) };
+        protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasPosition) };
 
-        
         /// <summary>
         /// this method does not in use
         /// </summary>
@@ -80,7 +81,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap
                 };
             }
            */
-         
+
             yield return (BaseRpObject)original;
         }
 
@@ -89,12 +90,19 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap
         /// </summary>
         /// <param name="original">The un-converted Beatmap.</param>
         /// <returns>The converted Beatmap.</returns>
-        protected override Beatmap<BaseRpObject> ConvertBeatmap(Beatmap original, bool isForCurrentRuleset)
+        protected override Beatmap<BaseRpObject> ConvertBeatmap(Beatmap original)
         {
-            return new Beatmap<BaseRpObject>(original)
+            
+            //TODO : ・ｽﾒ考Mania・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
+            var newBratmaps= new Beatmap<BaseRpObject>()
             {
+                BeatmapInfo = original.BeatmapInfo,
+                ControlPointInfo = original.ControlPointInfo,
                 HitObjects = convertHitObjects(original, original.BeatmapInfo?.StackLeniency ?? 0.7f),
+
             };
+            //newBratmaps.HitObjects.BindingAll();
+            return newBratmaps;
         }
 
 

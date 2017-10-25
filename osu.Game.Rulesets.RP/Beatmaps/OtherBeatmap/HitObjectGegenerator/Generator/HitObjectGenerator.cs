@@ -2,11 +2,9 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
-using osu.Game.Audio;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Parameter;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Parameter;
 using osu.Game.Rulesets.RP.Objects;
-using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Generator
 {
@@ -20,30 +18,17 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Genera
             {
                 var singleHitObjects = new List<BaseRpHitableObject>();
                 for (var i = 0; i < singleHitObject.MultiNumber; i++)
-                    singleHitObjects.Add(GenerateRpHitObject(singleHitObject));
+                    singleHitObjects.Add(GenerateRpHitObject(singleHitObject, single));
                 singleHitObject.ListBaseHitObject = singleHitObjects;
             }
 
             return single.HitObjectConvertParameter.ListSingleHitObjectConvertParameter;
         }
 
-        public RpHitObject GenerateRpHitObject(SingleHitObjectConvertParameter singleHitObject)
+        public RpHitObject GenerateRpHitObject(SingleHitObjectConvertParameter singleHitObject, ConvertParameter single)
         {
-            var rpHitObject = new RpHitObject();
+            var rpHitObject = new RpHitObject(single.ContainerConvertParameter.ListObjectContainer[0].ListContainObject[0], singleHitObject.StartTime);
             //fake sample
-            rpHitObject.Samples.Clear();
-            rpHitObject.Samples.Add(
-                new SampleInfo
-                {
-                    Bank = "whistle",
-                    Name = "soft"
-                }
-            );
-
-            //fake position
-            rpHitObject.Position = new Vector2(100, 100);
-
-            rpHitObject.StartTime = singleHitObject.StartTime;
             return rpHitObject;
         }
     }

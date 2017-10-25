@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using osu.Game.Audio;
-using osu.Game.Rulesets.Objects;
-using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.type;
-using OpenTK;
-using SliderCurve = osu.Game.Rulesets.RP.Objects.MovingPath.SliderCurve;
-   
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 namespace osu.Game.Rulesets.RP.Parser
 {
     /// <summary>
     /// the class that use to convert effect string to RpEffect
     /// this Parser may be use in skin
     /// </summary>
+    /*
     public class RpEffectParser : HitObjectParser
     {
         public RpEffectParser()
@@ -35,10 +29,10 @@ namespace osu.Game.Rulesets.RP.Parser
             BaseRpHitableObject result;
             switch (type)
             {
-                case RpBaseObjectType.ObjectType.Click:
+                case RpBaseObjectType.ObjectType.Hit:
                     result = new RpHitObject();
                     break;
-                case RpBaseObjectType.ObjectType.LongTail:
+                case RpBaseObjectType.ObjectType.Hold:
                     var s = new RpHoldObject();
 
                     var curveType = RpBaseObjectType.CurveTypes.Catmull;
@@ -101,7 +95,7 @@ namespace osu.Game.Rulesets.RP.Parser
 
                     result = s;
                     break;
-                case RpBaseObjectType.ObjectType.ContainerPress:
+                case RpBaseObjectType.ObjectType.ContainerHold:
                     result = new RpContainerLineHoldObject();
                     break;
                 default:
@@ -123,4 +117,5 @@ namespace osu.Game.Rulesets.RP.Parser
         }
     
     }
+    */
 }

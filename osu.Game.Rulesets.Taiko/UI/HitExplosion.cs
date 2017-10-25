@@ -8,7 +8,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics;
-using osu.Game.Rulesets.Taiko.Judgements;
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Taiko.Objects;
 
 namespace osu.Game.Rulesets.Taiko.UI
@@ -18,22 +18,23 @@ namespace osu.Game.Rulesets.Taiko.UI
     /// </summary>
     internal class HitExplosion : CircularContainer
     {
-        public readonly TaikoJudgement Judgement;
+        public readonly DrawableHitObject JudgedObject;
 
         private readonly Box innerFill;
 
         private readonly bool isRim;
 
-        public HitExplosion(TaikoJudgement judgement, bool isRim)
+        public HitExplosion(DrawableHitObject judgedObject, bool isRim)
         {
             this.isRim = isRim;
 
-            Judgement = judgement;
+            JudgedObject = judgedObject;
 
-            Anchor = Anchor.Centre;
+            Anchor = Anchor.CentreLeft;
             Origin = Anchor.Centre;
 
-            Size = new Vector2(TaikoPlayfield.HIT_TARGET_OFFSET + TaikoHitObject.DEFAULT_CIRCLE_DIAMETER);
+            RelativeSizeAxes = Axes.Both;
+            Size = new Vector2(TaikoHitObject.DEFAULT_SIZE);
 
             RelativePositionAxes = Axes.Both;
 
@@ -62,8 +63,8 @@ namespace osu.Game.Rulesets.Taiko.UI
         {
             base.LoadComplete();
 
-            ScaleTo(3f, 1000, EasingTypes.OutQuint);
-            FadeOut(500);
+            this.ScaleTo(3f, 1000, Easing.OutQuint);
+            this.FadeOut(500);
 
             Expire();
         }
@@ -73,7 +74,7 @@ namespace osu.Game.Rulesets.Taiko.UI
         /// </summary>
         public void VisualiseSecondHit()
         {
-            ResizeTo(new Vector2(TaikoPlayfield.HIT_TARGET_OFFSET + TaikoHitObject.DEFAULT_STRONG_CIRCLE_DIAMETER), 50);
+            this.ResizeTo(new Vector2(TaikoHitObject.DEFAULT_STRONG_SIZE), 50);
         }
     }
 }

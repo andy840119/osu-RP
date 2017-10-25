@@ -2,6 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using System.Collections.Generic;
+using System.Linq;
 using osu.Game.Rulesets.Mania.Objects;
 using osu.Game.Rulesets.Mania.UI;
 using osu.Game.Rulesets.Mods;
@@ -15,17 +16,18 @@ namespace osu.Game.Rulesets.Mania.Mods
     public class ManiaModGravity : Mod, IGenerateSpeedAdjustments
     {
         public override string Name => "Gravity";
+        public override string ShortenedName => "GR";
 
         public override double ScoreMultiplier => 0;
 
         public override FontAwesome Icon => FontAwesome.fa_sort_desc;
 
-        public void ApplyToHitRenderer(ManiaHitRenderer hitRenderer, ref List<SpeedAdjustmentContainer>[] hitObjectTimingChanges, ref List<SpeedAdjustmentContainer> barlineTimingChanges)
+        public void ApplyToRulesetContainer(ManiaRulesetContainer rulesetContainer, ref List<SpeedAdjustmentContainer>[] hitObjectTimingChanges, ref List<SpeedAdjustmentContainer> barlineTimingChanges)
         {
             // We have to generate one speed adjustment per hit object for gravity
-            foreach (ManiaHitObject obj in hitRenderer.Objects)
+            foreach (ManiaHitObject obj in rulesetContainer.Objects.OfType<ManiaHitObject>())
             {
-                MultiplierControlPoint controlPoint = hitRenderer.CreateControlPointAt(obj.StartTime);
+                MultiplierControlPoint controlPoint = rulesetContainer.CreateControlPointAt(obj.StartTime);
                 // Beat length has too large of an effect for gravity, so we'll force it to a constant value for now
                 controlPoint.TimingPoint.BeatLength = 1000;
 
@@ -33,9 +35,9 @@ namespace osu.Game.Rulesets.Mania.Mods
             }
 
             // Like with hit objects, we need to generate one speed adjustment per bar line
-            foreach (DrawableBarLine barLine in hitRenderer.BarLines)
+            foreach (DrawableBarLine barLine in rulesetContainer.BarLines)
             {
-                var controlPoint = hitRenderer.CreateControlPointAt(barLine.HitObject.StartTime);
+                var controlPoint = rulesetContainer.CreateControlPointAt(barLine.HitObject.StartTime);
                 // Beat length has too large of an effect for gravity, so we'll force it to a constant value for now
                 controlPoint.TimingPoint.BeatLength = 1000;
 

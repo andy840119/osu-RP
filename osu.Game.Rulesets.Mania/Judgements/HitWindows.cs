@@ -1,7 +1,8 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
-using osu.Game.Database;
+using osu.Game.Beatmaps;
+using osu.Game.Rulesets.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Mania.Judgements
 {
@@ -145,18 +146,18 @@ namespace osu.Game.Rulesets.Mania.Judgements
         /// </summary>
         /// <param name="hitOffset">The time offset.</param>
         /// <returns>The hit result, or null if the time offset results in a miss.</returns>
-        public ManiaHitResult? ResultFor(double hitOffset)
+        public HitResult? ResultFor(double hitOffset)
         {
             if (hitOffset <= Perfect / 2)
-                return ManiaHitResult.Perfect;
+                return HitResult.Perfect;
             if (hitOffset <= Great / 2)
-                return ManiaHitResult.Great;
+                return HitResult.Great;
             if (hitOffset <= Good / 2)
-                return ManiaHitResult.Good;
+                return HitResult.Good;
             if (hitOffset <= Ok / 2)
-                return ManiaHitResult.Ok;
+                return HitResult.Ok;
             if (hitOffset <= Bad / 2)
-                return ManiaHitResult.Bad;
+                return HitResult.Meh;
             return null;
         }
 

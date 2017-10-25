@@ -54,6 +54,9 @@ namespace osu.Game.Configuration
             // Graphics
             Set(OsuSetting.ShowFpsDisplay, false);
 
+            Set(OsuSetting.ShowStoryboard, true);
+            Set(OsuSetting.CursorRotation, true);
+
             Set(OsuSetting.MenuParallax, true);
 
             Set(OsuSetting.SnakingInSliders, true);
@@ -70,6 +73,8 @@ namespace osu.Game.Configuration
 
             // Update
             Set(OsuSetting.ReleaseStream, ReleaseStream.Lazer);
+
+            Set(OsuSetting.Version, string.Empty);
         }
 
         public OsuConfigManager(Storage storage) : base(storage)
@@ -85,6 +90,7 @@ namespace osu.Game.Configuration
         GameplayCursorSize,
         AutoCursorSize,
         DimLevel,
+        ShowStoryboard,
         KeyOverlay,
         FloatingComments,
         PlaybackSpeed,
@@ -94,6 +100,7 @@ namespace osu.Game.Configuration
         AudioOffset,
         MenuMusic,
         MenuVoice,
+        CursorRotation,
         MenuParallax,
         BeatmapDetailTab,
         Username,
@@ -106,6 +113,7 @@ namespace osu.Game.Configuration
         SnakingInSliders,
         SnakingOutSliders,
         ShowFpsDisplay,
-        ChatDisplayHeight
+        ChatDisplayHeight,
+        Version
     }
 }

@@ -1,8 +1,13 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
 using osu.Game.Graphics;
+using System.Linq;
+using osu.Game.Rulesets.RP.Objects;
 
 namespace osu.Game.Rulesets.RP.UI.Select.Info
 {
@@ -11,11 +16,11 @@ namespace osu.Game.Rulesets.RP.UI.Select.Info
     /// </summary>
     internal class BeatmapStatistics : IEnumerable<BeatmapStatistic>
     {
-        private Beatmap _beatmap;
+        private WorkingBeatmap _beatmap;
 
         public BeatmapStatistics(WorkingBeatmap beatmap)
         {
-            _beatmap = beatmap.Beatmap;
+            _beatmap = beatmap;
         }
 
         /// <summary>
@@ -27,31 +32,31 @@ namespace osu.Game.Rulesets.RP.UI.Select.Info
             yield return new BeatmapStatistic
             {
                 Name = @"Hit",
-                Content = "10000", //beatmap.Beatmap.HitObjects.Count(h => h is HitCircle).ToString(),
+                Content = _beatmap.Beatmap.HitObjects.Where(x=>x is RpHitObject).Count().ToString("N0"),
                 Icon = FontAwesome.fa_dot_circle_o
             };
 
-            //RpSlider
+            //Hold
             yield return new BeatmapStatistic
             {
-                Name = @"Slider",
-                Content = "10000", //beatmap.Beatmap.HitObjects.Count(h => h is Slider).ToString(),
+                Name = @"Hold",
+                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpHoldObject).Count().ToString("N0"),
                 Icon = FontAwesome.fa_circle_o
             };
 
-            //RpPress
+            //Hold
             yield return new BeatmapStatistic
             {
                 Name = @"Press",
-                Content = "10000", //beatmap.Beatmap.HitObjects.Count(h => h is Slider).ToString(),
+                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpContainerLineHoldObject).Count().ToString("N0"),
                 Icon = FontAwesome.fa_circle_o
             };
 
-            //RpContainer
+            //Container
             yield return new BeatmapStatistic
             {
-                Name = @"Container",
-                Content = "10000", //beatmap.Beatmap.HitObjects.Count(h => h is Slider).ToString(),
+                Name = @"ContainerLine",
+                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpContainerLine).Count().ToString("N0"),
                 Icon = FontAwesome.fa_circle_o
             };
         }

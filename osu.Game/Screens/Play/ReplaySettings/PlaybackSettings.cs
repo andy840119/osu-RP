@@ -16,10 +16,11 @@ namespace osu.Game.Screens.Play.ReplaySettings
         {
             Children = new Drawable[]
             {
-                new ReplaySliderBar<double>()
+                new ReplaySliderBar<double>
                 {
                     LabelText = "Playback speed",
-                    Bindable = config.GetBindable<double>(OsuSetting.PlaybackSpeed)
+                    Bindable = config.GetBindable<double>(OsuSetting.PlaybackSpeed),
+                    KeyboardStep = 0.5f
                 }
             };
         }

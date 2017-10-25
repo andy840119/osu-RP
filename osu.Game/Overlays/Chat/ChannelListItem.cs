@@ -2,6 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using System;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 using osu.Framework.Allocation;
@@ -12,10 +13,11 @@ using osu.Framework.Input;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Online.Chat;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Overlays.Chat
 {
-    public class ChannelListItem : ClickableContainer, IFilterable
+    public class ChannelListItem : OsuClickableContainer, IFilterable
     {
         private const float width_padding = 5;
         private const float channel_width = 150;
@@ -27,18 +29,18 @@ namespace osu.Game.Overlays.Chat
         private readonly Bindable<bool> joinedBind = new Bindable<bool>();
         private readonly OsuSpriteText name;
         private readonly OsuSpriteText topic;
-        private readonly TextAwesome joinedCheckmark;
+        private readonly SpriteIcon joinedCheckmark;
 
         private Color4 joinedColour;
         private Color4 topicColour;
         private Color4 hoverColour;
 
-        public string[] FilterTerms => new[] { channel.Name };
+        public IEnumerable<string> FilterTerms => new[] { channel.Name };
         public bool MatchingFilter
         {
             set
             {
-                FadeTo(value ? 1f : 0f, 100);
+                this.FadeTo(value ? 1f : 0f, 100);
             }
         }
 
@@ -67,15 +69,14 @@ namespace osu.Game.Overlays.Chat
                         {
                             Children = new[]
                             {
-                                joinedCheckmark = new TextAwesome
+                                joinedCheckmark = new SpriteIcon
                                 {
                                     Anchor = Anchor.TopRight,
                                     Origin = Anchor.TopRight,
                                     Icon = FontAwesome.fa_check_circle,
-                                    TextSize = text_size,
+                                    Size = new Vector2(text_size),
                                     Shadow = false,
                                     Margin = new MarginPadding { Right = 10f },
-                                    Alpha = 0f,
                                 },
                             },
                         },
@@ -108,7 +109,6 @@ namespace osu.Game.Overlays.Chat
                                     TextSize = text_size,
                                     Font = @"Exo2.0-SemiBold",
                                     Shadow = false,
-                                    Alpha = 0.8f,
                                 },
                             },
                         },
@@ -120,10 +120,10 @@ namespace osu.Game.Overlays.Chat
                             Spacing = new Vector2(3f, 0f),
                             Children = new Drawable[]
                             {
-                                new TextAwesome
+                                new SpriteIcon
                                 {
                                     Icon = FontAwesome.fa_user,
-                                    TextSize = text_size - 2,
+                                    Size = new Vector2(text_size - 2),
                                     Shadow = false,
                                     Margin = new MarginPadding { Top = 1 },
                                 },
@@ -150,12 +150,15 @@ namespace osu.Game.Overlays.Chat
 
             joinedBind.ValueChanged += updateColour;
             joinedBind.BindTo(channel.Joined);
+
+            joinedBind.TriggerChange();
+            FinishTransforms(true);
         }
 
         protected override bool OnHover(InputState state)
         {
             if (!channel.Joined.Value)
-                name.FadeColour(hoverColour, 50, EasingTypes.OutQuint);
+                name.FadeColour(hoverColour, 50, Easing.OutQuint);
 
             return base.OnHover(state);
         }
@@ -174,14 +177,14 @@ namespace osu.Game.Overlays.Chat
                 joinedCheckmark.FadeTo(1f, transition_duration);
                 topic.FadeTo(0.8f, transition_duration);
                 topic.FadeColour(Color4.White, transition_duration);
-                FadeColour(joinedColour, transition_duration);
+                this.FadeColour(joinedColour, transition_duration);
             }
             else
             {
                 joinedCheckmark.FadeTo(0f, transition_duration);
                 topic.FadeTo(1f, transition_duration);
                 topic.FadeColour(topicColour, transition_duration);
-                FadeColour(Color4.White, transition_duration);
+                this.FadeColour(Color4.White, transition_duration);
             }
         }
     }

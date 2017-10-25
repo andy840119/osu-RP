@@ -1,3 +1,6 @@
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Parameter;
@@ -18,7 +21,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Slicing
         private readonly OriginalBeatmapDifficultyCalculator _originalBeatmapDifficultyCalculator = new OriginalBeatmapDifficultyCalculator();
 
         /// <summary>
-        ///     回傳時間篁E��內皁Endex
+        ///     回傳時間篁E��內皁Endex
         /// </summary>
         private readonly TimeSlicingCalculator _timeSlicingCalculator = new TimeSlicingCalculator();
 
@@ -27,7 +30,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Slicing
         private Beatmap _originalBeatmap;
 
         /// <summary>
-        ///     回傳刁E��結果
+        ///     回傳刁E��結果
         /// </summary>
         /// <returns>The list comvert parameter.</returns>
         public List<ConvertParameter> GetListConvertParameter(Beatmap originalBeatmap)
@@ -85,7 +88,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Slicing
 
         /// <summary>
         ///     use startTime and Endtime to grab the object and return ComvertParameter
-        ///     And calculate number of Container and Layout
+        ///     And calculate number of ContainerGroup and Layout
         /// </summary>
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>

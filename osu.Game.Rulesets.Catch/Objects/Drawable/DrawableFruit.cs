@@ -3,37 +3,73 @@
 
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
-using osu.Framework.Graphics.Transforms;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.MathUtils;
+using osu.Game.Rulesets.Catch.Objects.Drawable.Pieces;
 using OpenTK;
 
 namespace osu.Game.Rulesets.Catch.Objects.Drawable
 {
-    internal class DrawableFruit : Sprite
+    public class DrawableFruit : DrawableCatchHitObject<Fruit>
     {
-        private readonly CatchBaseHit h;
-
-        public DrawableFruit(CatchBaseHit h)
+        public DrawableFruit(Fruit h)
+            : base(h)
         {
-            this.h = h;
-
             Origin = Anchor.Centre;
-            Scale = new Vector2(0.1f);
-            RelativePositionAxes = Axes.Y;
-            Position = new Vector2(h.Position, -0.1f);
+
+            Size = new Vector2(Pulp.PULP_SIZE * 2.2f, Pulp.PULP_SIZE * 2.8f);
+            AccentColour = HitObject.ComboColour;
+            Masking = false;
+
+            Rotation = (float)(RNG.NextDouble() - 0.5f) * 40;
         }
 
         [BackgroundDependencyLoader]
-        private void load(TextureStore textures)
+        private void load()
         {
-            Texture = textures.Get(@"Menu/logo");
-
-            const double duration = 0;
-
-            Transforms.Add(new TransformPosition { StartTime = h.StartTime - 200, EndTime = h.StartTime, StartValue = new Vector2(h.Position, -0.1f), EndValue = new Vector2(h.Position, 0.9f) });
-            Transforms.Add(new TransformAlpha { StartTime = h.StartTime + duration + 200, EndTime = h.StartTime + duration + 400, StartValue = 1, EndValue = 0 });
-            Expire(true);
+            Children = new Framework.Graphics.Drawable[]
+            {
+                //todo: share this more
+                new BufferedContainer
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    CacheDrawnFrameBuffer = true,
+                    Children = new Framework.Graphics.Drawable[]
+                    {
+                        new Pulp
+                        {
+                            RelativePositionAxes = Axes.Both,
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            AccentColour = AccentColour,
+                            Scale = new Vector2(0.6f),
+                        },
+                        new Pulp
+                        {
+                            RelativePositionAxes = Axes.Both,
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            AccentColour = AccentColour,
+                            Y = -0.08f
+                        },
+                        new Pulp
+                        {
+                            RelativePositionAxes = Axes.Both,
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            AccentColour = AccentColour,
+                            Y = -0.08f
+                        },
+                        new Pulp
+                        {
+                            RelativePositionAxes = Axes.Both,
+                            Anchor = Anchor.BottomCentre,
+                            Origin = Anchor.BottomCentre,
+                            AccentColour = AccentColour,
+                        },
+                    }
+                }
+            };
         }
     }
 }

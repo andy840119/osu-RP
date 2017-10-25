@@ -4,22 +4,21 @@
 using System;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Drawables;
 using OpenTK;
 using osu.Game.Rulesets.Judgements;
 using osu.Framework.Allocation;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace osu.Game.Rulesets.UI
 {
-    public abstract class Playfield<TObject, TJudgement> : Container
-        where TObject : HitObject
-        where TJudgement : Judgement
+    public abstract class Playfield : Container
     {
         /// <summary>
         /// The HitObjects contained in this Playfield.
         /// </summary>
-        protected HitObjectContainer<DrawableHitObject<TObject, TJudgement>> HitObjects;
+        public HitObjectContainer HitObjects { get; protected set; }
 
         internal Container<Drawable> ScaledContent;
 
@@ -37,8 +36,6 @@ namespace osu.Game.Rulesets.UI
         /// <param name="customWidth">Whether we want our internal coordinate system to be scaled to a specified width.</param>
         protected Playfield(float? customWidth = null)
         {
-            AlwaysReceiveInput = true;
-
             // Default height since we force relative size axes
             Size = Vector2.One;
 
@@ -50,13 +47,12 @@ namespace osu.Game.Rulesets.UI
                 {
                     content = new Container
                     {
-                        AlwaysReceiveInput = true,
                         RelativeSizeAxes = Axes.Both,
                     }
                 }
             });
 
-            HitObjects = new HitObjectContainer<DrawableHitObject<TObject, TJudgement>>
+            HitObjects = new HitObjectContainer
             {
                 RelativeSizeAxes = Axes.Both,
             };
@@ -71,7 +67,7 @@ namespace osu.Game.Rulesets.UI
         public override Axes RelativeSizeAxes
         {
             get { return Axes.Both; }
-            set { throw new InvalidOperationException($@"{nameof(Playfield<TObject, TJudgement>)}'s {nameof(RelativeSizeAxes)} should never be changed from {Axes.Both}"); }
+            set { throw new InvalidOperationException($@"{nameof(Playfield)}'s {nameof(RelativeSizeAxes)} should never be changed from {Axes.Both}"); }
         }
 
         /// <summary>
@@ -83,13 +79,27 @@ namespace osu.Game.Rulesets.UI
         /// Adds a DrawableHitObject to this Playfield.
         /// </summary>
         /// <param name="h">The DrawableHitObject to add.</param>
-        public virtual void Add(DrawableHitObject<TObject, TJudgement> h) => HitObjects.Add(h);
+        public virtual void Add(DrawableHitObject h) => HitObjects.Add(h);
 
         /// <summary>
-        /// Triggered when an object's Judgement is updated.
+        /// Remove a DrawableHitObject from this Playfield.
         /// </summary>
-        /// <param name="judgedObject">The object that Judgement has been updated for.</param>
-        public virtual void OnJudgement(DrawableHitObject<TObject, TJudgement> judgedObject) { }
+        /// <param name="h">The DrawableHitObject to remove.</param>
+        public virtual void Remove(DrawableHitObject h) => HitObjects.Remove(h);
+
+        /// <summary>
+        /// Triggered when a new <see cref="Judgement"/> occurs on a <see cref="DrawableHitObject"/>.
+        /// </summary>
+        /// <param name="judgedObject">The object that <paramref name="judgement"/> occured for.</param>
+        /// <param name="judgement">The <see cref="Judgement"/> that occurred.</param>
+        public virtual void OnJudgement(DrawableHitObject judgedObject, Judgement judgement) { }
+
+        public class HitObjectContainer : CompositeDrawable
+        {
+            public virtual IEnumerable<DrawableHitObject> Objects => InternalChildren.OfType<DrawableHitObject>();
+            public virtual void Add(DrawableHitObject hitObject) => AddInternal(hitObject);
+            public virtual bool Remove(DrawableHitObject hitObject) => RemoveInternal(hitObject);
+        }
 
         private class ScaledContainer : Container
         {
@@ -100,19 +110,6 @@ namespace osu.Game.Rulesets.UI
 
             //dividing by the customwidth will effectively scale our content to the required container size.
             protected override Vector2 DrawScale => CustomWidth.HasValue ? new Vector2(DrawSize.X / CustomWidth.Value) : base.DrawScale;
-
-            public ScaledContainer()
-            {
-                AlwaysReceiveInput = true;
-            }
-        }
-
-        public class HitObjectContainer<U> : Container<U> where U : Drawable
-        {
-            public HitObjectContainer()
-            {
-                AlwaysReceiveInput = true;
-            }
         }
     }
 }

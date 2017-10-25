@@ -10,12 +10,13 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Positi
     {
         internal void ProcessPosition(ConvertParameter single)
         {
-            //同一群絁E�E皁E��件位置
+            //同一群絁E�E�E皁E�E��E�件位置
             foreach (var singleTupleHitObjects in single.HitObjectConvertParameter.ListSingleHitObjectConvertParameter)
                 if (single.ContainerConvertParameter.LayoutNumber == 1) //如果layout只有一個就沒什麼好決定亁E
                 {
-                    singleTupleHitObjects.ListBaseHitObject[0].ContainerIndex = 0;
-                    singleTupleHitObjects.ListBaseHitObject[0].LayoutIndex = 0;
+                    singleTupleHitObjects.ListBaseHitObject[0].ParentObject = single.ContainerConvertParameter.ListObjectContainer[0].ListContainObject[0];
+                    //singleTupleHitObjects.ListBaseHitObject[0].RelativeContainerLineGroupIndex = 0;
+                    //singleTupleHitObjects.ListBaseHitObject[0].RelativeContainerLineIndex = 0;
                 }
                 else //兩個以上layout
                 {
@@ -29,11 +30,12 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Positi
                         //取得container位置和對應皁Eayoutindex
                         for (var j = 0; j < single.ContainerConvertParameter.ContainerNumber; j++)
                         {
-                            var layoutNumberinSingleContainer = single.ContainerConvertParameter.ListObjectContainer[i].ContainerLayerList.Count;
+                            var layoutNumberinSingleContainer = single.ContainerConvertParameter.ListObjectContainer[i].ListContainObject.Count;
                             if (remain < layoutNumberinSingleContainer)
                             {
-                                singleTupleHitObjects.ListBaseHitObject[i].ContainerIndex = j;
-                                singleTupleHitObjects.ListBaseHitObject[i].LayoutIndex = remain;
+                                singleTupleHitObjects.ListBaseHitObject[0].ParentObject = single.ContainerConvertParameter.ListObjectContainer[j].ListContainObject[remain];
+                                //singleTupleHitObjects.ListBaseHitObject[i].RelativeContainerLineGroupIndex = j;
+                                //singleTupleHitObjects.ListBaseHitObject[i].RelativeContainerLineIndex = remain;
                             }
                             remain = remain - j;
                         }
@@ -41,7 +43,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Positi
                 }
         }
 
-        //產生亂數�E�數字不要E��褁E��允E
+        //產生亂數�E�E�E�數字不要E�E��E�褁E�E��E�允E
         private int GetRandomValue(SingleHitObjectConvertParameter singleTupleHitObjects, int index)
         {
             //getTheTotal

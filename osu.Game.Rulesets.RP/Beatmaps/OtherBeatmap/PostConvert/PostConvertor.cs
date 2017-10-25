@@ -20,7 +20,14 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.PostConvert
 
             foreach (var single in output)
             foreach (var singleContainer in single.ContainerConvertParameter.ListObjectContainer)
+            {
                 list.Add(singleContainer);
+                //andy840119
+                foreach (RpContainerLine singleContainerLine in singleContainer.ListContainObject)
+                {
+                    list.Add(singleContainerLine);
+                }
+            }
 
 
             foreach (var single in output)

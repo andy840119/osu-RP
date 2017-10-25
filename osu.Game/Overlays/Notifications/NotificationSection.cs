@@ -11,6 +11,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using OpenTK;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Overlays.Notifications
 {
@@ -23,10 +24,9 @@ namespace osu.Game.Overlays.Notifications
 
         private FlowContainer<Notification> notifications;
 
-        public void Add(Notification notification)
-        {
-            notifications.Add(notification);
-        }
+        public int DisplayedCount => notifications.Count(n => !n.WasClosed);
+
+        public void Add(Notification notification) => notifications.Add(notification);
 
         public IEnumerable<Type> AcceptTypes;
 
@@ -68,7 +68,7 @@ namespace osu.Game.Overlays.Notifications
                 Left = 20,
             };
 
-            AddInternal(new Drawable[]
+            AddRangeInternal(new Drawable[]
             {
                 new Container
                 {
@@ -113,7 +113,7 @@ namespace osu.Game.Overlays.Notifications
                     AutoSizeAxes = Axes.Y,
                     RelativeSizeAxes = Axes.X,
                     LayoutDuration = 150,
-                    LayoutEasing = EasingTypes.OutQuart,
+                    LayoutEasing = Easing.OutQuart,
                     Spacing = new Vector2(3),
                 }
             });
@@ -131,7 +131,7 @@ namespace osu.Game.Overlays.Notifications
             countText.Text = notifications.Children.Count(c => c.Alpha > 0.99f).ToString();
         }
 
-        private class ClearAllButton : ClickableContainer
+        private class ClearAllButton : OsuClickableContainer
         {
             private readonly OsuSpriteText text;
 

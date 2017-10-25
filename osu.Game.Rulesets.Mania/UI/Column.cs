@@ -3,22 +3,21 @@
 
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Input;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Colour;
-using osu.Framework.Input;
 using osu.Game.Graphics;
 using osu.Game.Rulesets.Objects.Drawables;
 using System;
-using osu.Framework.Configuration;
-using osu.Game.Rulesets.Timing;
+using osu.Framework.Input.Bindings;
+using osu.Game.Rulesets.UI;
+using osu.Game.Rulesets.Judgements;
 
 namespace osu.Game.Rulesets.Mania.UI
 {
-    public class Column : Container, IHasAccentColour
+    public class Column : ScrollingPlayfield, IHasAccentColour
     {
         private const float key_icon_size = 10;
         private const float key_icon_corner_radius = 3;
@@ -30,36 +29,33 @@ namespace osu.Game.Rulesets.Mania.UI
         private const float column_width = 45;
         private const float special_column_width = 70;
 
-        private readonly BindableDouble visibleTimeRange = new BindableDouble();
-        public BindableDouble VisibleTimeRange
-        {
-            get { return visibleTimeRange; }
-            set { visibleTimeRange.BindTo(value); }
-        }
-
-        /// <summary>
-        /// The key that will trigger input actions for this column and hit objects contained inside it.
-        /// </summary>
-        public Bindable<Key> Key = new Bindable<Key>();
+        public ManiaAction Action;
 
         private readonly Box background;
         private readonly Container hitTargetBar;
         private readonly Container keyIcon;
 
-        private readonly SpeedAdjustmentCollection speedAdjustments;
+        internal readonly Container TopLevelContainer;
+        private readonly Container explosionContainer;
+
+        protected override Container<Drawable> Content => content;
+        private readonly Container<Drawable> content;
+
+        private const float opacity_released = 0.1f;
+        private const float opacity_pressed = 0.25f;
 
         public Column()
+            : base(Axes.Y)
         {
-            RelativeSizeAxes = Axes.Y;
             Width = column_width;
 
-            Children = new Drawable[]
+            InternalChildren = new Drawable[]
             {
                 background = new Box
                 {
-                    Name = "Foreground",
+                    Name = "Background",
                     RelativeSizeAxes = Axes.Both,
-                    Alpha = 0.2f
+                    Alpha = opacity_released
                 },
                 new Container
                 {
@@ -97,17 +93,21 @@ namespace osu.Game.Rulesets.Mania.UI
                                 }
                             }
                         },
-                        speedAdjustments = new SpeedAdjustmentCollection(Axes.Y)
+                        content = new Container
                         {
                             Name = "Hit objects",
                             RelativeSizeAxes = Axes.Both,
-                            VisibleTimeRange = VisibleTimeRange
                         },
                         // For column lighting, we need to capture input events before the notes
                         new InputTarget
                         {
-                            KeyDown = onKeyDown,
-                            KeyUp = onKeyUp
+                            Pressed = onPressed,
+                            Released = onReleased
+                        },
+                        explosionContainer = new Container
+                        {
+                            Name = "Hit explosions",
+                            RelativeSizeAxes = Axes.Both
                         }
                     }
                 },
@@ -122,7 +122,7 @@ namespace osu.Game.Rulesets.Mania.UI
                         {
                             Name = "Key gradient",
                             RelativeSizeAxes = Axes.Both,
-                            ColourInfo = ColourInfo.GradientVertical(Color4.Black, Color4.Black.Opacity(0)),
+                            Colour = ColourInfo.GradientVertical(Color4.Black, Color4.Black.Opacity(0)),
                             Alpha = 0.5f
                         },
                         keyIcon = new Container
@@ -146,9 +146,14 @@ namespace osu.Game.Rulesets.Mania.UI
                             }
                         }
                     }
-                }
+                },
+                TopLevelContainer = new Container { RelativeSizeAxes = Axes.Both }
             };
+
+            TopLevelContainer.Add(explosionContainer.CreateProxy());
         }
+
+        public override Axes RelativeSizeAxes => Axes.Y;
 
         private bool isSpecial;
         public bool IsSpecial
@@ -192,33 +197,43 @@ namespace osu.Game.Rulesets.Mania.UI
             }
         }
 
-        public void Add(SpeedAdjustmentContainer speedAdjustment) => speedAdjustments.Add(speedAdjustment);
-        public void Add(DrawableHitObject hitObject)
+        /// <summary>
+        /// Adds a DrawableHitObject to this Playfield.
+        /// </summary>
+        /// <param name="hitObject">The DrawableHitObject to add.</param>
+        public override void Add(DrawableHitObject hitObject)
         {
+            hitObject.Depth = (float)hitObject.HitObject.StartTime;
+
             hitObject.AccentColour = AccentColour;
-            speedAdjustments.Add(hitObject);
+            HitObjects.Add(hitObject);
         }
 
-        private bool onKeyDown(InputState state, KeyDownEventArgs args)
+        public override void OnJudgement(DrawableHitObject judgedObject, Judgement judgement)
         {
-            if (args.Repeat)
-                return false;
+            if (!judgement.IsHit)
+                return;
 
-            if (args.Key == Key)
+            explosionContainer.Add(new HitExplosion(judgedObject));
+        }
+
+        private bool onPressed(ManiaAction action)
+        {
+            if (action == Action)
             {
-                background.FadeTo(background.Alpha + 0.2f, 50, EasingTypes.OutQuint);
-                keyIcon.ScaleTo(1.4f, 50, EasingTypes.OutQuint);
+                background.FadeTo(opacity_pressed, 50, Easing.OutQuint);
+                keyIcon.ScaleTo(1.4f, 50, Easing.OutQuint);
             }
 
             return false;
         }
 
-        private bool onKeyUp(InputState state, KeyUpEventArgs args)
+        private bool onReleased(ManiaAction action)
         {
-            if (args.Key == Key)
+            if (action == Action)
             {
-                background.FadeTo(0.2f, 800, EasingTypes.OutQuart);
-                keyIcon.ScaleTo(1f, 400, EasingTypes.OutQuart);
+                background.FadeTo(opacity_released, 800, Easing.OutQuart);
+                keyIcon.ScaleTo(1f, 400, Easing.OutQuart);
             }
 
             return false;
@@ -227,10 +242,10 @@ namespace osu.Game.Rulesets.Mania.UI
         /// <summary>
         /// This is a simple container which delegates various input events that have to be captured before the notes.
         /// </summary>
-        private class InputTarget : Container
+        private class InputTarget : Container, IKeyBindingHandler<ManiaAction>
         {
-            public Func<InputState, KeyDownEventArgs, bool> KeyDown;
-            public Func<InputState, KeyUpEventArgs, bool> KeyUp;
+            public Func<ManiaAction, bool> Pressed;
+            public Func<ManiaAction, bool> Released;
 
             public InputTarget()
             {
@@ -239,8 +254,8 @@ namespace osu.Game.Rulesets.Mania.UI
                 Alpha = 0;
             }
 
-            protected override bool OnKeyDown(InputState state, KeyDownEventArgs args) => KeyDown?.Invoke(state, args) ?? false;
-            protected override bool OnKeyUp(InputState state, KeyUpEventArgs args) => KeyUp?.Invoke(state, args) ?? false;
+            public bool OnPressed(ManiaAction action) => Pressed?.Invoke(action) ?? false;
+            public bool OnReleased(ManiaAction action) => Released?.Invoke(action) ?? false;
         }
     }
 }

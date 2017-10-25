@@ -1,14 +1,16 @@
 {
     "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "VisualTests (debug)",
+    "configurations": [{
+            "name": "osu! VisualTests (Debug)",
             "windows": {
                 "type": "clr"
             },
             "type": "mono",
             "request": "launch",
-            "program": "${workspaceRoot}/osu.Desktop.VisualTests/bin/Debug/osu!.exe",
+            "program": "${workspaceRoot}/osu.Desktop/bin/Debug/osu!.exe",
+            "args": [
+                "--tests"
+            ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "Build (Debug)",
             "runtimeExecutable": null,
@@ -16,13 +18,16 @@
             "console": "internalConsole"
         },
         {
-            "name": "VisualTests (release)",
+            "name": "osu! VisualTests (Release)",
             "windows": {
                 "type": "clr"
             },
             "type": "mono",
             "request": "launch",
-            "program": "${workspaceRoot}/osu.Desktop.VisualTests/bin/Release/osu!.exe",
+            "program": "${workspaceRoot}/osu.Desktop/bin/Release/osu!.exe",
+            "args": [
+                "--tests"
+            ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "Build (Release)",
             "runtimeExecutable": null,
@@ -30,7 +35,7 @@
             "console": "internalConsole"
         },
         {
-            "name": "osu! (debug)",
+            "name": "osu! (Debug)",
             "windows": {
                 "type": "clr"
             },
@@ -44,7 +49,7 @@
             "console": "internalConsole"
         },
         {
-            "name": "osu! (release)",
+            "name": "osu! (Release)",
             "windows": {
                 "type": "clr"
             },

@@ -2,26 +2,29 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using System;
+using System.Collections.Generic;
+using OpenTK.Graphics;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Game.Database;
-using osu.Game.Graphics;
-using OpenTK.Graphics;
-using osu.Framework.Localisation;
 using osu.Framework.Graphics.Sprites;
-using System.Collections.Generic;
+using osu.Framework.Input;
+using osu.Framework.Localisation;
+using osu.Game.Beatmaps;
+using osu.Game.Graphics;
+using osu.Game.Graphics.Containers;
+using OpenTK;
 
 namespace osu.Game.Overlays.Music
 {
-    internal class PlaylistItem : Container, IFilterable
+    internal class PlaylistItem : Container, IFilterable, IDraggable
     {
         private const float fade_duration = 100;
 
         private Color4 hoverColour;
         private Color4 artistColour;
 
-        private TextAwesome handle;
+        private SpriteIcon handle;
         private TextFlowContainer text;
         private IEnumerable<SpriteText> titleSprites;
         private UnicodeBindableString titleBind;
@@ -30,6 +33,8 @@ namespace osu.Game.Overlays.Music
         public readonly BeatmapSetInfo BeatmapSetInfo;
 
         public Action<BeatmapSetInfo> OnSelect;
+
+        public bool IsDraggable => handle.IsHovered;
 
         private bool selected;
         public bool Selected
@@ -40,7 +45,7 @@ namespace osu.Game.Overlays.Music
                 if (value == selected) return;
                 selected = value;
 
-                Flush(true);
+                FinishTransforms(true);
                 foreach (SpriteText s in titleSprites)
                     s.FadeColour(Selected ? hoverColour : Color4.White, fade_duration);
             }
@@ -66,18 +71,11 @@ namespace osu.Game.Overlays.Music
 
             Children = new Drawable[]
             {
-                handle = new TextAwesome
+                handle = new PlaylistItemHandle
                 {
-                    Anchor = Anchor.TopLeft,
-                    Origin = Anchor.TopLeft,
-                    TextSize = 12,
-                    Colour = colours.Gray5,
-                    Icon = FontAwesome.fa_bars,
-                    Alpha = 0f,
-                    Margin = new MarginPadding { Left = 5 },
-                    Padding = new MarginPadding { Top = 2 },
+                    Colour = colours.Gray5
                 },
-                text = new TextFlowContainer
+                text = new OsuTextFlowContainer
                 {
                     RelativeSizeAxes = Axes.X,
                     AutoSizeAxes = Axes.Y,
@@ -113,25 +111,25 @@ namespace osu.Game.Overlays.Music
             });
         }
 
-        protected override bool OnHover(Framework.Input.InputState state)
+        protected override bool OnHover(InputState state)
         {
             handle.FadeIn(fade_duration);
 
             return base.OnHover(state);
         }
 
-        protected override void OnHoverLost(Framework.Input.InputState state)
+        protected override void OnHoverLost(InputState state)
         {
             handle.FadeOut(fade_duration);
         }
 
-        protected override bool OnClick(Framework.Input.InputState state)
+        protected override bool OnClick(InputState state)
         {
             OnSelect?.Invoke(BeatmapSetInfo);
             return true;
         }
 
-        public string[] FilterTerms { get; private set; }
+        public IEnumerable<string> FilterTerms { get; private set; }
 
         private bool matching = true;
 
@@ -144,8 +142,30 @@ namespace osu.Game.Overlays.Music
 
                 matching = value;
 
-                FadeTo(matching ? 1 : 0, 200);
+                this.FadeTo(matching ? 1 : 0, 200);
             }
         }
+
+        private class PlaylistItemHandle : SpriteIcon
+        {
+
+            public PlaylistItemHandle()
+            {
+                Anchor = Anchor.TopLeft;
+                Origin = Anchor.TopLeft;
+                Size = new Vector2(12);
+                Icon = FontAwesome.fa_bars;
+                Alpha = 0f;
+                Margin = new MarginPadding { Left = 5, Top = 2 };
+            }
+        }
+    }
+
+    public interface IDraggable : IDrawable
+    {
+        /// <summary>
+        /// Whether this <see cref="IDraggable"/> can be dragged in its current state.
+        /// </summary>
+        bool IsDraggable { get; }
     }
 }

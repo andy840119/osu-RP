@@ -17,6 +17,11 @@ namespace osu.Game.Rulesets.Mods
         public abstract string Name { get; }
 
         /// <summary>
+        /// The shortened name of this mod.
+        /// </summary>
+        public abstract string ShortenedName { get; }
+
+        /// <summary>
         /// The icon of this mod.
         /// </summary>
         public virtual FontAwesome Icon => FontAwesome.fa_question;
@@ -45,5 +50,10 @@ namespace osu.Game.Rulesets.Mods
         /// The mods this mod cannot be enabled with.
         /// </summary>
         public virtual Type[] IncompatibleMods => new Type[] { };
+
+        /// <summary>
+        /// Whether we should allow failing at the current point in time.
+        /// </summary>
+        public virtual bool AllowFail => true;
     }
 }

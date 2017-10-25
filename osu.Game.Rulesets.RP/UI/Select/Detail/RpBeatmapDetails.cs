@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 namespace osu.Game.Rulesets.RP.UI.Select.Detail
 {
@@ -159,7 +159,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Detail
                     Padding = new MarginPadding(10) { Top = 0 },
                     Children = new Drawable[]
                     {
-                        new Container
+                        new ContainerGroup
                         {
                             RelativeSizeAxes = Axes.X,
                             AutoSizeAxes = Axes.Y,
@@ -215,7 +215,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Detail
                                 }
                             }
                         },
-                        new Container
+                        new ContainerGroup
                         {
                             RelativeSizeAxes = Axes.X,
                             AutoSizeAxes = Axes.Y,
@@ -248,7 +248,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Detail
                                             Height = 5,
                                             Length = 0
                                         },
-                                        new Container
+                                        new ContainerGroup
                                         {
                                             RelativeSizeAxes = Axes.X,
                                             AutoSizeAxes = Axes.Y,
@@ -291,7 +291,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Detail
                             Text = "Points of Failure",
                             Font = @"Exo2.0-Medium"
                         },
-                        new Container<RpBeatmapDetailsGraph>
+                        new ContainerGroup<RpBeatmapDetailsGraph>
                         {
                             RelativeSizeAxes = Axes.X,
                             Size = new Vector2(1 / 0.6f, 50),
@@ -335,7 +335,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Detail
             retryGraph.Colour = colour.Yellow;
         }
 
-        private class DifficultyRow : Container
+        private class DifficultyRow : ContainerGroup
         {
             public float Value
             {
@@ -412,7 +412,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Detail
             }
         }
 
-        private class RetryAndFailBar : Container<RpBeatmapDetailsBar>
+        private class RetryAndFailBar : ContainerGroup<RpBeatmapDetailsBar>
         {
             public float RetryLength
             {

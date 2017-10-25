@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
 using osu.Framework.Graphics;
@@ -54,15 +54,15 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjectsConnector
         {
             base.LoadComplete();
 
-            Delay(StartTime);
-            FadeIn(TIME_FADEIN);
+            this.Delay(StartTime);
+            this.FadeIn(TIME_FADEIN);
             //ScaleTo(1.5f);
-            //ScaleTo(1,TIME_FADEIN, EasingTypes.Out);
-            //MoveTo(EndPosition, DrawableOsuHitObject.TIME_FADEIN, EasingTypes.Out);
-            Delay(EndTime - StartTime);
-            FadeOut(TIME_FADEIN);
+            //ScaleTo(1,FadeInTime, EasingTypes.Out);
+            //MoveTo(EndPosition, DrawableOsuHitObject.FadeInTime, EasingTypes.Out);
+            this.Delay(EndTime - StartTime);
+            this.FadeOut(TIME_FADEIN);
 
-            Delay(TIME_FADEIN);
+            this.Delay(TIME_FADEIN);
             Expire(true);
         }
     }

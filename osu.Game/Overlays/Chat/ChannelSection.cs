@@ -18,12 +18,12 @@ namespace osu.Game.Overlays.Chat
         public readonly FillFlowContainer<ChannelListItem> ChannelFlow;
 
         public IEnumerable<IFilterable> FilterableChildren => ChannelFlow.Children;
-        public string[] FilterTerms => new[] { Header };
+        public IEnumerable<string> FilterTerms => new[] { Header };
         public bool MatchingFilter
         {
             set
             {
-                FadeTo(value ? 1f : 0f, 100);
+                this.FadeTo(value ? 1f : 0f, 100);
             }
         }
 
@@ -35,7 +35,7 @@ namespace osu.Game.Overlays.Chat
 
         public IEnumerable<Channel> Channels
         {
-            set { ChannelFlow.Children = value.Select(c => new ChannelListItem(c)); }
+            set { ChannelFlow.ChildrenEnumerable = value.Select(c => new ChannelListItem(c)); }
         }
 
         public ChannelSection()
