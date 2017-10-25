@@ -28,9 +28,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         protected DrawableBaseRpHitableObject(BaseRpHitableObject hitObject)
             : base(hitObject)
         {
-            //霈会ｿｽE蛻､譁ｷ鮟・
-            //if (Judgement == null)
-            //    Judgement = CreateJudgement();
+           
         }
 
         protected override void ConstructObject()
@@ -173,7 +171,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
     }
 
     //RpScoreResult
-    //TODO : now use anymore
+    //TODO : not use anymore
     /*
     public enum RpScoreResult
     {
