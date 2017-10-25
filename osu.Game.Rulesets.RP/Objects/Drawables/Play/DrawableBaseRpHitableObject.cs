@@ -86,7 +86,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             {
                 var result = HitObject.ScoreResultForOffset(timeOffset);
                 //cell component to show effect
-                this.TickleComponents(result);
+                this.TickleComponents(RpObject);
                 //call parent component to show effect
                 this.ParentObject.TickleComponents(RpObject,result);
             }

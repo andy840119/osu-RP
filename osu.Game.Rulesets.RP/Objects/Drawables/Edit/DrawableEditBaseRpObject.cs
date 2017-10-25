@@ -33,6 +33,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit
 
         public Container DrawableObject { get; protected set; }
 
+        public IHasTemplate ParentObject { get; set; }
+
         /// <summary>
         /// generate right click menu
         /// </summary>

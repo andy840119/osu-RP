@@ -16,9 +16,9 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
     public class RingPiece : Container
     {
         private readonly Sprite ring;
-        private RpHitObject _rpObject;
+        private RpHit _rpObject;
 
-        public RingPiece(RpHitObject rpObject)
+        public RingPiece(RpHit rpObject)
         {
             _rpObject = rpObject;
 

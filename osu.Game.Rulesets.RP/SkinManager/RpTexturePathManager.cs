@@ -273,9 +273,9 @@ namespace osu.Game.Rulesets.RP.SkinManager
         {
             string fileName = null;
 
-            if (baseHitObject as RpHitObject != null)
+            if (baseHitObject as RpHit != null)
             {
-                switch ((baseHitObject as RpHitObject).Direction)
+                switch ((baseHitObject as RpHit).Direction)
                 {
                     case Direction.Up:
                         fileName = @"Up";

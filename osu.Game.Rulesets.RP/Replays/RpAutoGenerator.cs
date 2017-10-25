@@ -70,13 +70,13 @@ namespace osu.Game.Rulesets.RP.Replays
             {
                 var h = listHitObjects[i];
 
-                if (h is RpHitObject)
+                if (h is RpHit)
                 {
                     //add start and endPoint
                     listPointTime.Add(h.StartTime);
                     listPointTime.Add(h.StartTime + h.HitWindowFor(HitResult.Perfect));
                 }
-                else if (h is RpHoldObject)
+                else if (h is RpHold)
                 {
                     //add start and endPoint
                     listPointTime.Add(h.StartTime);

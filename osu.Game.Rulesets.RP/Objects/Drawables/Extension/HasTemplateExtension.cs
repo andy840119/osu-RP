@@ -91,7 +91,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         }
 
         //tickle
-        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject, HitResult result)
+        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject, BaseRpObject result)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {
@@ -104,7 +104,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         }
 
         //Tickle form child object
-        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject ,ObjectType tickleFrom, HitResult result)
+        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject ,BaseRpObject tickleFrom, HitResult result)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {

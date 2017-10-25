@@ -118,7 +118,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             _containerEndDecisionLineComponent = new RectanglePiece(5, 50)
             {
                 //Scale = new Vector2(0.002f, 0.2f * layerCount),
-                //Position = CalculatePosition((HitObject as RpContainerLineGroup).EndTime - HitObject.StartTime)
+                //Position = CalculatePosition((HitObject as RpContainerGroup).EndTime - HitObject.StartTime)
                 //Position = this.PositionOfTime(Duration)
                 Colour = new Color4(226, 66, 54, 255),
             };

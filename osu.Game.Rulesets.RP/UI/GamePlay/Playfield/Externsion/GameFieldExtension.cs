@@ -29,11 +29,11 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
             {
                 AddDrawableRpContainerLine(field, drawableRpContainerLine);
             }
-            else if (drawableObject is DrawableRpContainerLineGroup drawableRpContainerLineGroup)
+            else if (drawableObject is DrawableRpContainerGroup drawableRpContainerLineGroup)
             {
                 AddDrawableRpContainerLineGroup(field, drawableRpContainerLineGroup);
             }
-            else if (drawableObject is DrawableRpHitObject drawableRpHitObject)
+            else if (drawableObject is DrawableRpHit drawableRpHitObject)
             {
                 AddDrawableRpHitObject(field, drawableRpHitObject);
             }
@@ -45,34 +45,34 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 
         public static void AddDrawableRpContainerLine(this IHasGameField field, DrawableRpContainerLine drawableRpContainerLine)
         {
-            DrawableRpContainerLineGroup drawableRpContainerLineGroup = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field,drawableRpContainerLine.HitObject.ParentObject);
-            drawableRpContainerLineGroup.GameFieldContainer.Add(drawableRpContainerLine);
-            drawableRpContainerLineGroup.AddObject(drawableRpContainerLine);
-            drawableRpContainerLine.ParentObject = drawableRpContainerLineGroup;
+            DrawableRpContainerGroup drawableRpContainerGroup = GeDrawableByRpObject<DrawableRpContainerGroup>(field,drawableRpContainerLine.HitObject.ParentObject);
+            drawableRpContainerGroup.GameFieldContainer.Add(drawableRpContainerLine);
+            drawableRpContainerGroup.AddObject(drawableRpContainerLine);
+            drawableRpContainerLine.ParentObject = drawableRpContainerGroup;
             //
             field.ListDrawableObject.Add(drawableRpContainerLine);
         }
 
-        public static void AddDrawableRpContainerLineGroup(this IHasGameField field, DrawableRpContainerLineGroup drawableRpContainerLineGroup)
+        public static void AddDrawableRpContainerLineGroup(this IHasGameField field, DrawableRpContainerGroup drawableRpContainerGroup)
         {
             Container container = new Container();
-            drawableRpContainerLineGroup.GameFieldContainer = container;
-            container.Position = drawableRpContainerLineGroup.HitObject.Position;
-            container.Rotation = drawableRpContainerLineGroup.HitObject.Rotation;
-            container.Add(drawableRpContainerLineGroup);
+            drawableRpContainerGroup.GameFieldContainer = container;
+            container.Position = drawableRpContainerGroup.HitObject.Position;
+            container.Rotation = drawableRpContainerGroup.HitObject.Rotation;
+            container.Add(drawableRpContainerGroup);
             //
-            field.ListDrawableObject.Add(drawableRpContainerLineGroup);
+            field.ListDrawableObject.Add(drawableRpContainerGroup);
             field.ListGroupContainer.Add(container);
         }
 
-        public static void AddDrawableRpHitObject(this IHasGameField field, DrawableRpHitObject drawableRpHitObject)
+        public static void AddDrawableRpHitObject(this IHasGameField field, DrawableRpHit drawableRpHit)
         {
-            DrawableRpContainerLineGroup drawableRpContainerLineGroup = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field,drawableRpHitObject.HitObject.ParentObject.ParentObject);
-            drawableRpContainerLineGroup.GameFieldContainer.Add(drawableRpHitObject);
+            DrawableRpContainerGroup drawableRpContainerGroup = GeDrawableByRpObject<DrawableRpContainerGroup>(field,drawableRpHit.HitObject.ParentObject.ParentObject);
+            drawableRpContainerGroup.GameFieldContainer.Add(drawableRpHit);
 
-            DrawableRpContainerLine drawableRpContainerLine = GeDrawableByRpObject<DrawableRpContainerLine>(field,drawableRpHitObject.HitObject.ParentObject);
-            drawableRpContainerLine.AddObject(drawableRpHitObject);
-            drawableRpHitObject.ParentObject = drawableRpContainerLine;
+            DrawableRpContainerLine drawableRpContainerLine = GeDrawableByRpObject<DrawableRpContainerLine>(field,drawableRpHit.HitObject.ParentObject);
+            drawableRpContainerLine.AddObject(drawableRpHit);
+            drawableRpHit.ParentObject = drawableRpContainerLine;
             //
             field.ListDrawableObject.Add(drawableRpContainerLine);
         }
@@ -128,28 +128,28 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
         /// <returns></returns>
         public static Vector2 FindObjectPosition(this IHasGameField field, DrawableBaseRpObject drawableRpHitObject)
         {
-            if (drawableRpHitObject is DrawableRpContainerLineGroup group)
+            if (drawableRpHitObject is DrawableRpContainerGroup group)
             {
                 return group.GameFieldContainer.Position;
             }
             else if (drawableRpHitObject is DrawableRpContainerLine line)
             {
-                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, line.HitObject.ParentObject).GameFieldContainer;
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerGroup>(field, line.HitObject.ParentObject).GameFieldContainer;
                 return grpupContainer.Position + line.Position.Rotate(grpupContainer.Rotation);
             }
-            else if (drawableRpHitObject is DrawableRpContainerLineHoldObject lineHold)
+            else if (drawableRpHitObject is DrawableRpRectangleHold lineHold)
             {
                 //TODO : implement
                 return new Vector2(0, 0);
             }
-            else if (drawableRpHitObject is DrawableRpHitObject hit)
+            else if (drawableRpHitObject is DrawableRpHit hit)
             {
-                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hit.HitObject.ParentObject.ParentObject).GameFieldContainer;
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerGroup>(field, hit.HitObject.ParentObject.ParentObject).GameFieldContainer;
                 return grpupContainer.Position + hit.Position.Rotate(grpupContainer.Rotation);
             }
-            else if (drawableRpHitObject is DrawableRpHoldObject hold)
+            else if (drawableRpHitObject is DrawableRpHold hold)
             {
-                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hold.HitObject.ParentObject.ParentObject).GameFieldContainer;
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerGroup>(field, hold.HitObject.ParentObject.ParentObject).GameFieldContainer;
                 return grpupContainer.Position + hold.Position.Rotate(grpupContainer.Rotation);
             }
 

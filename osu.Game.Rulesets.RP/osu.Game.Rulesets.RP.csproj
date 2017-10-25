@@ -149,7 +149,7 @@
     <Compile Include="Objects\Drawables\RpDrawableJudgement\SlideDrawableJudgement.cs" />
     <Compile Include="UI\Piece\BarPiece.cs" />
     <Compile Include="UI\Piece\ImagePicec.cs" />
-    <Compile Include="Objects\RpContainerLineGroup.cs" />
+    <Compile Include="Objects\RpContainerGroup.cs" />
     <Compile Include="Objects\RpContainerLine.cs" />
     <Compile Include="UI\Setting\RpSettings.cs" />
     <Compile Include="Beatmaps\RPBeatmap\RpBeatmapProcessor.cs" />
@@ -170,11 +170,11 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\KeySound\KeySoundLayout.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\HitObjectConnector.cs" />
     <Compile Include="Scoreing\RpScoreProcessor.cs" />
-    <Compile Include="Objects\RpHitObject.cs" />
+    <Compile Include="Objects\RpHit.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableRpHitObject.cs" />
     <Compile Include="Objects\BaseRpHitableObject.cs" />
-    <Compile Include="Objects\RpHoldObject.cs" />
-    <Compile Include="Objects\RpContainerLineHoldObject.cs" />
+    <Compile Include="Objects\RpHold.cs" />
+    <Compile Include="Objects\RpRectangleHold.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkinManager\RpTexturePathManager.cs" />
     <Compile Include="UI\GamePlay\RulesetContainer\RpRulesetContainer.cs" />

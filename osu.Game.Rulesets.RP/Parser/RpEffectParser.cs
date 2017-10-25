@@ -96,7 +96,7 @@ namespace osu.Game.Rulesets.RP.Parser
                     result = s;
                     break;
                 case RpBaseObjectType.ObjectType.ContainerHold:
-                    result = new RpContainerLineHoldObject();
+                    result = new RpRectangleHold();
                     break;
                 default:
                     //throw new InvalidOperationException($@"Unknown hit object type {type}");

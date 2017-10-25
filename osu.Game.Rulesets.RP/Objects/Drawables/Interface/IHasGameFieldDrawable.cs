@@ -6,7 +6,7 @@ using osu.Framework.Graphics.Containers;
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Interface
 {
     /// <summary>
-    /// only appear to RpContainerLineGroup
+    /// only appear to RpContainerGroup
     /// </summary>
     public interface IHasGameFieldDrawable : IHasTemplate
     {

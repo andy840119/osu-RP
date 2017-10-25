@@ -23,7 +23,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
         {
             for (var i = 0; i < singleTuple.ListBaseHitObject.Count; i++)
             {
-                (singleTuple.ListBaseHitObject[i] as RpHitObject).Direction = CalRandomShape(singleTuple, i);
+                (singleTuple.ListBaseHitObject[i] as RpHit).Direction = CalRandomShape(singleTuple, i);
             }
         }
 
