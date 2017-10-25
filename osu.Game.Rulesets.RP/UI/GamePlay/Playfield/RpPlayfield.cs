@@ -22,7 +22,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
     /// <summary>
     ///     RpPlayfield
     /// </summary>
-    public class RpPlayfield : Rulesets.UI.Playfield , IHasGameField
+    public class RpPlayfield : Rulesets.UI.Playfield, IHasGameField
     {
         public List<DrawableBaseRpObject> ListDrawableObject { get; set; }
         public List<Container> ListGroupContainer { get; set; }
@@ -78,7 +78,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             Origin = Anchor.Centre;
 
             ListDrawableObject = new List<DrawableBaseRpObject>();
-            ListGroupContainer=new List<Container>();
+            ListGroupContainer = new List<Container>();
 
             AddRange(new Drawable[]
             {
@@ -106,7 +106,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             });
         }
 
-        
 
         /// <summary>
         ///     Add the DrawableHitObject
@@ -145,7 +144,5 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             //update position
             _judgementLayer.AddHitEffect(rpJudgement);
         }
-
-       
     }
 }

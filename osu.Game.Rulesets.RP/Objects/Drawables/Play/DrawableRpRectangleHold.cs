@@ -9,6 +9,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
     public class DrawableRpRectangleHold : DrawableBaseRpHitableObject
     {
         /// <summary>
+        /// 
         /// </summary>
         /// <param name="hitObject"></param>
         public DrawableRpRectangleHold(BaseRpHitableObject hitObject)

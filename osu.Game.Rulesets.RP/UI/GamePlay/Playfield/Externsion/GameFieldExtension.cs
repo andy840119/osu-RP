@@ -1,23 +1,22 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Objects.Types;
+using osu.Game.Rulesets.RP.Extension;
 using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Interface;
 using OpenTK;
-using osu.Game.Rulesets.RP.Extension;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 {
     public static class GameFieldExtension
     {
-
         /// <summary>
         /// add any type of DrawableHitObject
         /// </summary>
@@ -45,7 +44,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 
         public static void AddDrawableRpContainerLine(this IHasGameField field, DrawableRpContainerLine drawableRpContainerLine)
         {
-            DrawableRpContainerGroup drawableRpContainerGroup = GeDrawableByRpObject<DrawableRpContainerGroup>(field,drawableRpContainerLine.HitObject.ParentObject);
+            DrawableRpContainerGroup drawableRpContainerGroup = GeDrawableByRpObject<DrawableRpContainerGroup>(field, drawableRpContainerLine.HitObject.ParentObject);
             drawableRpContainerGroup.GameFieldContainer.Add(drawableRpContainerLine);
             drawableRpContainerGroup.AddObject(drawableRpContainerLine);
             drawableRpContainerLine.ParentObject = drawableRpContainerGroup;
@@ -67,10 +66,10 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 
         public static void AddDrawableRpHitObject(this IHasGameField field, DrawableRpHit drawableRpHit)
         {
-            DrawableRpContainerGroup drawableRpContainerGroup = GeDrawableByRpObject<DrawableRpContainerGroup>(field,drawableRpHit.HitObject.ParentObject.ParentObject);
+            DrawableRpContainerGroup drawableRpContainerGroup = GeDrawableByRpObject<DrawableRpContainerGroup>(field, drawableRpHit.HitObject.ParentObject.ParentObject);
             drawableRpContainerGroup.GameFieldContainer.Add(drawableRpHit);
 
-            DrawableRpContainerLine drawableRpContainerLine = GeDrawableByRpObject<DrawableRpContainerLine>(field,drawableRpHit.HitObject.ParentObject);
+            DrawableRpContainerLine drawableRpContainerLine = GeDrawableByRpObject<DrawableRpContainerLine>(field, drawableRpHit.HitObject.ParentObject);
             drawableRpContainerLine.AddObject(drawableRpHit);
             drawableRpHit.ParentObject = drawableRpContainerLine;
             //
@@ -89,7 +88,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
             foreach (var container in field.ListDrawableObject)
                 if (container.HitObject == containerGroupObject)
                 {
-                    if(container is T matchTypeDrawableObject)
+                    if (container is T matchTypeDrawableObject)
                         return matchTypeDrawableObject;
                 }
 
@@ -112,12 +111,11 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
                 }
                 else
                 {
-                    if(container.HitObject.StartTime== time)
+                    if (container.HitObject.StartTime == time)
                         if (container is T matchTypeDrawableObject)
                             yield return matchTypeDrawableObject;
                 }
             }
-            
         }
 
         /// <summary>

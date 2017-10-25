@@ -1,10 +1,12 @@
-﻿using System;
-using osu.Framework.Graphics.UserInterface;
-using osu.Game.Rulesets.RP.Objects.Interface;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
+using osu.Framework.Graphics.UserInterface;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
+using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit.Extension
 {
@@ -58,7 +60,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit.Extension
             return new OsuMenuItem(@"Up", MenuItemType.Standard, () =>
             {
                 //TODO : ShowColorPicker
-
             });
         }
 
@@ -139,7 +140,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit.Extension
             return new OsuMenuItem(@"Rotate", MenuItemType.Standard, () =>
             {
                 //TODO : show Rotate tool
-
             });
         }
 
@@ -153,7 +153,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit.Extension
             return new OsuMenuItem(@"Scale", MenuItemType.Standard, () =>
             {
                 //TODO : show Rotate tool
-
             });
         }
 
@@ -198,7 +197,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit.Extension
             return new OsuMenuItem(@"Velocity", MenuItemType.Standard, () =>
             {
                 //TODO : show Velocity tool
-
             });
         }
 
@@ -207,9 +205,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit.Extension
             return new OsuMenuItem(@"Delete", MenuItemType.Standard, () =>
             {
                 //TODO : delete the object
-
             });
         }
-
     }
 }

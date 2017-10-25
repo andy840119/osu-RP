@@ -9,7 +9,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Game.Rulesets.RP.SkinManager;
 using OpenTK;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     /// <summary>
     ///     用來顯示矩形元素

@@ -4,7 +4,6 @@
 using System.Linq;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
@@ -17,7 +16,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
             listTemplate.ListTemplate.Add(template);
 
             //return;
-  
+
             //TODO : get better
             //remove from origin drawable
             //template.RemoveTemplateFromChild();//TODO : impliment
@@ -28,12 +27,12 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
             if (list.Count == 0)
             {
                 list.Add(template.DrawableObject.CreateProxy());
-                (listTemplate as Container).Children = list.ToArray();//TODO : impliment
+                (listTemplate as Container).Children = list.ToArray(); //TODO : impliment
             }
             else
             {
                 //TODO : connot add
-                (listTemplate as Container).Add((template.DrawableObject.CreateProxy()));
+                (listTemplate as Container).Add(template.DrawableObject.CreateProxy());
             }
         }
 

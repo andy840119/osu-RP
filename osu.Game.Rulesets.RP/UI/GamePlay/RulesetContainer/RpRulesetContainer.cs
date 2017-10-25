@@ -14,8 +14,8 @@ using osu.Game.Rulesets.RP.Replays;
 using osu.Game.Rulesets.RP.Scoreing;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield;
 using osu.Game.Rulesets.Scoring;
-using OpenTK;
 using osu.Game.Rulesets.UI;
+using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.RulesetContainer
 {

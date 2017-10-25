@@ -6,7 +6,5 @@ namespace osu.Game.Rulesets.RP.Objects.Interface
     public interface IHasParent<T> : IHasParentID
     {
         T ParentObject { get; set; }
-
-        
     }
 }

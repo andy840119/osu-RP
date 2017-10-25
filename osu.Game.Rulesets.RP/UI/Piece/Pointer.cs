@@ -10,7 +10,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Game.Rulesets.RP.Objects;
 using osu.Game.Rulesets.RP.SkinManager;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     /// <summary>
     ///     RP指針

@@ -230,6 +230,5 @@ namespace osu.Game.Rulesets.RP.Mods
         public override int KeyCount => 4;
         public override string Name => "4K";
         public override string ShortenedName => "4K";
-
     }
 }

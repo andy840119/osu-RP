@@ -9,7 +9,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Interface
 {
     public interface IHasTemplate : IContainer
     {
-
         List<IComponentBase> Components { get; set; }
 
         BaseRpObject RpObject { get; }

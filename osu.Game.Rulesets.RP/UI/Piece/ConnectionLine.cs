@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using OpenTK;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     /// <summary>
     ///     the line that for connection two Vector

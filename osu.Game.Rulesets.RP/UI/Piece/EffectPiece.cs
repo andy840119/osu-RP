@@ -8,7 +8,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.RpEffect;
 using osu.Game.Rulesets.RP.Objects.RpEffect.Point;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     public class EffectPiece<T> where T : Container
     {

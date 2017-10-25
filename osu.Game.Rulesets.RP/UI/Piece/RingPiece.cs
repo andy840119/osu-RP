@@ -8,7 +8,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Game.Rulesets.RP.Objects;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     /// <summary>
     ///     中間那個環

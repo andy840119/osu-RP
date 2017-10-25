@@ -8,10 +8,9 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {

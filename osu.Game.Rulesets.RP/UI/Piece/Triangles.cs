@@ -7,7 +7,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.MathUtils;
 using OpenTK;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     /// <summary>
     ///     三角形

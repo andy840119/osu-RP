@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System.Collections.Generic;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using osu.Game.Rulesets.RP.SkinManager;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
@@ -127,7 +130,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         {
             _containerDecisionLineComponent.Alpha = 0;
         }
-
-
     }
 }

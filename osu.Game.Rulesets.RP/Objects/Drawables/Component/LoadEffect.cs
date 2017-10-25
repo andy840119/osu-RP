@@ -5,7 +5,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.SkinManager;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
@@ -44,7 +44,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         /// </summary>
         public void FadeIn(double time = 0)
         {
-            _effectPicec.FadeTo(0.9f, 0);//.ScaleTo(2.5f, 100).FadeTo(0.7f, 150).FadeTo(0, 200);
+            _effectPicec.FadeTo(0.9f, 0); //.ScaleTo(2.5f, 100).FadeTo(0.7f, 150).FadeTo(0, 200);
             _effectPicec.ScaleTo(2.5f, 100);
             _effectPicec.FadeTo(0.7f, 150);
             _effectPicec.FadeTo(0, 200);
