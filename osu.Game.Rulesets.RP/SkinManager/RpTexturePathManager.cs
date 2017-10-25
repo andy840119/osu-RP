@@ -42,15 +42,6 @@ namespace osu.Game.Rulesets.RP.SkinManager
         }
 
         /// <summary>
-        ///     按鈕要用的icon
-        /// </summary>
-        /// <returns></returns>
-        public static string GetKeyLayoutButtonIcon(Shape Type)
-        {
-            return RP_KEYCOUNTER_FOLDER + Type;
-        }
-
-        /// <summary>
         ///     RP物件聲音
         /// </summary>
         /// <param name="baseHitObject"></param>
@@ -304,14 +295,14 @@ namespace osu.Game.Rulesets.RP.SkinManager
             }
             else
             {
-                switch (baseHitObject.Shape)
-                {
-                    case Shape.ContainerPress:
-                        fileName = @"Left";
-                        break;
-                    default:
-                        return @"RP_Unknown";
-                }
+                //switch (baseHitObject.Shape)
+                //{
+                //    case Shape.ContainerPress:
+                //        fileName = @"Left";
+                //        break;
+                //    default:
+                //        return @"RP_Unknown";
+                //}
             }
             return fileName;
         }

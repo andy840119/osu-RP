@@ -48,11 +48,6 @@ namespace osu.Game.Rulesets.RP.SkinManager
             return new Color4(255, 255, 255, 255);
         }
 
-        public static Color4 GetTypeColor(Shape type)
-        {
-            return new Color4(169, 188, 185, 255);
-        }
-
         /// <summary>
         ///     get the layout color
         /// </summary>

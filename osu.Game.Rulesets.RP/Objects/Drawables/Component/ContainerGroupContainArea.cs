@@ -11,7 +11,7 @@ using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {
-    public class ContainerGroupContainArea : Container, IContainListTemplate, IComponentBase
+    public class ContainerGroupContainArea : Container, IComponentContainListTemplate, IComponentBase
     {
         //TODO : if get Temlate from here, update the view and child
         public List<IHasTemplate> ListTemplate { get; set; }

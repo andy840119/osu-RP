@@ -11,7 +11,7 @@ using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {
-    public class ContainerLineContainArea : Container, IContainListTemplate,IHasVelocity,IHasStartTime, IComponentBase
+    public class ContainerLineContainArea : Container, IComponentContainListTemplate,IHasVelocity,IHasStartTime, IComponentBase
     {
         //TODO : if get Temlate from here, update the view and child
         public List<IHasTemplate> ListTemplate { get; set; }
@@ -41,6 +41,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         public void FadeIn(double time = 0)
         {
+
         }
 
         public void FadeOut(double time = 0)

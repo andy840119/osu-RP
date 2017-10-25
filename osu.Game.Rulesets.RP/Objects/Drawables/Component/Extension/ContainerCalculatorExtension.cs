@@ -30,9 +30,9 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
             return LAYOUT_HEIGHT;
         }
 
-        public static float TotalHeight(this IContainListTemplate containListTemplate)
+        public static float TotalHeight(this IComponentContainListTemplate componentContainListTemplate)
         {
-            int layerCount = containListTemplate.ListTemplate.Count;
+            int layerCount = componentContainListTemplate.ListTemplate.Count;
             if (layerCount > 0)
                 return CONTAINER_TO_FIRST_LAYOUT_HEIGHT * 2 + LAYOUT_HEIGHT * layerCount + LAYOUT_INTERVAL_HEIGHT * layerCount - 1;
 

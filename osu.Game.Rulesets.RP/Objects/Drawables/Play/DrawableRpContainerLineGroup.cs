@@ -15,7 +15,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
     /// <summary>
     ///     匁E��RP物件
     /// </summary>
-    public class DrawableRpContainerLineGroup : DrawableBaseRpObject, IHasParentDrawable,ICanContainObject
+    public class DrawableRpContainerLineGroup : DrawableBaseRpObject, IHasGameFieldDrawable,ICanContainObject
     {
         /// <summary>
         /// </summary>
@@ -24,7 +24,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             get { return (RpContainerLineGroup)base.HitObject; }
         }
 
-        public Container ParentGroupContainer { get; set; }
+        public Container GameFieldContainer { get; set; }
 
         /// <summary>
         /// </summary>

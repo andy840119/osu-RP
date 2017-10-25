@@ -18,6 +18,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
     public class DrawableBaseRpObject : DrawableHitObject<BaseRpObject>, IHasTemplate
     {
+        public IHasTemplate ParentObject { get; set; }
         public List<IComponentBase> Components { get; set; }
         public BaseRpObject RpObject => HitObject;
         public Container DrawableObject => this;
@@ -141,8 +142,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
                 Result = HitResult.Good,
                 RpObject = this,
             });
-
-
         }
 
         /// <summary>

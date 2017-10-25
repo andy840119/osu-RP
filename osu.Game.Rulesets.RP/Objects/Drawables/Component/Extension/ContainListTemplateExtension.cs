@@ -11,7 +11,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
 {
     public static class ContainListTemplateExtension
     {
-        public static void AddTemplate(this IContainListTemplate listTemplate, IHasTemplate template)
+        public static void AddTemplate(this IComponentContainListTemplate listTemplate, IHasTemplate template)
         {
             //Add to list
             listTemplate.ListTemplate.Add(template);
@@ -37,7 +37,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension
             }
         }
 
-        public static void RemoveTemplate(this IContainListTemplate listTemplate, IHasTemplate template)
+        public static void RemoveTemplate(this IComponentContainListTemplate listTemplate, IHasTemplate template)
         {
             //remove from drawable
             //template.AddTemplateToChild();

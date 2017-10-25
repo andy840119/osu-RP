@@ -13,19 +13,19 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
     {
         public static List<IHasTemplate> ListContainObject(this ICanContainObject iCanContainObject)
         {
-            var list = iCanContainObject.Components.Where(n => n is IContainListTemplate);
-            return (list.FirstOrDefault() as IContainListTemplate).ListTemplate;
+            var list = iCanContainObject.Components.Where(n => n is IComponentContainListTemplate);
+            return (list.FirstOrDefault() as IComponentContainListTemplate).ListTemplate;
 
             //(Components.Where(n => n is ICanContainObject<T>).FirstOrDefault() as ICanContainObject<T>).ListContainObject = value;
         }
 
-        private static List<IContainListTemplate> containListTemplate(this ICanContainObject iCanContainObject)
+        private static List<IComponentContainListTemplate> containListTemplate(this ICanContainObject iCanContainObject)
         {
-            var listCompare = iCanContainObject.Components.Where(n => n is IContainListTemplate);
-            List<IContainListTemplate> listReturn = new List<IContainListTemplate>();
+            var listCompare = iCanContainObject.Components.Where(n => n is IComponentContainListTemplate);
+            List<IComponentContainListTemplate> listReturn = new List<IComponentContainListTemplate>();
             foreach (var single in listCompare)
             {
-                listReturn.Add(single as IContainListTemplate);
+                listReturn.Add(single as IComponentContainListTemplate);
             }
             return listReturn;
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
@@ -10,6 +10,7 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component;
+using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
@@ -27,7 +28,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         protected DrawableBaseRpHitableObject(BaseRpHitableObject hitObject)
             : base(hitObject)
         {
-            //載�E判斷黁E
+            //霈会ｿｽE蛻､譁ｷ鮟・
             //if (Judgement == null)
             //    Judgement = CreateJudgement();
         }
@@ -81,6 +82,16 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
                 Result = HitObject.ScoreResultForOffset(timeOffset),
                 RpObject = this,
             });
+
+            //如果是打在時間內
+            if (timeOffset < HitObject.HitWindowFor(HitResult.Meh))
+            {
+                var result = HitObject.ScoreResultForOffset(timeOffset);
+                //cell component to show effect
+                this.TickleComponents(result);
+                //call parent component to show effect
+                this.ParentObject.TickleComponents(RpObject,result);
+            }
         }
 
         public virtual bool OnPressed(RpAction action)
@@ -121,7 +132,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 
         protected override void UpdateCurrentState(ArmedState state)
         {
-            //TODO :  �C��
+            //TODO :  修正
             double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
 
             switch (state)

@@ -46,8 +46,9 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
         public static void AddDrawableRpContainerLine(this IHasGameField field, DrawableRpContainerLine drawableRpContainerLine)
         {
             DrawableRpContainerLineGroup drawableRpContainerLineGroup = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field,drawableRpContainerLine.HitObject.ParentObject);
-            drawableRpContainerLineGroup.ParentGroupContainer.Add(drawableRpContainerLine);
+            drawableRpContainerLineGroup.GameFieldContainer.Add(drawableRpContainerLine);
             drawableRpContainerLineGroup.AddObject(drawableRpContainerLine);
+            drawableRpContainerLine.ParentObject = drawableRpContainerLineGroup;
             //
             field.ListDrawableObject.Add(drawableRpContainerLine);
         }
@@ -55,7 +56,7 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
         public static void AddDrawableRpContainerLineGroup(this IHasGameField field, DrawableRpContainerLineGroup drawableRpContainerLineGroup)
         {
             Container container = new Container();
-            drawableRpContainerLineGroup.ParentGroupContainer = container;
+            drawableRpContainerLineGroup.GameFieldContainer = container;
             container.Position = drawableRpContainerLineGroup.HitObject.Position;
             container.Rotation = drawableRpContainerLineGroup.HitObject.Rotation;
             container.Add(drawableRpContainerLineGroup);
@@ -67,10 +68,11 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
         public static void AddDrawableRpHitObject(this IHasGameField field, DrawableRpHitObject drawableRpHitObject)
         {
             DrawableRpContainerLineGroup drawableRpContainerLineGroup = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field,drawableRpHitObject.HitObject.ParentObject.ParentObject);
-            drawableRpContainerLineGroup.ParentGroupContainer.Add(drawableRpHitObject);
+            drawableRpContainerLineGroup.GameFieldContainer.Add(drawableRpHitObject);
 
             DrawableRpContainerLine drawableRpContainerLine = GeDrawableByRpObject<DrawableRpContainerLine>(field,drawableRpHitObject.HitObject.ParentObject);
             drawableRpContainerLine.AddObject(drawableRpHitObject);
+            drawableRpHitObject.ParentObject = drawableRpContainerLine;
             //
             field.ListDrawableObject.Add(drawableRpContainerLine);
         }
@@ -128,11 +130,11 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
         {
             if (drawableRpHitObject is DrawableRpContainerLineGroup group)
             {
-                return group.ParentGroupContainer.Position;
+                return group.GameFieldContainer.Position;
             }
             else if (drawableRpHitObject is DrawableRpContainerLine line)
             {
-                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, line.HitObject.ParentObject).ParentGroupContainer;
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, line.HitObject.ParentObject).GameFieldContainer;
                 return grpupContainer.Position + line.Position.Rotate(grpupContainer.Rotation);
             }
             else if (drawableRpHitObject is DrawableRpContainerLineHoldObject lineHold)
@@ -142,12 +144,12 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
             }
             else if (drawableRpHitObject is DrawableRpHitObject hit)
             {
-                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hit.HitObject.ParentObject.ParentObject).ParentGroupContainer;
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hit.HitObject.ParentObject.ParentObject).GameFieldContainer;
                 return grpupContainer.Position + hit.Position.Rotate(grpupContainer.Rotation);
             }
             else if (drawableRpHitObject is DrawableRpHoldObject hold)
             {
-                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hold.HitObject.ParentObject.ParentObject).ParentGroupContainer;
+                var grpupContainer = GeDrawableByRpObject<DrawableRpContainerLineGroup>(field, hold.HitObject.ParentObject.ParentObject).GameFieldContainer;
                 return grpupContainer.Position + hold.Position.Rotate(grpupContainer.Rotation);
             }
 

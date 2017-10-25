@@ -6,7 +6,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface
 {
-    public interface IContainListTemplate
+    public interface IComponentContainListTemplate
     {
         List<IHasTemplate> ListTemplate { get; set; }
 

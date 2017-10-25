@@ -80,18 +80,24 @@
     <Compile Include="Objects\Drawables\Component\Extension\ContainListTemplateExtension.cs" />
     <Compile Include="Objects\Drawables\Component\Extension\TimeExtension.cs" />
     <Compile Include="Objects\Drawables\Component\Interface\IComponentBase.cs" />
+    <Compile Include="Objects\Drawables\Component\Interface\IComponentCanBeTickle.cs" />
+    <Compile Include="Objects\Drawables\Component\Interface\IcomponentKnowTemplate.cs" />
     <Compile Include="Objects\Drawables\Component\Interface\IComponentUpdateEachFrame.cs" />
-    <Compile Include="Objects\Drawables\Component\Interface\IContainListTemplate.cs" />
+    <Compile Include="Objects\Drawables\Component\Interface\IComponentContainListTemplate.cs" />
     <Compile Include="Objects\Drawables\Component\LoadEffect.cs" />
     <Compile Include="Objects\Drawables\Component\StillHit.cs" />
     <Compile Include="Objects\Drawables\Edit\DrawableEditBaseRpObject.cs" />
+    <Compile Include="Objects\Drawables\Edit\DrawableEditRpHitObject.cs" />
     <Compile Include="Objects\Drawables\Extension\HasTemplateExtension.cs" />
     <Compile Include="Objects\Drawables\Extension\ICanContainObjectExtension.cs" />
     <Compile Include="Objects\Drawables\Extension\ObjectTypeExtension.cs" />
     <Compile Include="Objects\Drawables\Interface\ICanContainObject.cs" />
-    <Compile Include="Objects\Drawables\Interface\IHasParentDrawable.cs" />
+    <Compile Include="Objects\Drawables\Interface\IHasEditableTemplate.cs" />
+    <Compile Include="Objects\Drawables\Interface\IHasGameFieldDrawable.cs" />
     <Compile Include="Objects\Drawables\Interface\IHasTemplate.cs" />
+    <Compile Include="Objects\Interface\IHasContainChildType.cs" />
     <Compile Include="Tests\HelloTestCase.cs" />
+    <Compile Include="Tests\TestCaseEditableObjectRightClick.cs" />
     <Compile Include="UI\GamePlay\Playfield\Externsion\HitObjectRelationBindingExtension.cs" />
     <Compile Include="Objects\Interface\IHasBPM.cs" />
     <Compile Include="Objects\Interface\IHasColor.cs" />
@@ -245,7 +251,6 @@
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Hold\Start\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\End\" />
     <Folder Include="Textures\Play\RP\RPObject\Square\Special\Long\Start\" />
-    <Folder Include="Objects\Drawables\Edit\Extension\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\Play\RP\HitEffect\Cool\RP.png" />

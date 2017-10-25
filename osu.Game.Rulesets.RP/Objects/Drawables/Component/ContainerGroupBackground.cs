@@ -18,7 +18,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
     /// <summary>
     /// Background of container 
     /// </summary>
-    public class ContainerGroupBackground : Container, IContainListTemplate, IHasColor, IComponentBase
+    public class ContainerGroupBackground : Container, IComponentContainListTemplate, IHasColor, IComponentBase
     {
         /// <summary>
         ///     背景

@@ -7,7 +7,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Interface
 {
-    public interface IHasTemplate
+    public interface IHasTemplate : IContainer
     {
 
         List<IComponentBase> Components { get; set; }
@@ -15,5 +15,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Interface
         BaseRpObject RpObject { get; }
 
         Container DrawableObject { get; }
+
+        IHasTemplate ParentObject { get; set; }
     }
 }

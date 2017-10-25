@@ -5,6 +5,7 @@ using System.Linq;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.MathUtils;
+using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Objects.Drawables.Calculator;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
@@ -88,5 +89,32 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
             }
             return drawableObject;
         }
+
+        //tickle
+        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject, HitResult result)
+        {
+            foreach (IComponentBase single in drawableObject.Components)
+            {
+                if (single is IComponentTickleByHit canTickleObject)
+                {
+                    canTickleObject.Tickle(result);
+                }
+            }
+            return drawableObject;
+        }
+
+        //Tickle form child object
+        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject ,ObjectType tickleFrom, HitResult result)
+        {
+            foreach (IComponentBase single in drawableObject.Components)
+            {
+                if (single is IComponentTickleByChild canTickleObject)
+                {
+                    canTickleObject.Tickle(tickleFrom,result);
+                }
+            }
+            return drawableObject;
+        }
+
     }
 }

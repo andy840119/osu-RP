@@ -51,10 +51,6 @@ namespace osu.Game.Rulesets.RP.Objects
         //the layout fo the index ,will mapping on HitRanderer
         public int RelativeContainerLineIndex => ParentObject.ID;
 
-        //set the shape type
-        //TODO : 之後把這屬性拿掉
-        public Shape Shape = Shape.Unknown;
-
         //can be trigger by what key 
         public abstract bool CanHitBy(RpAction action);
 
@@ -145,16 +141,6 @@ namespace osu.Game.Rulesets.RP.Objects
     {
         Normal = 0,
         Gold = 1
-    }
-
-    //Shape
-    [Flags]
-    public enum Shape
-    {
-        Unknown = 0, //Unknown
-        Hit = 1, //Hit
-        Hold = 2, //Hold
-        ContainerPress = 4 //containerPress
     }
 
     //RpMultiHit , not impliment yet
