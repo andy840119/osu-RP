@@ -2,7 +2,6 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using osu.Game.Database;
@@ -48,10 +47,10 @@ namespace osu.Game.Beatmaps
         {
             var context = GetContext();
 
-            if (beatmapSet.DeletePending) return false;
+            Refresh(ref beatmapSet, BeatmapSets);
 
+            if (beatmapSet.DeletePending) return false;
             beatmapSet.DeletePending = true;
-            context.Update(beatmapSet);
             context.SaveChanges();
 
             BeatmapSetRemoved?.Invoke(beatmapSet);
@@ -67,10 +66,10 @@ namespace osu.Game.Beatmaps
         {
             var context = GetContext();
 
-            if (!beatmapSet.DeletePending) return false;
+            Refresh(ref beatmapSet, BeatmapSets);
 
+            if (!beatmapSet.DeletePending) return false;
             beatmapSet.DeletePending = false;
-            context.Update(beatmapSet);
             context.SaveChanges();
 
             BeatmapSetAdded?.Invoke(beatmapSet);
@@ -86,10 +85,10 @@ namespace osu.Game.Beatmaps
         {
             var context = GetContext();
 
-            if (beatmap.Hidden) return false;
+            Refresh(ref beatmap, Beatmaps);
 
+            if (beatmap.Hidden) return false;
             beatmap.Hidden = true;
-            context.Update(beatmap);
             context.SaveChanges();
 
             BeatmapHidden?.Invoke(beatmap);
@@ -105,10 +104,10 @@ namespace osu.Game.Beatmaps
         {
             var context = GetContext();
 
-            if (!beatmap.Hidden) return false;
+            Refresh(ref beatmap, Beatmaps);
 
+            if (!beatmap.Hidden) return false;
             beatmap.Hidden = false;
-            context.Update(beatmap);
             context.SaveChanges();
 
             BeatmapRestored?.Invoke(beatmap);
@@ -136,17 +135,17 @@ namespace osu.Game.Beatmaps
             context.SaveChanges();
         }
 
-        public IEnumerable<BeatmapSetInfo> BeatmapSets => GetContext().BeatmapSetInfo
-                                                                      .Include(s => s.Metadata)
-                                                                      .Include(s => s.Beatmaps).ThenInclude(s => s.Ruleset)
-                                                                      .Include(s => s.Beatmaps).ThenInclude(b => b.BaseDifficulty)
-                                                                      .Include(s => s.Beatmaps).ThenInclude(b => b.Metadata)
-                                                                      .Include(s => s.Files).ThenInclude(f => f.FileInfo);
+        public IQueryable<BeatmapSetInfo> BeatmapSets => GetContext().BeatmapSetInfo
+                                                                     .Include(s => s.Metadata)
+                                                                     .Include(s => s.Beatmaps).ThenInclude(s => s.Ruleset)
+                                                                     .Include(s => s.Beatmaps).ThenInclude(b => b.BaseDifficulty)
+                                                                     .Include(s => s.Beatmaps).ThenInclude(b => b.Metadata)
+                                                                     .Include(s => s.Files).ThenInclude(f => f.FileInfo);
 
-        public IEnumerable<BeatmapInfo> Beatmaps => GetContext().BeatmapInfo
-                                                                .Include(b => b.BeatmapSet).ThenInclude(s => s.Metadata)
-                                                                .Include(b => b.Metadata)
-                                                                .Include(b => b.Ruleset)
-                                                                .Include(b => b.BaseDifficulty);
+        public IQueryable<BeatmapInfo> Beatmaps => GetContext().BeatmapInfo
+                                                               .Include(b => b.BeatmapSet).ThenInclude(s => s.Metadata)
+                                                               .Include(b => b.Metadata)
+                                                               .Include(b => b.Ruleset)
+                                                               .Include(b => b.BaseDifficulty);
     }
 }

@@ -60,18 +60,24 @@ namespace osu.Game.Input
         }
 
         /// <summary>
-        /// Retrieve <see cref="KeyBinding"/>s for a specified ruleset/variant content.
+        /// Retrieve <see cref="DatabasedKeyBinding"/>s for a specified ruleset/variant content.
         /// </summary>
         /// <param name="rulesetId">The ruleset's internal ID.</param>
         /// <param name="variant">An optional variant.</param>
         /// <returns></returns>
-        public IEnumerable<KeyBinding> Query(int? rulesetId = null, int? variant = null) =>
-            GetContext().DatabasedKeyBinding.Where(b => b.RulesetID == rulesetId && b.Variant == variant);
+        public List<DatabasedKeyBinding> Query(int? rulesetId = null, int? variant = null) =>
+            GetContext().DatabasedKeyBinding.Where(b => b.RulesetID == rulesetId && b.Variant == variant).ToList();
 
         public void Update(KeyBinding keyBinding)
         {
+            var dbKeyBinding = (DatabasedKeyBinding)keyBinding;
+
             var context = GetContext();
-            context.Update(keyBinding);
+
+            Refresh(ref dbKeyBinding);
+
+            dbKeyBinding.KeyCombination = keyBinding.KeyCombination;
+
             context.SaveChanges();
 
             KeyBindingChanged?.Invoke();
