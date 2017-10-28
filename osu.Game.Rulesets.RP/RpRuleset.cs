@@ -11,13 +11,11 @@ using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.RP.DifficultyCalculator;
 using osu.Game.Rulesets.RP.KeyManager;
-using osu.Game.Rulesets.RP.Scoreing;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
 using osu.Game.Rulesets.RP.UI.GamePlay.RulesetContainer;
+using osu.Game.Rulesets.RP.UI.Piece;
 using osu.Game.Rulesets.RP.UI.Select.Info;
 using osu.Game.Rulesets.RP.UI.Select.RpMod;
 using osu.Game.Rulesets.RP.UI.Setting;
-using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.RP
@@ -79,12 +77,13 @@ namespace osu.Game.Rulesets.RP
         /// </summary>
         /// <returns></returns>
         public override SettingsSubsection CreateSettings() => new RpSettings();
+
         /// <summary>
         /// Do not override this unless you are a legacy mode.
         /// </summary>
         //public override int LegacyID => 1111;
-
         public static ResourceStore<byte[]> VitaruResources;
+
         public static TextureStore VitaruTextures;
 
         //public override int LegacyID => 0;
@@ -94,7 +93,7 @@ namespace osu.Game.Rulesets.RP
         {
             //TODO : use this or not
             VitaruResources = new ResourceStore<byte[]>();
-            VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.RP.dll"), ("Assets")));
+            VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.RP.dll"), "Assets"));
             VitaruResources.AddStore(new DllResourceStore("osu.Game.Rulesets.RP.dll"));
             VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
             VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));

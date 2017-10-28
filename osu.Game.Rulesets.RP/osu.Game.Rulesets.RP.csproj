@@ -96,6 +96,7 @@
     <Compile Include="Objects\Drawables\Interface\IHasGameFieldDrawable.cs" />
     <Compile Include="Objects\Drawables\Interface\IHasTemplate.cs" />
     <Compile Include="Objects\Interface\IHasContainChildType.cs" />
+    <Compile Include="Objects\Interface\IHasHoldToEarnExtraPoint.cs" />
     <Compile Include="Tests\HelloTestCase.cs" />
     <Compile Include="Tests\TestCaseEditableObjectRightClick.cs" />
     <Compile Include="UI\GamePlay\Playfield\Externsion\HitObjectRelationBindingExtension.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\ConnectionRenderer.cs" />
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\RpHitMulitpleObjectConnectionLine.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableBaseRpObject.cs" />
-    <Compile Include="Objects\Drawables\Play\DrawableRpContainerLineGroup.cs" />
+    <Compile Include="Objects\Drawables\Play\DrawableRpContainerGroup.cs" />
     <Compile Include="Objects\Drawables\RpDrawableJudgement\CoolDrawableJudgement.cs" />
     <Compile Include="Objects\Drawables\RpDrawableJudgement\FineDrawableJudgement.cs" />
     <Compile Include="Objects\Drawables\RpDrawableJudgement\SadDrawableJudgement.cs" />
@@ -154,10 +155,10 @@
     <Compile Include="UI\Setting\RpSettings.cs" />
     <Compile Include="Beatmaps\RPBeatmap\RpBeatmapProcessor.cs" />
     <Compile Include="RpRuleset.cs" />
-    <Compile Include="Objects\Drawables\Play\DrawableRpContainerLineHoldObject.cs" />
+    <Compile Include="Objects\Drawables\Play\DrawableRpRectangleHold.cs" />
     <Compile Include="Objects\Drawables\Play\DrawableBaseRpHitableObject.cs" />
     <Compile Include="UI\Piece\Pointer.cs" />
-    <Compile Include="Objects\Drawables\Play\DrawableRpHoldObject.cs" />
+    <Compile Include="Objects\Drawables\Play\DrawableRpHold.cs" />
     <Compile Include="UI\Piece\ExplodePiece.cs" />
     <Compile Include="UI\Piece\FlashPiece.cs" />
     <Compile Include="UI\Piece\GlowPiece.cs" />
@@ -171,7 +172,7 @@
     <Compile Include="UI\GamePlay\Playfield\Layout\HitObjectsConnector\HitObjectConnector.cs" />
     <Compile Include="Scoreing\RpScoreProcessor.cs" />
     <Compile Include="Objects\RpHit.cs" />
-    <Compile Include="Objects\Drawables\Play\DrawableRpHitObject.cs" />
+    <Compile Include="Objects\Drawables\Play\DrawableRpHit.cs" />
     <Compile Include="Objects\BaseRpHitableObject.cs" />
     <Compile Include="Objects\RpHold.cs" />
     <Compile Include="Objects\RpRectangleHold.cs" />

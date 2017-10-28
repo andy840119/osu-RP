@@ -92,14 +92,12 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap
         /// <returns>The converted Beatmap.</returns>
         protected override Beatmap<BaseRpObject> ConvertBeatmap(Beatmap original)
         {
-            
             //TODO : ・ｽﾒ考Mania・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
-            var newBratmaps= new Beatmap<BaseRpObject>()
+            var newBratmaps = new Beatmap<BaseRpObject>()
             {
                 BeatmapInfo = original.BeatmapInfo,
                 ControlPointInfo = original.ControlPointInfo,
                 HitObjects = convertHitObjects(original, original.BeatmapInfo?.StackLeniency ?? 0.7f),
-
             };
             //newBratmaps.HitObjects.BindingAll();
             return newBratmaps;

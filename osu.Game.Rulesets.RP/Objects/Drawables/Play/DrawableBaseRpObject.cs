@@ -7,12 +7,11 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
-using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
-using OpenTK.Graphics;
 using osu.Game.Rulesets.RP.Objects.Interface;
+using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
@@ -51,7 +50,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //建構樣板物件
         protected virtual void ConstructObject()
         {
-
         }
 
         //建構
@@ -118,7 +116,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
                     Expire(true);
                     break;
 
-                default: 
+                default:
 
                     this.Delay(duration + PreemptTime).FadeOut(FadeOutTime);
                     //this.FadeOutComponents(FadeOutTime);
@@ -153,7 +151,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             //更新物件位置
             this.UpdateTemplate(Time.Current);
         }
-
-        
     }
 }

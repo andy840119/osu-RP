@@ -10,7 +10,6 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Replays;
 using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using osu.Game.Users;
 
 namespace osu.Game.Rulesets.RP.Replays
