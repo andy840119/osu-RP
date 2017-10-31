@@ -8,6 +8,7 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Game.Beatmaps;
 using osu.Game.Graphics;
 using osu.Game.Rulesets.Karaoke.Objects;
+using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Replays;
 using osu.Game.Rulesets.Karaoke.UI;
 using osu.Game.Rulesets.Mods;
@@ -40,11 +41,11 @@ namespace osu.Game.Rulesets.Karaoke.Mods
 
         public void ApplyToRulesetContainer(RulesetContainer<OsuHitObject> rulesetContainer)
         {
-            rulesetContainer.Objects.OfType<OsuHitObject>().ForEach(h => h.Position = new Vector2(h.Position.X, OsuPlayfield.BASE_SIZE.Y - h.Y));
+            rulesetContainer.Objects.OfType<OsuHitObject>().ForEach(h => h.Position = new Vector2(h.Position.X, KaraokePlayfield.BASE_SIZE.Y - h.Y));
             rulesetContainer.Objects.OfType<Slider>().ForEach(s =>
             {
                 var newControlPoints = new List<Vector2>();
-                s.ControlPoints.ForEach(c => newControlPoints.Add(new Vector2(c.X, OsuPlayfield.BASE_SIZE.Y - c.Y)));
+                s.ControlPoints.ForEach(c => newControlPoints.Add(new Vector2(c.X, KaraokePlayfield.BASE_SIZE.Y - c.Y)));
 
                 s.ControlPoints = newControlPoints;
                 s.Curve?.Calculate(); // Recalculate the slider curve
@@ -121,7 +122,7 @@ namespace osu.Game.Rulesets.Karaoke.Mods
 
         protected override Score CreateReplayScore(Beatmap<OsuHitObject> beatmap) => new Score
         {
-            Replay = new OsuAutoGenerator(beatmap).Generate()
+            Replay = new KaraokeAutoGenerator(beatmap).Generate()
         };
     }
 

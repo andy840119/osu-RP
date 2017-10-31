@@ -86,17 +86,17 @@ namespace osu.Game.Rulesets.RP
 
         public static TextureStore VitaruTextures;
 
-        //public override int LegacyID => 0;
+        public override int LegacyID => 0;
 
         public RpRuleset(RulesetInfo rulesetInfo)
             : base(rulesetInfo)
         {
             //TODO : use this or not
-            VitaruResources = new ResourceStore<byte[]>();
-            VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.RP.dll"), "Assets"));
-            VitaruResources.AddStore(new DllResourceStore("osu.Game.Rulesets.RP.dll"));
-            VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
-            VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
+            //VitaruResources = new ResourceStore<byte[]>();
+            //VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.RP.dll"), "Assets"));
+            //VitaruResources.AddStore(new DllResourceStore("osu.Game.Rulesets.RP.dll"));
+            //VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
+            //VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
         }
     }
 }

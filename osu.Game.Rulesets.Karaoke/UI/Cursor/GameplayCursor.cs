@@ -16,7 +16,7 @@ using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Cursor
 {
-    public class GameplayCursor : CursorContainer, IKeyBindingHandler<OsuAction>
+    public class GameplayCursor : CursorContainer, IKeyBindingHandler<KaraokeAction>
     {
         protected override Drawable CreateCursor() => new OsuCursor();
 
@@ -132,12 +132,12 @@ namespace osu.Game.Rulesets.Karaoke.UI.Cursor
             }
         }
 
-        public bool OnPressed(OsuAction action)
+        public bool OnPressed(KaraokeAction action)
         {
             switch (action)
             {
-                case OsuAction.LeftButton:
-                case OsuAction.RightButton:
+                case KaraokeAction.LeftButton:
+                case KaraokeAction.RightButton:
                     downCount++;
                     ActiveCursor.ScaleTo(1).ScaleTo(1.2f, 100, Easing.OutQuad);
                     break;
@@ -146,12 +146,12 @@ namespace osu.Game.Rulesets.Karaoke.UI.Cursor
             return false;
         }
 
-        public bool OnReleased(OsuAction action)
+        public bool OnReleased(KaraokeAction action)
         {
             switch (action)
             {
-                case OsuAction.LeftButton:
-                case OsuAction.RightButton:
+                case KaraokeAction.LeftButton:
+                case KaraokeAction.RightButton:
                     if (--downCount == 0)
                         ActiveCursor.ScaleTo(1, 200, Easing.OutQuad);
                     break;

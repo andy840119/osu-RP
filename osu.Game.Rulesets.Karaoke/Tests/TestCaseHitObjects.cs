@@ -8,7 +8,8 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Timing;
 using osu.Game.Rulesets.Karaoke.Objects;
-using osu.Game.Rulesets.Karaoke.Objects.Drawables;
+using osu.Game.Rulesets.Karaoke.Osu_Objects;
+using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Tests.Visual;
 using OpenTK;
@@ -44,7 +45,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
                 Clock = framedClock,
                 Children = new[]
                 {
-                    playfieldContainer = new OsuInputManager(rulesets.GetRuleset(0)) { RelativeSizeAxes = Axes.Both },
+                    playfieldContainer = new KaraokeInputManager(rulesets.GetRuleset(0)) { RelativeSizeAxes = Axes.Both },
                     approachContainer = new Container { RelativeSizeAxes = Axes.Both }
                 }
             };
