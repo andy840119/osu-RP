@@ -33,6 +33,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// size of the font
         /// </summary>
-        public string FontSize { get; set; }
+        public int FontSize { get; set; } = 13;//default subText size is 13
     }
 }

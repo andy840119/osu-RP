@@ -18,6 +18,11 @@ using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.Karaoke
 {
+    /// <summary>
+    /// this the the lagacy karaoke project
+    /// and will not have any update version.
+    /// means that it will not looks like Joysound or other different Karakoe tools in the future : )
+    /// </summary>
     public class KaraokeRuleset : Ruleset
     {
         public override RulesetContainer CreateRulesetContainerWith(WorkingBeatmap beatmap, bool isForCurrentRuleset) => new KaraokeRulesetContainer(this, beatmap, isForCurrentRuleset);
@@ -111,7 +116,7 @@ namespace osu.Game.Rulesets.Karaoke
             }
         }
 
-        public override Drawable CreateIcon() => new SpriteIcon { Icon = FontAwesome.fa_osu_osu_o };
+        public override Drawable CreateIcon() => new SpriteIcon { Icon = FontAwesome.fa_question_circle_o };
 
         public override DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap) => new OsuDifficultyCalculator(beatmap);
 

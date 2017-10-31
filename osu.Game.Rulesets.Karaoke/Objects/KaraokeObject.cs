@@ -31,9 +31,22 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         public float Y => Position.Y;
 
         /// <summary>
+        /// width
+        /// </summary>
+        public float Width { get; set; }
+
+        /// <summary>
+        /// height
+        /// </summary>
+        public float Height { get; set; }
+
+        /// <summary>
         /// Main text
         /// </summary>
-        public TextObject MainText { get; set; }
+        public TextObject MainText { get; set; } =new TextObject()
+        {
+            FontSize = 25,//default Main text Size is 25
+        };
 
         /// <summary>
         /// List little aid text,like japanese's text
