@@ -33,12 +33,12 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// width
         /// </summary>
-        public float Width { get; set; }
+        public float Width { get; set; } = 512;
 
         /// <summary>
         /// height
         /// </summary>
-        public float Height { get; set; }
+        public float Height { get; set; } = 100;
 
         /// <summary>
         /// Main text
@@ -46,6 +46,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         public TextObject MainText { get; set; } =new TextObject()
         {
             FontSize = 25,//default Main text Size is 25
+            Position = new Vector2(0,70),//位置定義總是至左，靠下面
         };
 
         /// <summary>

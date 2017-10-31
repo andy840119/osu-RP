@@ -24,7 +24,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                 },
                 new SettingsCheckbox
                 {
-                    LabelText = "Snaking out sliders",
+                    LabelText = "Always shows the karaoke panel",
                     //Bindable = config.GetBindable<bool>(OsuSetting.SnakingOutSliders)
                 },
             };

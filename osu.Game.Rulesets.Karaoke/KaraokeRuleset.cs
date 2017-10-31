@@ -120,7 +120,7 @@ namespace osu.Game.Rulesets.Karaoke
 
         public override DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap) => new OsuDifficultyCalculator(beatmap);
 
-        public override string Description => "Karaoke!";
+        public override string Description => "カラオケ!";
 
         public override SettingsSubsection CreateSettings() => new KaraokeSettings();
 
