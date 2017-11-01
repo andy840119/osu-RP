@@ -24,7 +24,11 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
         public TextsAndMask()
         {
-
+            Children = new Drawable[]
+            {
+                LeftSideText,
+                //RightSideText,
+            };
         }
 
         public void AddText(TextObject textObject)
@@ -77,7 +81,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
             public SingleSideOfAndMask()
             {
-                UpdateChild();
+               // UpdateChild();
             }
 
             public void AddText(TextObject textObject)
@@ -100,7 +104,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
                     _listDrawableText.Add(GetTextByTextObject(singleText));
                 }
                 Children = _listDrawableText.ToArray();
-                //Children.ToList().Add(maskConttainer);
+                Children.ToList().Add(maskConttainer);
             }
 
             public void SetHeight(float height)

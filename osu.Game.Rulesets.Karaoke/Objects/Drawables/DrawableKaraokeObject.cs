@@ -35,10 +35,17 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             {
                 TextsAndMaskPiece.AddText(singleText);
             }
+
             TextsAndMaskPiece.SetWidth(hitObject.Width);
             TextsAndMaskPiece.SetHeight(hitObject.Height);
 
-            Children = TextsAndMaskPiece;
+            Width = hitObject.Width;
+            Height = hitObject.Height;
+
+            Children = new Drawable[]
+            {
+                TextsAndMaskPiece,
+            };
         }
 
         protected sealed override void UpdateState(ArmedState state)
