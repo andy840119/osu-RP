@@ -8,6 +8,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Objects.Drawables;
 
@@ -22,17 +23,22 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         public const float TIME_FADEIN = 400;
         public const float TIME_FADEOUT = 500;
 
-        protected DrawableKaraokeObject(KaraokeObject hitObject)
+        protected TextsAndMask TextsAndMaskPiece=new TextsAndMask();
+
+        public DrawableKaraokeObject(KaraokeObject hitObject)
             : base(hitObject)
         {
             Alpha = 0;
 
-            //put all the text as child
-            var listComponent = InitialTextContainer(hitObject);
-            //add to child
-            Children = listComponent.ToArray();
-            //Add Background and mask
-            Children.ToList().Add(InitialBackground(hitObject));
+            TextsAndMaskPiece.AddText(hitObject.MainText);
+            foreach (var singleText in hitObject.ListSubTextObject)
+            {
+                TextsAndMaskPiece.AddText(singleText);
+            }
+            TextsAndMaskPiece.SetWidth(hitObject.Width);
+            TextsAndMaskPiece.SetHeight(hitObject.Height);
+
+            Children = TextsAndMaskPiece;
         }
 
         protected sealed override void UpdateState(ArmedState state)
@@ -50,51 +56,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             }
         }
 
-        /// <summary>
-        /// generate background and mask
-        /// </summary>
-        protected Container InitialBackground(KaraokeObject hitObject)
-        {
-            Container container=new Container();
-            container.Width = hitObject.Width;
-            container.Height = hitObject.Height;
-            container.Masking = true;
-            return container;
-        }
-
-        /// <summary>
-        /// generate list text
-        /// </summary>
-        /// <param name="hitObject"></param>
-        /// <returns></returns>
-        protected List<OsuSpriteText> InitialTextContainer(KaraokeObject hitObject)
-        {
-            List<OsuSpriteText> text = new List<OsuSpriteText>();
-
-            text.Add(GetTextByTextObject(hitObject.MainText));
-
-            foreach (var singleText in hitObject.ListSubTextObject)
-            {
-                text.Add(GetTextByTextObject(singleText));
-            }
-
-            return text;
-        }
-
-        protected OsuSpriteText GetTextByTextObject(TextObject textObject)
-        {
-            return new OsuSpriteText
-            {
-                Text = textObject.Text,
-                Font = @"Venera",
-                UseFullGlyphHeight = false,
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                TextSize = textObject.FontSize,
-                Alpha = 1
-            };
-        }
-
         protected virtual void UpdateInitialState()
         {
             Hide();
@@ -108,6 +69,11 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         protected virtual void UpdateCurrentState(ArmedState state)
         {
 
+        }
+
+        protected virtual void MovingMask(float newValue)
+        {
+            TextsAndMaskPiece.MovingMask(newValue);
         }
 
         private KaraokeInputManager karaokeActionInputManager;

@@ -11,6 +11,7 @@ namespace osu.Game.Rulesets.Karaoke
     {
         public KaraokeInputManager(RulesetInfo ruleset) : base(ruleset, 0, SimultaneousBindingMode.Unique)
         {
+
         }
     }
 

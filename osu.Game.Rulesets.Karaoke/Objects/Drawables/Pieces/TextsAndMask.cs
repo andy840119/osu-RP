@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
+using OpenTK;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
@@ -19,18 +22,18 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
         private float _maskHeight;
 
-        protected TextsAndMask()
+        public TextsAndMask()
         {
 
         }
 
-        protected void AddText(TextObject textObject)
+        public void AddText(TextObject textObject)
         {
             LeftSideText.AddText(textObject);
             RightSideText.AddText(textObject);
         }
 
-        protected void RemoveText(TextObject textObject)
+        public void RemoveText(TextObject textObject)
         {
             LeftSideText.RemoveText(textObject);
             RightSideText.RemoveText(textObject);
@@ -39,23 +42,19 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
         public void SetWidth(float width)
         {
             _maskWidth = width;
-            LeftSideText.SetWidth(_maskWidth);
-            RightSideText.SetWidth(_maskWidth);
         }
 
         public void SetHeight(float height)
         {
             _maskHeight = height;
-            LeftSideText.SetWidth(_maskHeight);
-            RightSideText.SetWidth(_maskHeight);
+            LeftSideText.SetHeight(_maskHeight);
+            RightSideText.SetHeight(_maskHeight);
         }
 
-        protected void MovingMask(float newValue)
+        public void MovingMask(float newValue)
         {
-            LeftSideText.SetMaskStartPosition(0);
-            LeftSideText.SetMaskEndPosition(newValue);
-            RightSideText.SetMaskStartPosition(newValue);
-            RightSideText.SetMaskEndPosition(_maskWidth);
+            LeftSideText.SetMaskStartAndEndPosition(0, newValue);
+            RightSideText.SetMaskStartAndEndPosition(newValue, _maskWidth);
         }
 
         public void SetColor(Color4 color)
@@ -72,7 +71,9 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
                 Masking = true,
             };
 
-            private List<OsuSpriteText> _listText=new List<OsuSpriteText>();
+            private List<TextObject> _listText = new List<TextObject>();
+            private List<Drawable> _listDrawableText=new List<Drawable>();
+            private float _height;
 
             public SingleSideOfAndMask()
             {
@@ -81,45 +82,57 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
             public void AddText(TextObject textObject)
             {
+                _listText.Add(textObject);
                 UpdateChild();
             }
 
             public void RemoveText(TextObject textObject)
             {
-
+                _listText.Remove(textObject);
                 UpdateChild();
             }
 
             protected void UpdateChild()
             {
-
-            }
-
-
-            public void SetWidth(float width)
-            {
-
+                _listDrawableText.Clear();
+                foreach (var singleText in _listText)
+                {
+                    _listDrawableText.Add(GetTextByTextObject(singleText));
+                }
+                Children = _listDrawableText.ToArray();
+                //Children.ToList().Add(maskConttainer);
             }
 
             public void SetHeight(float height)
             {
-
+                _height = height;
+                maskConttainer.Height = height;
             }
 
-
-            public void SetMaskStartPosition(float positionX)
+            public void SetMaskStartAndEndPosition(float startPositionX, float endPositionX)
             {
-
-            }
-
-            public void SetMaskEndPosition(float positionX)
-            {
-
+                maskConttainer.Position = new Vector2(0, startPositionX);
+                maskConttainer.Width = endPositionX - startPositionX;
             }
 
             public void SetColor(Color4 color)
             {
+                
+            }
 
+            protected OsuSpriteText GetTextByTextObject(TextObject textObject)
+            {
+                return new OsuSpriteText
+                {
+                    Text = textObject.Text,
+                    Font = @"Venera",
+                    UseFullGlyphHeight = false,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    TextSize = textObject.FontSize,
+                    Alpha = 1,
+                    ShadowColour = Color4.Orange,
+                };
             }
         }
     }
