@@ -23,6 +23,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
         private readonly Container judgementLayer;
         private readonly ConnectionRenderer<OsuHitObject> connectionLayer;
 
+        private readonly KaraokePanelOverlay karaokePanelOverlay;
+
         public override bool ProvidingUserCursor => true;
 
         public static readonly Vector2 BASE_SIZE = new Vector2(512, 384);
@@ -60,6 +62,12 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     RelativeSizeAxes = Axes.Both,
                     Depth = -1,
                 },
+                karaokePanelOverlay=new KaraokePanelOverlay()
+                {
+                    RelativeSizeAxes = Axes.X,
+                    Origin = Anchor.BottomCentre,
+                    Anchor = Anchor.BottomCentre,
+                }
             });
         }
 

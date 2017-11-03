@@ -11,6 +11,7 @@ using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Framework.Configuration;
 
 namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 {
@@ -25,10 +26,13 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 
         protected TextsAndMask TextsAndMaskPiece=new TextsAndMask();
 
+        protected double _nowProgress;
+
         public DrawableKaraokeObject(KaraokeObject hitObject)
             : base(hitObject)
         {
             Alpha = 0;
+            TextsAndMaskPiece.SetColor(OpenTK.Graphics.Color4.Blue);
 
             TextsAndMaskPiece.AddText(hitObject.MainText);
             foreach (var singleText in hitObject.ListSubTextObject)
@@ -39,6 +43,8 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             TextsAndMaskPiece.SetWidth(hitObject.Width);
             TextsAndMaskPiece.SetHeight(hitObject.Height);
 
+            
+
             Width = hitObject.Width;
             Height = hitObject.Height;
 
@@ -46,6 +52,16 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             {
                 TextsAndMaskPiece,
             };
+        }
+
+        public double Progress
+        {
+            get => new double();
+            set
+            {
+                _nowProgress = value;
+                TextsAndMaskPiece.MovingMask((float)_nowProgress);
+            }
         }
 
         protected sealed override void UpdateState(ArmedState state)

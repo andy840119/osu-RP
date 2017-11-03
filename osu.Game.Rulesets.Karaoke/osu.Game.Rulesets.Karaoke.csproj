@@ -91,8 +91,10 @@
     <Compile Include="Replays\KaraokeReplayInputHandler.cs" />
     <Compile Include="Tests\TestCaseHitObjects.cs" />
     <Compile Include="Tests\TestCaseKaraokeObject.cs" />
+    <Compile Include="Tests\TestCaseKaraokePanel.cs" />
     <Compile Include="UI\Cursor\CursorTrail.cs" />
     <Compile Include="UI\Cursor\GameplayCursor.cs" />
+    <Compile Include="UI\KaraokePanelOverlay.cs" />
     <Compile Include="UI\KaraokeSettings.cs" />
     <Compile Include="Scoring\KaraokeScoreProcessor.cs" />
     <Compile Include="UI\KaraokeRulesetContainer.cs" />

@@ -14,9 +14,9 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 {
     public class TextsAndMask : Container
     {
-        protected SingleSideOfAndMask LeftSideText { get; set; }=new SingleSideOfAndMask();
+        protected SingleSideOfAndMask LeftSideText { get; set; } = new SingleSideOfAndMask();
 
-        protected SingleSideOfAndMask RightSideText { get; set; }=new SingleSideOfAndMask();
+        protected SingleSideOfAndMask RightSideText { get; set; } = new SingleSideOfAndMask();
 
         private float _maskWidth;
 
@@ -26,8 +26,8 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
         {
             Children = new Drawable[]
             {
+                RightSideText,
                 LeftSideText,
-                //RightSideText,
             };
         }
 
@@ -65,18 +65,14 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
         {
             LeftSideText.SetColor(color);
             //Right side is white
-            RightSideText.SetColor(new Color4(1,1,1,1));
+            RightSideText.SetColor(Color4.White);
         }
 
         protected class SingleSideOfAndMask : Container
         {
-            private Container maskConttainer = new Container()
-            {
-                Masking = true,
-            };
-
             private List<TextObject> _listText = new List<TextObject>();
             private List<Drawable> _listDrawableText=new List<Drawable>();
+            private Color4 _textColor = new Color4();
             private float _height;
 
             public SingleSideOfAndMask()
@@ -104,24 +100,30 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
                     _listDrawableText.Add(GetTextByTextObject(singleText));
                 }
                 Children = _listDrawableText.ToArray();
-                Children.ToList().Add(maskConttainer);
+                Masking = true;
             }
 
             public void SetHeight(float height)
             {
                 _height = height;
-                maskConttainer.Height = height;
+                this.Height = _height;
             }
 
             public void SetMaskStartAndEndPosition(float startPositionX, float endPositionX)
             {
-                maskConttainer.Position = new Vector2(0, startPositionX);
-                maskConttainer.Width = endPositionX - startPositionX;
+                this.Position = new Vector2(startPositionX, 0);
+
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    Children[i].Position= _listText[i].Position- this.Position;
+                }
+                this.Width= endPositionX - startPositionX;
             }
 
             public void SetColor(Color4 color)
             {
-                
+                _textColor = color;
+                this.Colour = _textColor;
             }
 
             protected OsuSpriteText GetTextByTextObject(TextObject textObject)
@@ -129,13 +131,15 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
                 return new OsuSpriteText
                 {
                     Text = textObject.Text,
-                    Font = @"Venera",
+                    //Font = @"Venera",
                     UseFullGlyphHeight = false,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
                     TextSize = textObject.FontSize,
                     Alpha = 1,
-                    ShadowColour = Color4.Orange,
+                    //ShadowColour = _textColor,
+                    Position = textObject.Position,
+                    //BorderColour = _textColor,
                 };
             }
         }
