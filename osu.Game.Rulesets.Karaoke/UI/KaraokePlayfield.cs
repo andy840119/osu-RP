@@ -17,16 +17,17 @@ using OpenTK;
 using osu.Game.Beatmaps;
 using osu.Game.Graphics.UserInterface;
 using osu.Framework.Timing;
+using osu.Game.Rulesets.Karaoke.UI.Interface;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
     /// <summary>
     /// Karaoke PlayField
     /// </summary>
-    public class KaraokePlayfield : Playfield
+    public class KaraokePlayfield : Playfield, IAmKaraokeField
     {
-        public Ruleset Ruleset;
-        public WorkingBeatmap Beatmap;
+        public Ruleset Ruleset { get; set; }
+        public WorkingBeatmap Beatmap { get; set; }
 
         private readonly Container approachCircles;
         private readonly Container judgementLayer;
@@ -53,6 +54,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public KaraokePlayfield(Ruleset ruleset, WorkingBeatmap beatmap) : base(BASE_SIZE.X)
         {
+           
             Ruleset = ruleset;
             Beatmap = beatmap;
 
@@ -94,13 +96,13 @@ namespace osu.Game.Rulesets.Karaoke.UI
                          }
                     }
                 },
-                karaokePanelOverlay=new KaraokePanelOverlay()
+                karaokePanelOverlay=new KaraokePanelOverlay(this)
                 {
                     Clock=new FramedClock(new StopwatchClock(true)),
                     RelativeSizeAxes = Axes.X,
                     Origin = Anchor.BottomCentre,
                     Anchor = Anchor.BottomCentre,
-                    Position=new Vector2(0,-100),
+                    Position=new Vector2(-100,-100),
                 },
             });
         }

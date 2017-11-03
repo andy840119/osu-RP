@@ -95,6 +95,8 @@
     <Compile Include="Tests\TestCasePlayField.cs" />
     <Compile Include="UI\Cursor\CursorTrail.cs" />
     <Compile Include="UI\Cursor\GameplayCursor.cs" />
+    <Compile Include="UI\Extension\KaraokeFieldExtension.cs" />
+    <Compile Include="UI\Interface\IAmKaraokeField.cs" />
     <Compile Include="UI\Panel\KaraokePanelOverlay.cs" />
     <Compile Include="UI\KaraokeSettings.cs" />
     <Compile Include="Scoring\KaraokeScoreProcessor.cs" />
