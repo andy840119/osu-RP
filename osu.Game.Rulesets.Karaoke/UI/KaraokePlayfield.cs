@@ -14,14 +14,23 @@ using osu.Game.Rulesets.Karaoke.UI.Cursor;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.UI;
 using OpenTK;
+using osu.Game.Beatmaps;
+using osu.Game.Graphics.UserInterface;
+using osu.Framework.Timing;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
+    /// <summary>
+    /// Karaoke PlayField
+    /// </summary>
     public class KaraokePlayfield : Playfield
     {
+        public Ruleset Ruleset;
+        public WorkingBeatmap Beatmap;
+
         private readonly Container approachCircles;
         private readonly Container judgementLayer;
-        private readonly ConnectionRenderer<OsuHitObject> connectionLayer;
+        private readonly Container connectionLayer;
 
         private readonly KaraokePanelOverlay karaokePanelOverlay;
 
@@ -29,6 +38,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public static readonly Vector2 BASE_SIZE = new Vector2(512, 384);
 
+        
         public override Vector2 Size
         {
             get
@@ -39,19 +49,18 @@ namespace osu.Game.Rulesets.Karaoke.UI
                 return new Vector2(aspectSize.X / parentSize.X, aspectSize.Y / parentSize.Y) * base.Size;
             }
         }
+        
 
-        public KaraokePlayfield() : base(BASE_SIZE.X)
+        public KaraokePlayfield(Ruleset ruleset, WorkingBeatmap beatmap) : base(BASE_SIZE.X)
         {
+            Ruleset = ruleset;
+            Beatmap = beatmap;
+
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
 
             AddRange(new Drawable[]
             {
-                connectionLayer = new FollowPointRenderer
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = 2,
-                },
                 judgementLayer = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
@@ -62,12 +71,37 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     RelativeSizeAxes = Axes.Both,
                     Depth = -1,
                 },
+                connectionLayer = new Container
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Depth = -2,
+                    Clock=new FramedClock(new StopwatchClock(true)),
+                    Children=new Drawable[]
+                    {
+                         new OsuButton()
+                         {
+                            //Origin = Anchor.BottomRight,
+                            //Anchor = Anchor.BottomRight,
+                            
+                            Position=new Vector2(0,0),
+                            Width=70,
+                            Height=30,
+                            Text="Panel",
+                            Action=()=>
+                            {
+                                karaokePanelOverlay.ToggleVisibility();
+                            }
+                         }
+                    }
+                },
                 karaokePanelOverlay=new KaraokePanelOverlay()
                 {
+                    Clock=new FramedClock(new StopwatchClock(true)),
                     RelativeSizeAxes = Axes.X,
                     Origin = Anchor.BottomCentre,
                     Anchor = Anchor.BottomCentre,
-                }
+                    Position=new Vector2(0,-100),
+                },
             });
         }
 
@@ -90,9 +124,10 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public override void PostProcess()
         {
-            connectionLayer.HitObjects = HitObjects.Objects
-                .Select(d => d.HitObject)
-                .OrderBy(h => h.StartTime).OfType<OsuHitObject>();
+            return ;
+            //connectionLayer.HitObjects = HitObjects.Objects
+            //    .Select(d => d.HitObject)
+            //    .OrderBy(h => h.StartTime).OfType<OsuHitObject>();
         }
 
         public override void OnJudgement(DrawableHitObject judgedObject, Judgement judgement)

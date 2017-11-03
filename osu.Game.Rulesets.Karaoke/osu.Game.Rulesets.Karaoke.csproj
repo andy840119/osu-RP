@@ -92,9 +92,10 @@
     <Compile Include="Tests\TestCaseHitObjects.cs" />
     <Compile Include="Tests\TestCaseKaraokeObject.cs" />
     <Compile Include="Tests\TestCaseKaraokePanel.cs" />
+    <Compile Include="Tests\TestCasePlayField.cs" />
     <Compile Include="UI\Cursor\CursorTrail.cs" />
     <Compile Include="UI\Cursor\GameplayCursor.cs" />
-    <Compile Include="UI\KaraokePanelOverlay.cs" />
+    <Compile Include="UI\Panel\KaraokePanelOverlay.cs" />
     <Compile Include="UI\KaraokeSettings.cs" />
     <Compile Include="Scoring\KaraokeScoreProcessor.cs" />
     <Compile Include="UI\KaraokeRulesetContainer.cs" />
@@ -109,6 +110,9 @@
     <Compile Include="Mods\OsuMod.cs" />
     <Compile Include="Replays\KaraokeAutoGenerator.cs" />
     <Compile Include="Replays\KaraokeAutoGeneratorBase.cs" />
+    <Compile Include="UI\Panel\Pieces\KaraokeIntroduceText.cs" />
+    <Compile Include="UI\Panel\Pieces\KaraokeTimerSliderBar.cs" />
+    <Compile Include="UI\Panel\Pieces\WithUpAndDownButtonSlider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\osu.licenseheader">
