@@ -1,6 +1,8 @@
-﻿using osu.Game.Beatmaps;
+﻿using osu.Framework.Graphics;
+using osu.Game.Beatmaps;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +14,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Interface
     /// </summary>
     public interface IAmKaraokeField
     {
-         Ruleset Ruleset { get;  }
-         WorkingBeatmap Beatmap { get; }
+        Ruleset Ruleset { get; }
+        WorkingBeatmap WorkingBeatmap { get; }
     }
 }

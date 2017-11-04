@@ -27,7 +27,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
     public class KaraokePlayfield : Playfield, IAmKaraokeField
     {
         public Ruleset Ruleset { get; set; }
-        public WorkingBeatmap Beatmap { get; set; }
+        public WorkingBeatmap WorkingBeatmap { get; set; }
 
         private readonly Container approachCircles;
         private readonly Container judgementLayer;
@@ -56,7 +56,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
         {
            
             Ruleset = ruleset;
-            Beatmap = beatmap;
+            WorkingBeatmap = beatmap;
 
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
@@ -104,7 +104,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     Anchor = Anchor.BottomCentre,
                     Position=new Vector2(-100,-100),
                     Scale=new Vector2(1.0f),
-                    Depth = -3,
+                    Depth = -1.5f,
                 },
             });
         }

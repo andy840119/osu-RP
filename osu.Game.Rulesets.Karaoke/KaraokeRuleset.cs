@@ -29,6 +29,7 @@ namespace osu.Game.Rulesets.Karaoke
 
         public override IEnumerable<KeyBinding> GetDefaultKeyBindings(int variant = 0) => new[]
         {
+            //TODO : will remove
             new KeyBinding(InputKey.Z, KaraokeAction.LeftButton),
             new KeyBinding(InputKey.X, KaraokeAction.RightButton),
             new KeyBinding(InputKey.MouseLeft, KaraokeAction.LeftButton),
@@ -48,6 +49,10 @@ namespace osu.Game.Rulesets.Karaoke
 
         public override IEnumerable<BeatmapStatistic> GetBeatmapStatistics(WorkingBeatmap beatmap) => new[]
             {
+
+            //TODO Change to foreach and calculate each singer's lyric number
+            
+
             new BeatmapStatistic
             {
                 Name = @"Circle count",

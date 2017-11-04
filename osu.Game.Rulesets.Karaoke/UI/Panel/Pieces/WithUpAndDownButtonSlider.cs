@@ -12,7 +12,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
     /// <summary>
     /// it's a slider with up and down button
     /// </summary>
-    public class WithUpAndDownButtonSlider : OsuSliderBar<double>
+    public class WithUpAndDownButtonSlider : OsuSliderBar<float>
     {
         public EventHandler<double> OnValueChanged;
 
@@ -28,8 +28,32 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         /// </summary>
         public KaraokeButton IncreaseButton;
 
-      
+        public float MinValue
+        {
+            get => CurrentNumber.MinValue;
+            set
+            {
+                CurrentNumber.MinValue = value;
+            }
+        }
 
+        public float MaxValue
+        {
+            get => CurrentNumber.MaxValue;
+            set
+            {
+                CurrentNumber.MaxValue = value;
+            }
+        }
+
+        public float Value
+        {
+            get => CurrentNumber.Value;
+            set
+            {
+                CurrentNumber.Value = value;
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -57,7 +81,8 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                 TooltipText = "Decrease",
                 Action = () =>
                 {
-
+                    float newValue = Value - KeyboardStep;
+                    Value = newValue;
                 }
             });
 
@@ -72,7 +97,8 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                 TooltipText = "Increase",
                 Action = () =>
                 {
-
+                    float newValue = Value + KeyboardStep;
+                    Value = newValue;
                 }
             });
            
@@ -93,8 +119,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         protected override void UpdateValue(float value)
         {
             base.UpdateValue(value);
+
             if (OnValueChanged != null)
-                OnValueChanged(this, value);
+                OnValueChanged(this, Value);
         }
     }
 }

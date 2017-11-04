@@ -59,9 +59,9 @@ namespace osu.Game.Rulesets.Karaoke.UI
         /// <param name="action">Action.</param>
         public bool OnPressed(KaraokeAction action)
         {
-	        switch (action)
-	        {
-		        case KaraokeAction.FirstLyric:
+            switch (action)
+            {
+                case KaraokeAction.FirstLyric:
                     FirstLyricButton.Action?.Invoke();
                     break;
                 case KaraokeAction.PreviousLyric:
@@ -95,10 +95,16 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     break;
             }
 
-	        return false;
+            return false;
         }
 
-        public bool OnReleased(KaraokeAction action) => false;
+        public bool OnReleased(KaraokeAction action) => true;
+
+        protected override void Update()
+        {
+            //Update current time
+            double current=
+        }
 
         public KaraokePanelOverlay(IAmKaraokeField playField = null)
         {
@@ -258,10 +264,14 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     Position=new Vector2(startXPositin + 60, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
                                     Width=150,
-                                     OnValueChanged = (eaa,newValue)=>
-                                     {
-                                         playField?.AdjustSpeed(newValue);
-                                     },
+                                    MinValue=0.5f,
+                                    MaxValue=1.5f,
+                                    Value=1,
+                                    KeyboardStep=0.1f,
+                                    OnValueChanged = (eaa,newValue)=>
+                                    {
+                                        playField?.AdjustSpeed(newValue);
+                                    },
                                 },
 
                                  //"tone" introduce
@@ -278,6 +288,10 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     Position=new Vector2(startXPositin + 340, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
                                     Width=150,
+                                    MinValue=0.5f,
+                                    MaxValue=1.5f,
+                                    Value=1.0f,
+                                    KeyboardStep=0.1f,
                                      OnValueChanged = (eaa,newValue)=>
                                      {
                                          playField?.AdjustTone(newValue);
@@ -298,6 +312,10 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     Position=new Vector2(startXPositin + 630, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
                                     Width=150,
+                                    MinValue=-5.0f,
+                                    MaxValue=5.0f,
+                                    Value=0,
+                                    KeyboardStep=0.5f,
                                      OnValueChanged = (eaa,newValue)=>
                                      {
                                          playField?.AdjustlyricsOffset(newValue);
