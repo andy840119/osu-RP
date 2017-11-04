@@ -30,10 +30,9 @@ namespace osu.Game.Rulesets.Karaoke.UI
     /// </summary>
     public class KaraokePanelOverlay : WaveOverlayContainer
     {
-        private const int button_duration = 700;
-        private const int ranked_multiplier_duration = 700;
         private const float content_width = 0.8f;
 
+        //define the position of object
         private const int oneLayerYPosition = 30;
         private const int twoLayerYPosition = 75;
         private const int objectHeight = 30;
@@ -251,9 +250,5 @@ namespace osu.Game.Rulesets.Karaoke.UI
                 },
             };
         }
-
-        public static int ObjectHeight => ObjectHeight1;
-
-        public static int ObjectHeight1 => objectHeight;
     }
 }
