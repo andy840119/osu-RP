@@ -65,6 +65,12 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// Each singer has different Text color
         /// </summary>
         public int SingerIndex { get; set; } = 0;
+
+        /// <summary>
+        /// all the translate for a single language
+        /// </summary>
+        /// <value>The list trans late.</value>
+        public List<KaraokeTranslateString> ListTransLate { get; set; } = new List<KaraokeTranslateString>();
     
     }
 }

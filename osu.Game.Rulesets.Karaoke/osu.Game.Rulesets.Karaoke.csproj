@@ -107,6 +107,7 @@
     <Compile Include="Mods\OsuMod.cs" />
     <Compile Include="Replays\KaraokeAutoGenerator.cs" />
     <Compile Include="Replays\KaraokeAutoGeneratorBase.cs" />
+    <Compile Include="Objects\KaraokeTranslateString.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\osu.licenseheader">
