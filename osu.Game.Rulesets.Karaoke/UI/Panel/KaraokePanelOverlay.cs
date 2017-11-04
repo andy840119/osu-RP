@@ -159,7 +159,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 },
 
                                 //Play and pause
-                                new KaraokeButton()
+                                new KaraokePlayPauseButton()
                                 {
                                      Position=new Vector2(startXPositin + 200, oneLayerYPosition),
                                      Origin = Anchor.CentreLeft,
