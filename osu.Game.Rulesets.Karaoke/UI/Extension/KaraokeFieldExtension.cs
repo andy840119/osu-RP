@@ -98,7 +98,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         /// use to get the current time
         /// </summary>
         /// <returns></returns>
-        public static double GetBeatmapFrameClock(this IAmKaraokeField karaokeField)
+        public static double GetCurrentTime(this IAmKaraokeField karaokeField)
         {
             return karaokeField.WorkingBeatmap.Track.CurrentTime;
         }

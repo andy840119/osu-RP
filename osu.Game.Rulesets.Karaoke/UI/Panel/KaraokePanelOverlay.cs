@@ -31,6 +31,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
     /// </summary>
     public class KaraokePanelOverlay : WaveOverlayContainer, IKeyBindingHandler<KaraokeAction>
     {
+        private IAmKaraokeField PlayField;
+
         private const float content_width = 0.8f;
 
         //define the position of object
@@ -39,7 +41,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
         private const int objectHeight = 30;
         private const int startXPositin = -60;
 
-
+        //panel container
         private Container panelContainer;
 
         //TODO : all the setting object
@@ -102,12 +104,19 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         protected override void Update()
         {
-            //Update current time
-            double current=
+            if (PlayField != null)
+            {
+                //Update current time
+                double current = PlayField.GetCurrentTime();
+                TimeSlideBar.CurrentTime = current;
+            }
+           
         }
 
         public KaraokePanelOverlay(IAmKaraokeField playField = null)
         {
+            PlayField = playField;
+
             FirstWaveColour = OsuColour.FromHex(@"19b0e2").Opacity(50);
             SecondWaveColour = OsuColour.FromHex(@"2280a2").Opacity(50);
             ThirdWaveColour = OsuColour.FromHex(@"005774").Opacity(50);
@@ -244,6 +253,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     Position=new Vector2(startXPositin + 280, oneLayerYPosition),
                                     Origin = Anchor.CentreLeft,
                                     Width=500,
+                                    StartTime=playField!=null?(playField?.FirstObjectTime()).Value : 0,
+                                    EndTime=playField!=null?(playField?.LastObjectTime()).Value : 100000,//1:40
                                     OnValueChanged = (eaa,newValue)=>
                                     {
                                         playField?.NavigateToTime(newValue);
