@@ -113,6 +113,7 @@
     <Compile Include="Mods\OsuMod.cs" />
     <Compile Include="Replays\KaraokeAutoGenerator.cs" />
     <Compile Include="Replays\KaraokeAutoGeneratorBase.cs" />
+    <Compile Include="UI\Panel\Pieces\KaraokeButton.cs" />
     <Compile Include="UI\Panel\Pieces\KaraokeIntroduceText.cs" />
     <Compile Include="UI\Panel\Pieces\KaraokeTimerSliderBar.cs" />
     <Compile Include="UI\Panel\Pieces\WithUpAndDownButtonSlider.cs" />

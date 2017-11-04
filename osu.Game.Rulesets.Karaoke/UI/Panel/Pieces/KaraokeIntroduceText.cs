@@ -5,18 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Cursor;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 {
-    public class KaraokeIntroduceText : OsuSpriteText
+    public class KaraokeIntroduceText : OsuSpriteText, IHasTooltip
     {
         public KaraokeIntroduceText()
         {
             UseFullGlyphHeight = false;
+            Origin = Anchor.CentreLeft;
             Anchor = Anchor.TopLeft;
-            Origin = Anchor.TopLeft;
-            TextSize = 10;
+            TextSize = 20;
             Alpha = 1;
         }
+
+        public string TooltipText { get; set; }
     }
 }

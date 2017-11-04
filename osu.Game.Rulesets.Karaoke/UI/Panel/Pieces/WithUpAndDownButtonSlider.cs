@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using osu.Framework.Graphics;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 {
@@ -12,8 +13,13 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
     /// </summary>
     public class WithUpAndDownButtonSlider : OsuSliderBar<double>
     {
+        public EventHandler<double> OnValueChanged;
+
         public WithUpAndDownButtonSlider()
         {
+           // Origin = Anchor.Centre;
+           // Anchor = Anchor.Centre;
+
             CurrentNumber.MinValue = 0;
             CurrentNumber.MaxValue = 1;
             //RelativeSizeAxes = Axes.X;
@@ -36,6 +42,8 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         protected override void UpdateValue(float value)
         {
             base.UpdateValue(value);
+            if (OnValueChanged != null)
+                OnValueChanged(this, value);
         }
     }
 }

@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using osu.Game.Rulesets.Karaoke.UI.Extension;
+using osu.Game.Rulesets.Karaoke.UI.Interface;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -32,15 +34,15 @@ namespace osu.Game.Rulesets.Karaoke.UI
         private const int ranked_multiplier_duration = 700;
         private const float content_width = 0.8f;
 
-        private const int oneLayerYPosition = 5;
-
-        private const int twoLayerYPosition = 35;
-
+        private const int oneLayerYPosition = 30;
+        private const int twoLayerYPosition = 75;
         private const int objectHeight = 30;
+        private const int startXPositin = -60;
+
 
         private Container panelContainer;
 
-        public KaraokePanelOverlay(Playfield playField = null)
+        public KaraokePanelOverlay(IAmKaraokeField playField = null)
         {
             FirstWaveColour = OsuColour.FromHex(@"19b0e2").Opacity(50);
             SecondWaveColour = OsuColour.FromHex(@"2280a2").Opacity(50);
@@ -97,66 +99,88 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 //"sentence" introduce text
                                 new KaraokeIntroduceText
                                 {
-                                    Text = "00:00",
+                                    Position=new Vector2(startXPositin - 35,oneLayerYPosition),
+                                    Text = "Sentence",
+                                    TooltipText="Choose the sentence you want to sing."
                                 },
 
                                 //switch to first sentence
-                                new OsuButton()
+                                new KaraokeButton()
                                 {
-                                     Position=new Vector2(-50,5),
-                                     Width=30,
-                                     Height=30,
-                                     Text="P",
+                                     Position=new Vector2(startXPositin + 40,oneLayerYPosition),
+                                     Origin = Anchor.CentreLeft,
+                                     Width =objectHeight,
+                                     Height=objectHeight,
+                                     Text="1",
+                                     TooltipText="Move to first sentence",
                                      Action=()=>
                                      {
-                                         this.ToggleVisibility();
+                                         playField?.NavigationToFirst();
                                      }
                                 },
 
                                 //switch to previous sentence
-                                new OsuButton()
+                                new KaraokeButton()
                                 {
-                                     Position=new Vector2(-40,5),
-                                     Width=30,
-                                     Height=30,
-                                     Text="P",
-                                     //Action=
+                                     Position=new Vector2(startXPositin + 80,oneLayerYPosition),
+                                     Origin = Anchor.CentreLeft,
+                                     Width=objectHeight,
+                                     Height=objectHeight,
+                                     Text="<-",
+                                     TooltipText="Move to previous sentence",
+                                     Action=()=>
+                                     {
+                                         playField?.NavigationToPrevious();
+                                     }
                                 },
 
                                 //switch to next sentence
-                                new OsuButton()
+                                new KaraokeButton()
                                 {
-                                     Position=new Vector2(-40,5),
-                                     Width=30,
-                                     Height=30,
-                                     Text="P",
-                                     //Action=
+                                     Position=new Vector2(startXPositin + 120, oneLayerYPosition),
+                                     Origin = Anchor.CentreLeft,
+                                     Width=objectHeight,
+                                     Height=objectHeight,
+                                     Text="->",
+                                     TooltipText="Move to next sentence",
+                                     Action=()=>
+                                     {
+                                         playField?.NavigationToNext();
+                                     }
                                 },
 
                                 //"play" introduce text
                                 new KaraokeIntroduceText
                                 {
-                                    Text = "00:00",
+                                    Position=new Vector2(startXPositin + 160, oneLayerYPosition),
+                                    Text = "Play",
+                                    TooltipText="Pause,play the song and adjust time"
                                 },
 
                                 //Play and pause
-                                new OsuButton()
+                                new KaraokeButton()
                                 {
-                                     Position=new Vector2(-40,5),
-                                     Width=30,
-                                     Height=30,
+                                     Position=new Vector2(startXPositin + 200, oneLayerYPosition),
+                                     Origin = Anchor.CentreLeft,
+                                     Width=objectHeight,
+                                     Height=objectHeight,
                                      Text="P",
-                                     //Action=
+                                     TooltipText="Play",
+                                     Action=()=>
+                                     {
+                                         //TODO : 
+                                         playField?.Play();
+                                     }
                                 },
 
                                 //now time
                                 new OsuSpriteText
                                 {
+                                    Position=new Vector2(startXPositin + 240, oneLayerYPosition),
                                     Text = "00:00",
-                                    //Font = @"Venera",
                                     UseFullGlyphHeight = false,
+                                    Origin = Anchor.CentreLeft,
                                     Anchor = Anchor.TopLeft,
-                                    Origin = Anchor.TopLeft,
                                     TextSize = 10,
                                     Alpha = 1,
                                     //ShadowColour = _textColor,
@@ -166,18 +190,23 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 //time slider
                                 new KaraokeTimerSliderBar()
                                 {
-                                    Position=new Vector2(50,10),
+                                    Position=new Vector2(startXPositin + 280, oneLayerYPosition),
+                                    Origin = Anchor.CentreLeft,
                                     Width=300,
+                                    OnValueChanged = (eaa,newValue)=>
+                                    {
+                                        playField?.NavigateToTime(newValue);
+                                    },
                                 },
 
                                 //end time
                                 new OsuSpriteText
                                 {
-                                    Text = "00:00",
-                                    //Font = @"Venera",
+                                    Position=new Vector2(startXPositin + 600, oneLayerYPosition),
+                                    Text = "03:20",
                                     UseFullGlyphHeight = false,
                                     Anchor = Anchor.TopLeft,
-                                    Origin = Anchor.TopLeft,
+                                    Origin = Anchor.CentreLeft,
                                     TextSize = 10,
                                     Alpha = 1,
                                     //ShadowColour = _textColor,
@@ -187,40 +216,61 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                  //"speed" introduce
                                  new KaraokeIntroduceText
                                  {
-                                    Text = "00:00",
+                                     Position=new Vector2(startXPositin - 30, twoLayerYPosition),
+                                     Text = "Speed",
+                                     TooltipText="Adjust song speed."
                                  },
 
                                 //speed
                                 new WithUpAndDownButtonSlider()
                                 {
-                                    Position=new Vector2(50,10),
-                                    Width=300,
+                                    Position=new Vector2(startXPositin + 20, twoLayerYPosition),
+                                    Origin = Anchor.CentreLeft,
+                                    Width=200,
+                                     OnValueChanged = (eaa,newValue)=>
+                                     {
+                                         playField?.AdjustSpeed(newValue);
+                                     },
                                 },
 
                                  //"tone" introduce
                                  new KaraokeIntroduceText
                                  {
-                                    Text = "Tone",
+                                     Position=new Vector2(startXPositin + 235, twoLayerYPosition),
+                                     Text = "Tone",
+                                     TooltipText="Adjust song tone."
                                  },
 
                                 //Tone
                                 new WithUpAndDownButtonSlider()
                                 {
-                                    Position=new Vector2(50,10),
-                                    Width=300,
+                                    Position=new Vector2(startXPositin + 280, twoLayerYPosition),
+                                    Origin = Anchor.CentreLeft,
+                                    Width=200,
+                                     OnValueChanged = (eaa,newValue)=>
+                                     {
+                                         playField?.AdjustTone(newValue);
+                                     },
                                 },
 
                                  //"offset" introduce
                                  new KaraokeIntroduceText
                                  {
-                                    Text = "Offset",
+                                     Position=new Vector2(startXPositin + 495, twoLayerYPosition),
+                                     Text = "Offset",
+                                     TooltipText="Adjust lyrics appear offset."
                                  },
 
                                 //offset
                                 new WithUpAndDownButtonSlider()
                                 {
-                                    Position=new Vector2(50,10),
-                                    Width=300,
+                                    Position=new Vector2(startXPositin + 550, twoLayerYPosition),
+                                    Origin = Anchor.CentreLeft,
+                                    Width=200,
+                                     OnValueChanged = (eaa,newValue)=>
+                                     {
+                                         playField?.AdjustlyricsOffset(newValue);
+                                     },
                                 },
                             },
                         },
