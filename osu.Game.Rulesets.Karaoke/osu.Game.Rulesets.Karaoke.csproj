@@ -93,6 +93,7 @@
     <Compile Include="Tests\TestCaseKaraokeObject.cs" />
     <Compile Include="Tests\TestCaseKaraokePanel.cs" />
     <Compile Include="Tests\TestCasePlayField.cs" />
+    <Compile Include="Tools\Translator\GoogleTranslator.cs" />
     <Compile Include="UI\Cursor\CursorTrail.cs" />
     <Compile Include="UI\Cursor\GameplayCursor.cs" />
     <Compile Include="UI\Extension\KaraokeFieldExtension.cs" />

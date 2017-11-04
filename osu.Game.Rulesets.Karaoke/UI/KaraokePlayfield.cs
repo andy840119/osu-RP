@@ -82,10 +82,10 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     {
                          new OsuButton()
                          {
-                            //Origin = Anchor.BottomRight,
-                            //Anchor = Anchor.BottomRight,
+                            Origin = Anchor.BottomRight,
+                            Anchor = Anchor.BottomRight,
                             
-                            Position=new Vector2(0,0),
+                            Position=new Vector2(0,-100),
                             Width=70,
                             Height=30,
                             Text="Panel",
