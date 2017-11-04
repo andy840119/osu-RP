@@ -104,6 +104,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     Anchor = Anchor.BottomCentre,
                     Position=new Vector2(-100,-100),
                     Scale=new Vector2(1.0f),
+                    Depth = -3,
                 },
             });
         }

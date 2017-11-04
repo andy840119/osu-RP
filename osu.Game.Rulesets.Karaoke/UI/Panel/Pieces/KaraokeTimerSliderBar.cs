@@ -13,6 +13,20 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
     public class KaraokeTimerSliderBar : OsuSliderBar<double>
     {
         public EventHandler<double> OnValueChanged;
+
+        /// <summary>
+        /// Now time label
+        /// </summary>
+        public OsuSpriteText NowTimeSpriteText;
+
+        /// <summary>
+        /// total time label
+        /// </summary>
+        public OsuSpriteText TotalTimeSpriteText;
+
+        /// <summary>
+        /// constructor
+        /// </summary>
         public KaraokeTimerSliderBar()
         {
             CurrentNumber.MinValue = 0;
@@ -21,7 +35,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             KeyboardStep = 0.1f;
 
             //now time
-            Add(new OsuSpriteText
+            Add(NowTimeSpriteText = new OsuSpriteText
             {
                 //Position = new Vector2(startXPositin + 240, oneLayerYPosition),
                 Position=new OpenTK.Vector2(-10,-2),
@@ -36,7 +50,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             });
 
             //end time
-            Add(new OsuSpriteText
+            Add(TotalTimeSpriteText = new OsuSpriteText
             {
                 //Position = new Vector2(startXPositin + 240, oneLayerYPosition),
                 //Position = new Vector2(startXPositin + 600, oneLayerYPosition),

@@ -18,6 +18,22 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 
         protected int ButtonZixe = 25;
 
+        /// <summary>
+        /// Decrease Button
+        /// </summary>
+        public KaraokeButton DecreaseButton;
+
+        /// <summary>
+        /// Increase button
+        /// </summary>
+        public KaraokeButton IncreaseButton;
+
+      
+
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public WithUpAndDownButtonSlider()
         {
             // Origin = Anchor.Centre;
@@ -30,7 +46,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 
             //TODO : tp add button in here ?
 
-            Add(new KaraokeButton()
+            Add(DecreaseButton = new KaraokeButton()
             {
                 Position = new Vector2(-10, 0),
                 Origin = Anchor.CentreRight,
@@ -45,7 +61,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                 }
             });
 
-            Add(new KaraokeButton()
+            Add(IncreaseButton = new KaraokeButton()
             {
                 Position = new Vector2(10, 0),
                 Origin = Anchor.CentreLeft,

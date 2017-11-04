@@ -43,10 +43,14 @@ namespace osu.Game.Rulesets.Karaoke.UI
         private Container panelContainer;
 
         //TODO : all the setting object
-
-
-
-
+        public KaraokeButton FirstLyricButton;
+        public KaraokeButton PreviousLyricButton;
+        public KaraokeButton NextLyricButton;
+        public KaraokePlayPauseButton PlayPauseButton;
+        public KaraokeTimerSliderBar TimeSlideBar;
+        public WithUpAndDownButtonSlider SpeedSlider;
+        public WithUpAndDownButtonSlider ToneSlider;
+        public WithUpAndDownButtonSlider LyricOffectSlider;
 
         /// <summary>
         /// TODO : implenent
@@ -57,12 +61,39 @@ namespace osu.Game.Rulesets.Karaoke.UI
         {
 	        switch (action)
 	        {
-		        case KaraokeAction.LeftButton:
-                    //Button.Action.Invoke()
-		        case KaraokeAction.RightButton:
+		        case KaraokeAction.FirstLyric:
+                    FirstLyricButton.Action?.Invoke();
+                    break;
+                case KaraokeAction.PreviousLyric:
+                    PreviousLyricButton.Action?.Invoke();
+                    break;
+                case KaraokeAction.NextLyric:
+                    NextLyricButton.Action?.Invoke();
+                    break;
+                case KaraokeAction.PlayAndPause:
+                    PlayPauseButton.Action?.Invoke();
+                    break;
 
-                break;
-	        }
+                case KaraokeAction.IncreaseSpeed:
+                    SpeedSlider.IncreaseButton.Action?.Invoke();
+                    break;
+                case KaraokeAction.DecreaseSpeed:
+                    SpeedSlider.DecreaseButton.Action?.Invoke();
+                    break;
+                case KaraokeAction.IncreaseTone:
+                    ToneSlider.IncreaseButton.Action?.Invoke();
+                    break;
+                case KaraokeAction.DecreaseTone:
+                    ToneSlider.DecreaseButton.Action?.Invoke();
+                    break;
+
+                case KaraokeAction.IncreaseLyricAppearTime:
+                    LyricOffectSlider.IncreaseButton.Action?.Invoke();
+                    break;
+                case KaraokeAction.DecreaseLyricAppearTime:
+                    LyricOffectSlider.DecreaseButton.Action?.Invoke();
+                    break;
+            }
 
 	        return false;
         }
@@ -133,7 +164,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 },
 
                                 //switch to first sentence
-                                new KaraokeButton()
+                                FirstLyricButton = new KaraokeButton()
                                 {
                                      Position=new Vector2(startXPositin + 40,oneLayerYPosition),
                                      Origin = Anchor.CentreLeft,
@@ -148,7 +179,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 },
 
                                 //switch to previous sentence
-                                new KaraokeButton()
+                                PreviousLyricButton = new KaraokeButton()
                                 {
                                      Position=new Vector2(startXPositin + 80,oneLayerYPosition),
                                      Origin = Anchor.CentreLeft,
@@ -163,7 +194,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 },
 
                                 //switch to next sentence
-                                new KaraokeButton()
+                                NextLyricButton = new KaraokeButton()
                                 {
                                      Position=new Vector2(startXPositin + 120, oneLayerYPosition),
                                      Origin = Anchor.CentreLeft,
@@ -186,7 +217,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 },
 
                                 //Play and pause
-                                new KaraokePlayPauseButton()
+                                PlayPauseButton = new KaraokePlayPauseButton()
                                 {
                                      Position=new Vector2(startXPositin + 200, oneLayerYPosition),
                                      Origin = Anchor.CentreLeft,
@@ -202,11 +233,11 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 },
 
                                 //time slider
-                                new KaraokeTimerSliderBar()
+                                TimeSlideBar = new KaraokeTimerSliderBar()
                                 {
                                     Position=new Vector2(startXPositin + 280, oneLayerYPosition),
                                     Origin = Anchor.CentreLeft,
-                                    Width=300,
+                                    Width=500,
                                     OnValueChanged = (eaa,newValue)=>
                                     {
                                         playField?.NavigateToTime(newValue);
@@ -222,7 +253,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                  },
 
                                 //speed
-                                new WithUpAndDownButtonSlider()
+                                SpeedSlider = new WithUpAndDownButtonSlider()
                                 {
                                     Position=new Vector2(startXPositin + 60, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
@@ -242,7 +273,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                  },
 
                                 //Tone
-                                new WithUpAndDownButtonSlider()
+                                ToneSlider = new WithUpAndDownButtonSlider()
                                 {
                                     Position=new Vector2(startXPositin + 340, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
@@ -262,7 +293,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                  },
 
                                 //offset
-                                new WithUpAndDownButtonSlider()
+                                LyricOffectSlider = new WithUpAndDownButtonSlider()
                                 {
                                     Position=new Vector2(startXPositin + 630, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
