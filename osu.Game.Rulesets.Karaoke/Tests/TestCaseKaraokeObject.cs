@@ -37,8 +37,18 @@ namespace osu.Game.Rulesets.Karaoke.Tests
             ExampleContainer container;
 
             KaraokeObject =new KaraokeObject();
-            KaraokeObject.MainText.Text = "Hello world!";
+            KaraokeObject.MainText.Text = "終わるまでは終わらないよ";
             KaraokeObject.Position=new Vector2(300,150);
+            KaraokeObject.ListSubTextObject.Add(new TextObject
+            {
+                Text="お",
+                Position=new Vector2(13,10)
+            });
+            KaraokeObject.ListSubTextObject.Add(new TextObject
+            {
+                Text = "お",
+                Position = new Vector2(278, 10)
+            });
 
             DrawableKaraokeObject = new DrawableKaraokeObject(KaraokeObject)
             {
@@ -48,13 +58,26 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 
             Add(container = new ExampleContainer());
 
-            //Add a slider
-            Add(new SettingsSlider<double>
+            var slider = new SettingsSlider<double>()
             {
                 LabelText = "Background dim",
-                Bindable = new Bindable<double>(),
-                KeyboardStep = 0.1f
-            });
+                Bindable = new BindableDouble
+                {
+                    MinValue = 0,
+                    MaxValue = 1000,
+                    Default = 500,
+                    Value = DrawableKaraokeObject.Progress,
+                },
+            };
+            slider.Bindable.ValueChanged+=  (v) =>
+            {
+                DrawableKaraokeObject.Progress = v;
+            };
+
+            Children = new Drawable[]
+            {
+                slider,
+            };
 
             Add(DrawableKaraokeObject);
         }

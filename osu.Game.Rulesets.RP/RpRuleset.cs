@@ -86,7 +86,7 @@ namespace osu.Game.Rulesets.RP
 
         public static TextureStore VitaruTextures;
 
-        public override int LegacyID => 0;
+        public override int LegacyID => 1111;
 
         public RpRuleset(RulesetInfo rulesetInfo)
             : base(rulesetInfo)
