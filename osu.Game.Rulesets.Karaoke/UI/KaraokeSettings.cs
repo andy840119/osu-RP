@@ -27,6 +27,16 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     LabelText = "Always shows the karaoke panel",
                     //Bindable = config.GetBindable<bool>(OsuSetting.SnakingOutSliders)
                 },
+                new SettingsCheckbox
+                {
+                    LabelText = "Karaoke Effect",
+                    //Bindable = config.GetBindable<bool>(OsuSetting.SnakingOutSliders)
+                },
+                 new SettingsCheckbox
+                {
+                    LabelText = "Enable HotKey",
+                    //Bindable = config.GetBindable<bool>(OsuSetting.SnakingOutSliders)
+                },
             };
         }
     }

@@ -13,7 +13,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
     /// base karaoke object
     /// contain single sentence , a main text and several additional text
     /// </summary>
-    public class KaraokeObject : HitObject, IHasPosition
+    public class KaraokeObject : HitObject, IHasPosition ,IHasEndTime
     {
         /// <summary>
         /// position
@@ -70,7 +70,42 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// all the translate for a single language
         /// </summary>
         /// <value>The list trans late.</value>
-        public List<KaraokeTranslateString> ListTransLate { get; set; } = new List<KaraokeTranslateString>();
-    
+        public List<KaraokeTranslateString> ListTranslate { get; set; } = new List<KaraokeTranslateString>();
+
+        /// <summary>
+        /// The time at which the HitObject ends.
+        /// </summary>
+        public double EndTime { get; set;}
+
+        /// <summary>
+        /// The duration of the HitObject.
+        /// </summary>
+        public double Duration => EndTime - StartTime;
+
+    }
+
+    /// <summary>
+    /// Karaoke object extension.
+    /// </summary>
+    public static class KaraokeObjectExtension
+    {
+        /// <summary>
+        /// will filter if has same languate
+        /// </summary>
+        /// <param name="karaokeObject">Karaoke object.</param>
+        public static bool AddNewTranslate(this KaraokeObject karaokeObject)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// will check if this progress point is valid
+        /// </summary>
+        /// <returns><c>true</c>, if progress point was added, <c>false</c> otherwise.</returns>
+        /// <param name="karaokeObject">Karaoke object.</param>
+        public static bool AddProgressPoint(this KaraokeObject karaokeObject)
+        {
+            return false;
+        }
     }
 }

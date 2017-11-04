@@ -119,6 +119,8 @@
     <Compile Include="UI\Panel\Pieces\KaraokePlayPauseButton.cs" />
     <Compile Include="UI\Panel\Pieces\KaraokeTimerSliderBar.cs" />
     <Compile Include="UI\Panel\Pieces\WithUpAndDownButtonSlider.cs" />
+    <Compile Include="Objects\Drawables\Pieces\TranslateString.cs" />
+    <Compile Include="Mods\KaraokeMod.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\osu.licenseheader">

@@ -107,6 +107,9 @@ namespace osu.Game.Rulesets.Karaoke.Scoring
                     Health.Value -= hpDrainRate * 0.04;
                     break;
             }
+
+            //In Karaoke mode ,HP will always 1 
+            Health.Value = 1;
         }
     }
 }

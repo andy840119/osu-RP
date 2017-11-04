@@ -17,9 +17,33 @@ namespace osu.Game.Rulesets.Karaoke
 
     public enum KaraokeAction
     {
+        //TODO : remove it from osu!
         [Description("Left Button")]
         LeftButton,
         [Description("Right Button")]
-        RightButton
+        RightButton,
+
+        //Karaoke
+        [Description("First Lyric")]
+        FirstLyric,// 1 button
+        [Description("Previous Lyric")]
+        PreviousLyric,// left
+        [Description("Next Lyric")]
+        NextLyric,//right
+        [Description("PlayAndPause")]
+        PlayAndPause,//space
+
+        [Description("Increase Speed")]
+        IncreaseSpeed,//Q
+        [Description("Decrease Speed")]
+        DecreaseSpeed,//A
+        [Description("Increase Tone")]
+        IncreaseTone,//W
+        [Description("Decrease Tone")]
+        DecreaseTone,//S
+        [Description("Increase Lyric Appear Time")]
+        IncreaseLyricAppearTime,//E
+        [Description("Decrease Lyric Appear Time")]
+        DecreaseLyricAppearTime,//D
     }
 }

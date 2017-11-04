@@ -22,13 +22,14 @@ using System.Text;
 using System.Threading.Tasks;
 using osu.Game.Rulesets.Karaoke.UI.Extension;
 using osu.Game.Rulesets.Karaoke.UI.Interface;
+using osu.Framework.Input.Bindings;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
     /// <summary>
     /// to show the Karaoke panel on Playfield 
     /// </summary>
-    public class KaraokePanelOverlay : WaveOverlayContainer
+    public class KaraokePanelOverlay : WaveOverlayContainer, IKeyBindingHandler<KaraokeAction>
     {
         private const float content_width = 0.8f;
 
@@ -40,6 +41,33 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
 
         private Container panelContainer;
+
+        //TODO : all the setting object
+
+
+
+
+
+        /// <summary>
+        /// TODO : implenent
+        /// </summary>
+        /// <returns><c>true</c>, if pressed was oned, <c>false</c> otherwise.</returns>
+        /// <param name="action">Action.</param>
+        public bool OnPressed(KaraokeAction action)
+        {
+	        switch (action)
+	        {
+		        case KaraokeAction.LeftButton:
+                    //Button.Action.Invoke()
+		        case KaraokeAction.RightButton:
+
+                break;
+	        }
+
+	        return false;
+        }
+
+        public bool OnReleased(KaraokeAction action) => false;
 
         public KaraokePanelOverlay(IAmKaraokeField playField = null)
         {
