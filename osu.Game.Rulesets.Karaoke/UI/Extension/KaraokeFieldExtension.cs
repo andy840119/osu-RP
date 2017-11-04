@@ -49,7 +49,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 
         }
 
-        public static void AdjustOffset(this IAmKaraokeField karaokeField, double value)
+        public static void AdjustlyricsOffset(this IAmKaraokeField karaokeField, double value)
         {
 
         }

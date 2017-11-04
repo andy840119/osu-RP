@@ -9,6 +9,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 {
     public class KaraokeTimerSliderBar : OsuSliderBar<double>
     {
+        public EventHandler<double> OnValueChanged;
         public KaraokeTimerSliderBar()
         {
             CurrentNumber.MinValue = 0;
@@ -33,6 +34,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         protected override void UpdateValue(float value)
         {
             base.UpdateValue(value);
+
+            if (OnValueChanged != null)
+                OnValueChanged(this, value);
         }
     }
 }
