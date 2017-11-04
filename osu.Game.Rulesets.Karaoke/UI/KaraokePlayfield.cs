@@ -35,7 +35,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         private readonly KaraokePanelOverlay karaokePanelOverlay;
 
-        public override bool ProvidingUserCursor => true;
+        //public override bool ProvidingUserCursor => true;
 
         public static readonly Vector2 BASE_SIZE = new Vector2(512, 384);
 
@@ -82,10 +82,10 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     {
                          new OsuButton()
                          {
-                            Origin = Anchor.BottomRight,
-                            Anchor = Anchor.BottomRight,
+                            Origin = Anchor.Centre,
+                            Anchor = Anchor.Centre,
                             
-                            Position=new Vector2(0,-100),
+                            Position=new Vector2(110,100),
                             Width=70,
                             Height=30,
                             Text="Panel",
@@ -103,6 +103,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     Origin = Anchor.BottomCentre,
                     Anchor = Anchor.BottomCentre,
                     Position=new Vector2(-100,-100),
+                    Scale=new Vector2(1.0f),
                 },
             });
         }
@@ -110,7 +111,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
         protected override void LoadComplete()
         {
             base.LoadComplete();
-            AddInternal(new GameplayCursor());
+            //AddInternal(new GameplayCursor());
         }
 
         public override void Add(DrawableHitObject h)

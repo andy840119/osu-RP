@@ -93,7 +93,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
                             Anchor = Anchor.TopCentre,
                             RelativeSizeAxes = Axes.X,
                             Width = content_width,
-                            Height=110,
+                            Height= (playField!=null)? 110.0f/0.7f : 110,
+                            Scale= (playField!=null)? new Vector2(0.7f):new Vector2(1.0f),// if on playfield , make UI smaller
                             Children=new Drawable[]
                             {
                                 //"sentence" introduce text
@@ -173,20 +174,6 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                      }
                                 },
 
-                                //now time
-                                new OsuSpriteText
-                                {
-                                    Position=new Vector2(startXPositin + 240, oneLayerYPosition),
-                                    Text = "00:00",
-                                    UseFullGlyphHeight = false,
-                                    Origin = Anchor.CentreLeft,
-                                    Anchor = Anchor.TopLeft,
-                                    TextSize = 10,
-                                    Alpha = 1,
-                                    //ShadowColour = _textColor,
-                                    //BorderColour = _textColor,
-                                },
-
                                 //time slider
                                 new KaraokeTimerSliderBar()
                                 {
@@ -197,20 +184,6 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     {
                                         playField?.NavigateToTime(newValue);
                                     },
-                                },
-
-                                //end time
-                                new OsuSpriteText
-                                {
-                                    Position=new Vector2(startXPositin + 600, oneLayerYPosition),
-                                    Text = "03:20",
-                                    UseFullGlyphHeight = false,
-                                    Anchor = Anchor.TopLeft,
-                                    Origin = Anchor.CentreLeft,
-                                    TextSize = 10,
-                                    Alpha = 1,
-                                    //ShadowColour = _textColor,
-                                    //BorderColour = _textColor,
                                 },
 
                                  //"speed" introduce
@@ -224,9 +197,9 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 //speed
                                 new WithUpAndDownButtonSlider()
                                 {
-                                    Position=new Vector2(startXPositin + 20, twoLayerYPosition),
+                                    Position=new Vector2(startXPositin + 60, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
-                                    Width=200,
+                                    Width=150,
                                      OnValueChanged = (eaa,newValue)=>
                                      {
                                          playField?.AdjustSpeed(newValue);
@@ -236,7 +209,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                  //"tone" introduce
                                  new KaraokeIntroduceText
                                  {
-                                     Position=new Vector2(startXPositin + 235, twoLayerYPosition),
+                                     Position=new Vector2(startXPositin + 255, twoLayerYPosition),
                                      Text = "Tone",
                                      TooltipText="Adjust song tone."
                                  },
@@ -244,9 +217,9 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 //Tone
                                 new WithUpAndDownButtonSlider()
                                 {
-                                    Position=new Vector2(startXPositin + 280, twoLayerYPosition),
+                                    Position=new Vector2(startXPositin + 340, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
-                                    Width=200,
+                                    Width=150,
                                      OnValueChanged = (eaa,newValue)=>
                                      {
                                          playField?.AdjustTone(newValue);
@@ -256,7 +229,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                  //"offset" introduce
                                  new KaraokeIntroduceText
                                  {
-                                     Position=new Vector2(startXPositin + 495, twoLayerYPosition),
+                                     Position=new Vector2(startXPositin + 535, twoLayerYPosition),
                                      Text = "Offset",
                                      TooltipText="Adjust lyrics appear offset."
                                  },
@@ -264,9 +237,9 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                 //offset
                                 new WithUpAndDownButtonSlider()
                                 {
-                                    Position=new Vector2(startXPositin + 550, twoLayerYPosition),
+                                    Position=new Vector2(startXPositin + 630, twoLayerYPosition),
                                     Origin = Anchor.CentreLeft,
-                                    Width=200,
+                                    Width=150,
                                      OnValueChanged = (eaa,newValue)=>
                                      {
                                          playField?.AdjustlyricsOffset(newValue);
