@@ -10,7 +10,7 @@ using osu.Game.Rulesets.Objects.Types;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Extension
 {
-    public static class KaraokeFieldExtension
+    public static class PlayFieldExtension
     {
         /// <summary>
         /// if the number is larger , will have more preemp time

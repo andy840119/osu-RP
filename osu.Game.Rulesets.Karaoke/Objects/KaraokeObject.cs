@@ -101,5 +101,10 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// will automatically assign position by singer index and combo
         /// </summary>
         public bool IsDefaultPosition { get; set; }
+
+        /// <summary>
+        /// if value is -1 ,use automatically generated preemptive time;
+        /// </summary>
+        public double PreemptiveTime { get; set; } = -1;
     }
 }

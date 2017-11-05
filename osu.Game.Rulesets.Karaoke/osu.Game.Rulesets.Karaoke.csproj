@@ -99,7 +99,8 @@
     <Compile Include="Tools\Translator\GoogleTranslator.cs" />
     <Compile Include="UI\Cursor\CursorTrail.cs" />
     <Compile Include="UI\Cursor\GameplayCursor.cs" />
-    <Compile Include="UI\Extension\KaraokeFieldExtension.cs" />
+    <Compile Include="UI\Extension\PlayFieldExtension.cs" />
+    <Compile Include="UI\Extension\PlayFieldObjectExtension.cs" />
     <Compile Include="UI\Interface\IAmKaraokeField.cs" />
     <Compile Include="UI\Panel\KaraokeHotkeyPanel.cs" />
     <Compile Include="UI\Panel\KaraokePanelOverlay.cs" />
