@@ -12,18 +12,21 @@ namespace osu.Game.Rulesets.Karaoke.Objects
     /// base karaoke object
     /// contain single sentence , a main text and several additional text
     /// </summary>
-    public class KaraokeObject : HitObject, IHasPosition, IHasEndTime
+    public class KaraokeObject : HitObject, IHasPosition ,IHasCombo//, IHasEndTime
     {
+        /// <inheritdoc />
         /// <summary>
         /// position
         /// </summary>
         public Vector2 Position { get; set; }
 
+        /// <inheritdoc />
         /// <summary>
         /// X position
         /// </summary>
         public float X => Position.X;
 
+        /// <inheritdoc />
         /// <summary>
         /// Y position
         /// </summary>
@@ -74,12 +77,16 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// The time at which the HitObject ends.
         /// </summary>
-        public double EndTime { get; set; }
+        //public double EndTime { get; set; }
 
         /// <summary>
         /// The duration of the HitObject.
         /// </summary>
-        public double Duration => EndTime - StartTime;
+        //public double Duration => EndTime - StartTime;
+
+        public virtual bool NewCombo { get; set; }
+
+        public int ComboIndex { get; set; }
     }
 
     /// <summary>

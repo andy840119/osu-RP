@@ -3,6 +3,7 @@
 
 using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.ControlPoints;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Objects.Types;
@@ -11,7 +12,7 @@ using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.Karaoke.Osu_Objects
 {
-    public abstract class OsuHitObject : HitObject, IHasCombo, IHasPosition
+    public abstract class OsuHitObject : KaraokeObject
     {
         public const double OBJECT_RADIUS = 64;
 
@@ -20,9 +21,9 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects
         private const double hit_window_100 = 80;
         private const double hit_window_300 = 30;
 
-        public Vector2 Position { get; set; }
-        public float X => Position.X;
-        public float Y => Position.Y;
+        //public Vector2 Position { get; set; }
+        //public float X => Position.X;
+        //public float Y => Position.Y;
 
         public Vector2 StackedPosition => Position + StackOffset;
 
@@ -39,8 +40,6 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects
         public float Scale { get; set; } = 1;
 
         public Color4 ComboColour { get; set; } = Color4.Gray;
-        public virtual bool NewCombo { get; set; }
-        public int ComboIndex { get; set; }
 
         public double HitWindowFor(HitResult result)
         {

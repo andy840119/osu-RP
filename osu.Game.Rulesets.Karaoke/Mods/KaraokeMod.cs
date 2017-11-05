@@ -33,5 +33,23 @@ namespace osu.Game.Rulesets.Karaoke.Mods
     /// </summary>
     public class KaraokeCloseLyrics
     {
+
     }
+
+    /// <summary>
+    /// if sound trach has two parts, close the vocal part
+    /// </summary>
+    public class CloseVocal
+    {
+
+    }
+
+    /// <summary>
+    /// if sound trach has two parts, open the vocal part
+    /// </summary>
+    public class OpenVocal
+    {
+
+    }
+
 }

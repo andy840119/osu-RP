@@ -6,6 +6,7 @@ using osu.Framework.Extensions;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Karaoke.Judgements;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -17,9 +18,9 @@ namespace osu.Game.Rulesets.Karaoke.Scoring
     /// <summary>
     /// Karaoke does not have score i think
     /// </summary>
-    internal class KaraokeScoreProcessor : ScoreProcessor<OsuHitObject>
+    internal class KaraokeScoreProcessor : ScoreProcessor<KaraokeObject>
     {
-        public KaraokeScoreProcessor(RulesetContainer<OsuHitObject> rulesetContainer)
+        public KaraokeScoreProcessor(RulesetContainer<KaraokeObject> rulesetContainer)
             : base(rulesetContainer)
         {
         }
@@ -29,7 +30,7 @@ namespace osu.Game.Rulesets.Karaoke.Scoring
         private readonly Dictionary<HitResult, int> scoreResultCounts = new Dictionary<HitResult, int>();
         private readonly Dictionary<ComboResult, int> comboResultCounts = new Dictionary<ComboResult, int>();
 
-        protected override void SimulateAutoplay(Beatmap<OsuHitObject> beatmap)
+        protected override void SimulateAutoplay(Beatmap<KaraokeObject> beatmap)
         {
             hpDrainRate = beatmap.BeatmapInfo.BaseDifficulty.DrainRate;
 

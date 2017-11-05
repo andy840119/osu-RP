@@ -20,7 +20,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 
         protected TextsAndMask TextsAndMaskPiece = new TextsAndMask();
 
-        protected double _nowProgress;
+        private double _nowProgress;
 
         public DrawableKaraokeObject(KaraokeObject hitObject)
             : base(hitObject)

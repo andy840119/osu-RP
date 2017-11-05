@@ -4,6 +4,7 @@
 using osu.Framework.Input;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Beatmaps;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Karaoke.Replays;
@@ -16,7 +17,7 @@ using OpenTK;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
-    public class KaraokeRulesetContainer : RulesetContainer<OsuHitObject>
+    public class KaraokeRulesetContainer : RulesetContainer<KaraokeObject>
     {
         public KaraokeRulesetContainer(Ruleset ruleset, WorkingBeatmap beatmap, bool isForCurrentRuleset)
             : base(ruleset, beatmap, isForCurrentRuleset)
@@ -26,15 +27,15 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public override ScoreProcessor CreateScoreProcessor() => new KaraokeScoreProcessor(this);
 
-        protected override BeatmapConverter<OsuHitObject> CreateBeatmapConverter() => new KaraokeBeatmapConverter();
+        protected override BeatmapConverter<KaraokeObject> CreateBeatmapConverter() => new KaraokeBeatmapConverter();
 
-        protected override BeatmapProcessor<OsuHitObject> CreateBeatmapProcessor() => new KaraokeBeatmapProcessor();
+        protected override BeatmapProcessor<KaraokeObject> CreateBeatmapProcessor() => new KaraokeBeatmapProcessor();
 
         protected override Playfield CreatePlayfield() => new KaraokePlayfield(Ruleset, WorkingBeatmap);
 
         public override PassThroughInputManager CreateInputManager() => new KaraokeInputManager(Ruleset.RulesetInfo);
 
-        protected override DrawableHitObject<OsuHitObject> GetVisualRepresentation(OsuHitObject h)
+        protected override DrawableHitObject<KaraokeObject> GetVisualRepresentation(KaraokeObject h)
         {
             var circle = h as HitCircle;
             if (circle != null)

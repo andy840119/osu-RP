@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Beatmaps\KaraokeBeatmapConverter.cs" />
     <Compile Include="Beatmaps\KaraokeBeatmapProcessor.cs" />
+    <Compile Include="Mods\KaraokeMod2017.cs" />
     <Compile Include="Objects\Drawables\DrawableKaraokeObject.cs" />
     <Compile Include="Objects\Drawables\Pieces\TextsAndMask.cs" />
     <Compile Include="Objects\KaraokeObject.cs" />

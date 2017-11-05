@@ -7,16 +7,17 @@ using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Beatmaps;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Skills;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
 {
-    public class OsuDifficultyCalculator : DifficultyCalculator<OsuHitObject>
+    public class KaraokeDifficultyCalculator : DifficultyCalculator<KaraokeObject>
     {
         private const int section_length = 400;
         private const double difficulty_multiplier = 0.0675;
 
-        public OsuDifficultyCalculator(Beatmap beatmap)
+        public KaraokeDifficultyCalculator(Beatmap beatmap)
             : base(beatmap)
         {
         }
@@ -29,6 +30,10 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
 
         protected override double CalculateInternal(Dictionary<string, string> categoryDifficulty)
         {
+            //TODO : implement
+            return 1.5;
+
+            /*
             OsuDifficultyBeatmap beatmap = new OsuDifficultyBeatmap(Objects);
             Skill[] skills =
             {
@@ -66,8 +71,9 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
             }
 
             return starRating;
+            */
         }
 
-        protected override BeatmapConverter<OsuHitObject> CreateBeatmapConverter() => new KaraokeBeatmapConverter();
+        protected override BeatmapConverter<KaraokeObject> CreateBeatmapConverter() => new KaraokeBeatmapConverter();
     }
 }

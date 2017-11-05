@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.UI;
 using osu.Game.Rulesets.Objects;
@@ -12,11 +13,11 @@ using OpenTK;
 
 namespace osu.Game.Rulesets.Karaoke.Beatmaps
 {
-    internal class KaraokeBeatmapConverter : BeatmapConverter<OsuHitObject>
+    internal class KaraokeBeatmapConverter : BeatmapConverter<KaraokeObject>
     {
         protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasPosition) };
 
-        protected override IEnumerable<OsuHitObject> ConvertHitObject(HitObject original, Beatmap beatmap)
+        protected override IEnumerable<KaraokeObject> ConvertHitObject(HitObject original, Beatmap beatmap)
         {
             var curveData = original as IHasCurve;
             var endTimeData = original as IHasEndTime;

@@ -4,15 +4,18 @@
 using System.ComponentModel;
 using System.Linq;
 using osu.Framework.Graphics;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables
 {
-    public class DrawableOsuHitObject : DrawableHitObject<OsuHitObject>
+    public class DrawableOsuHitObject : DrawableHitObject<KaraokeObject>
     {
         public const float TIME_PREEMPT = 600;
         public const float TIME_FADEIN = 400;
         public const float TIME_FADEOUT = 500;
+
+        public new OsuHitObject HitObject => (OsuHitObject)base.HitObject;
 
         protected DrawableOsuHitObject(OsuHitObject hitObject)
             : base(hitObject)
