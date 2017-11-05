@@ -36,15 +36,24 @@ namespace osu.Game.Rulesets.Karaoke
             new KeyBinding(InputKey.MouseRight, KaraokeAction.RightButton),
 
             new KeyBinding(InputKey.Number1, KaraokeAction.FirstLyric),
+            new KeyBinding(InputKey.Keypad1, KaraokeAction.FirstLyric),
+
             new KeyBinding(InputKey.Left, KaraokeAction.PreviousLyric),
             new KeyBinding(InputKey.Right, KaraokeAction.NextLyric),
+
             new KeyBinding(InputKey.Space, KaraokeAction.PlayAndPause),
+
             new KeyBinding(InputKey.Q, KaraokeAction.IncreaseSpeed),
             new KeyBinding(InputKey.A, KaraokeAction.DecreaseSpeed),
+            new KeyBinding(InputKey.Z, KaraokeAction.ResetSpeed),
+
             new KeyBinding(InputKey.W, KaraokeAction.IncreaseTone),
             new KeyBinding(InputKey.S, KaraokeAction.DecreaseTone),
+            new KeyBinding(InputKey.X, KaraokeAction.ResetTone),
+
             new KeyBinding(InputKey.E, KaraokeAction.IncreaseLyricAppearTime),
             new KeyBinding(InputKey.D, KaraokeAction.DecreaseLyricAppearTime),
+            new KeyBinding(InputKey.C, KaraokeAction.ResetLyricAppearTime),
         };
 
         public override IEnumerable<BeatmapStatistic> GetBeatmapStatistics(WorkingBeatmap beatmap) => new[]

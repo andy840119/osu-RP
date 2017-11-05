@@ -28,6 +28,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         /// </summary>
         public KaraokeButton IncreaseButton;
 
+        /// <summary>
+        /// max value
+        /// </summary>
         public float MinValue
         {
             get => CurrentNumber.MinValue;
@@ -37,6 +40,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             }
         }
 
+        /// <summary>
+        /// min value
+        /// </summary>
         public float MaxValue
         {
             get => CurrentNumber.MaxValue;
@@ -46,6 +52,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             }
         }
 
+        /// <summary>
+        /// now value
+        /// </summary>
         public float Value
         {
             get => CurrentNumber.Value;
@@ -53,6 +62,20 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             {
                 CurrentNumber.Value = value;
             }
+        }
+
+        /// <summary>
+        /// default value
+        /// </summary>
+        public float DefauleValue { get; set; }
+
+        /// <summary>
+        /// reset to defaule value
+        /// </summary>
+        /// <returns></returns>
+        public void ResetToDefauleValue()
+        {
+            Value = DefauleValue;
         }
 
         /// <summary>

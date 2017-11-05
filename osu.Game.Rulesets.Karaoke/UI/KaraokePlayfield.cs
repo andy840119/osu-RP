@@ -18,6 +18,7 @@ using osu.Game.Beatmaps;
 using osu.Game.Graphics.UserInterface;
 using osu.Framework.Timing;
 using osu.Game.Rulesets.Karaoke.UI.Interface;
+using osu.Game.Rulesets.Karaoke.UI.Panel;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -105,6 +106,12 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     Position=new Vector2(-100,-100),
                     Scale=new Vector2(1.0f),
                     Depth = -1.5f,
+                },
+                new KaraokeHotkeyPanel(karaokePanelOverlay)
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Depth = -2,
+                    Clock=new FramedClock(new StopwatchClock(true)),
                 },
             });
         }

@@ -29,7 +29,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
     /// <summary>
     /// to show the Karaoke panel on Playfield 
     /// </summary>
-    public class KaraokePanelOverlay : WaveOverlayContainer, IKeyBindingHandler<KaraokeAction>
+    public class KaraokePanelOverlay : WaveOverlayContainer
     {
         private IAmKaraokeField PlayField;
 
@@ -54,54 +54,6 @@ namespace osu.Game.Rulesets.Karaoke.UI
         public WithUpAndDownButtonSlider ToneSlider;
         public WithUpAndDownButtonSlider LyricOffectSlider;
 
-        /// <summary>
-        /// TODO : implenent
-        /// </summary>
-        /// <returns><c>true</c>, if pressed was oned, <c>false</c> otherwise.</returns>
-        /// <param name="action">Action.</param>
-        public bool OnPressed(KaraokeAction action)
-        {
-            switch (action)
-            {
-                case KaraokeAction.FirstLyric:
-                    FirstLyricButton.Action?.Invoke();
-                    break;
-                case KaraokeAction.PreviousLyric:
-                    PreviousLyricButton.Action?.Invoke();
-                    break;
-                case KaraokeAction.NextLyric:
-                    NextLyricButton.Action?.Invoke();
-                    break;
-                case KaraokeAction.PlayAndPause:
-                    PlayPauseButton.Action?.Invoke();
-                    break;
-
-                case KaraokeAction.IncreaseSpeed:
-                    SpeedSlider.IncreaseButton.Action?.Invoke();
-                    break;
-                case KaraokeAction.DecreaseSpeed:
-                    SpeedSlider.DecreaseButton.Action?.Invoke();
-                    break;
-                case KaraokeAction.IncreaseTone:
-                    ToneSlider.IncreaseButton.Action?.Invoke();
-                    break;
-                case KaraokeAction.DecreaseTone:
-                    ToneSlider.DecreaseButton.Action?.Invoke();
-                    break;
-
-                case KaraokeAction.IncreaseLyricAppearTime:
-                    LyricOffectSlider.IncreaseButton.Action?.Invoke();
-                    break;
-                case KaraokeAction.DecreaseLyricAppearTime:
-                    LyricOffectSlider.DecreaseButton.Action?.Invoke();
-                    break;
-            }
-
-            return false;
-        }
-
-        public bool OnReleased(KaraokeAction action) => true;
-
         protected override void Update()
         {
             if (PlayField != null)
@@ -112,7 +64,6 @@ namespace osu.Game.Rulesets.Karaoke.UI
             }
            
         }
-
 
         public KaraokePanelOverlay(IAmKaraokeField playField = null)
         {
@@ -291,6 +242,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     MinValue=0.5f,
                                     MaxValue=1.5f,
                                     Value=1,
+                                    DefauleValue=1,
                                     KeyboardStep=0.05f,
                                     OnValueChanged = (eaa,newValue)=>
                                     {
@@ -315,6 +267,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     MinValue=0.5f,
                                     MaxValue=1.5f,
                                     Value=1.0f,
+                                    DefauleValue=1,
                                     KeyboardStep=0.05f,
                                      OnValueChanged = (eaa,newValue)=>
                                      {
@@ -339,6 +292,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     MinValue=-5.0f,
                                     MaxValue=5.0f,
                                     Value=0,
+                                    DefauleValue=0,
                                     KeyboardStep=0.5f,
                                      OnValueChanged = (eaa,newValue)=>
                                      {

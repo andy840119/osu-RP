@@ -37,13 +37,21 @@ namespace osu.Game.Rulesets.Karaoke
         IncreaseSpeed,//Q
         [Description("Decrease Speed")]
         DecreaseSpeed,//A
+        [Description("Reset Speed")]
+        ResetSpeed,//Z
+
         [Description("Increase Tone")]
         IncreaseTone,//W
         [Description("Decrease Tone")]
         DecreaseTone,//S
+        [Description("Reset Tone")]
+        ResetTone,//X
+
         [Description("Increase Lyric Appear Time")]
         IncreaseLyricAppearTime,//E
         [Description("Decrease Lyric Appear Time")]
         DecreaseLyricAppearTime,//D
+        [Description("Reset Lyric Appear Time")]
+        ResetLyricAppearTime,//C
     }
 }
