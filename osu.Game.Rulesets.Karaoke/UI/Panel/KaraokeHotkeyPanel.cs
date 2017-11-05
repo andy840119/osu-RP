@@ -1,19 +1,18 @@
-﻿using osu.Framework.Graphics.Containers;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Bindings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Panel
 {
     /// <summary>
     /// this container is use for detect HotKey pressing
     /// </summary>
-    public class KaraokeHotkeyPanel: Container, IKeyBindingHandler<KaraokeAction>
+    public class KaraokeHotkeyPanel : Container, IKeyBindingHandler<KaraokeAction>
     {
         protected KaraokePanelOverlay KaraokePanelOverlay;
+
         public KaraokeHotkeyPanel(KaraokePanelOverlay karaokePanelOverlay)
         {
             KaraokePanelOverlay = karaokePanelOverlay;
@@ -25,28 +24,28 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel
         /// <returns><c>true</c>, if pressed was oned, <c>false</c> otherwise.</returns>
         /// <param name="action">Action.</param>
         public bool OnPressed(KaraokeAction action)
-    {
-        switch (action)
         {
-            case KaraokeAction.FirstLyric:
+            switch (action)
+            {
+                case KaraokeAction.FirstLyric:
                     KaraokePanelOverlay.FirstLyricButton.Action?.Invoke();
-                break;
-            case KaraokeAction.PreviousLyric:
+                    break;
+                case KaraokeAction.PreviousLyric:
                     KaraokePanelOverlay.PreviousLyricButton.Action?.Invoke();
-                break;
-            case KaraokeAction.NextLyric:
+                    break;
+                case KaraokeAction.NextLyric:
                     KaraokePanelOverlay.NextLyricButton.Action?.Invoke();
-                break;
-            case KaraokeAction.PlayAndPause:
+                    break;
+                case KaraokeAction.PlayAndPause:
                     KaraokePanelOverlay.PlayPauseButton.Action?.Invoke();
-                break;
+                    break;
 
-            case KaraokeAction.IncreaseSpeed:
+                case KaraokeAction.IncreaseSpeed:
                     KaraokePanelOverlay.SpeedSlider.IncreaseButton.Action?.Invoke();
-                break;
-            case KaraokeAction.DecreaseSpeed:
+                    break;
+                case KaraokeAction.DecreaseSpeed:
                     KaraokePanelOverlay.SpeedSlider.DecreaseButton.Action?.Invoke();
-                break;
+                    break;
                 case KaraokeAction.ResetSpeed:
                     KaraokePanelOverlay.SpeedSlider.ResetToDefauleValue();
                     break;
@@ -54,10 +53,10 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel
 
                 case KaraokeAction.IncreaseTone:
                     KaraokePanelOverlay.ToneSlider.IncreaseButton.Action?.Invoke();
-                break;
-            case KaraokeAction.DecreaseTone:
+                    break;
+                case KaraokeAction.DecreaseTone:
                     KaraokePanelOverlay.ToneSlider.DecreaseButton.Action?.Invoke();
-                break;
+                    break;
                 case KaraokeAction.ResetTone:
                     KaraokePanelOverlay.ToneSlider.ResetToDefauleValue();
                     break;
@@ -65,19 +64,19 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel
 
                 case KaraokeAction.IncreaseLyricAppearTime:
                     KaraokePanelOverlay.LyricOffectSlider.IncreaseButton.Action?.Invoke();
-                break;
-            case KaraokeAction.DecreaseLyricAppearTime:
+                    break;
+                case KaraokeAction.DecreaseLyricAppearTime:
                     KaraokePanelOverlay.LyricOffectSlider.DecreaseButton.Action?.Invoke();
-                break;
+                    break;
 
                 case KaraokeAction.ResetLyricAppearTime:
                     KaraokePanelOverlay.LyricOffectSlider.ResetToDefauleValue();
                     break;
             }
 
-        return false;
-    }
+            return false;
+        }
 
-    public bool OnReleased(KaraokeAction action) => true;
-}
+        public bool OnReleased(KaraokeAction action) => true;
+    }
 }
