@@ -238,12 +238,24 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                      Origin = Anchor.CentreLeft,
                                      Width=objectHeight,
                                      Height=objectHeight,
-                                     Text="P",
-                                     TooltipText="Play",
-                                     Action=()=>
+                                     //Text="P",
+                                     KaraokeShowingState= KaraokePlayState.Pause,
+                                     Action =()=>
                                      {
-                                         //TODO : 
-                                         playField?.Play();
+                                         //TODO :
+                                         if(playField!=null)
+                                         {
+                                             if(playField.IsPlaying())
+                                             {
+                                                 playField?.Pause();
+                                                 PlayPauseButton.KaraokeShowingState= KaraokePlayState.Play;
+                                             }
+                                             else
+                                             {
+                                                 playField?.Play();
+                                                 PlayPauseButton.KaraokeShowingState= KaraokePlayState.Pause;
+                                             }
+                                         }
                                      }
                                 },
 
@@ -302,7 +314,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     MinValue=0.5f,
                                     MaxValue=1.5f,
                                     Value=1.0f,
-                                    KeyboardStep=0.1f,
+                                    KeyboardStep=0.05f,
                                      OnValueChanged = (eaa,newValue)=>
                                      {
                                          playField?.AdjustTone(newValue);

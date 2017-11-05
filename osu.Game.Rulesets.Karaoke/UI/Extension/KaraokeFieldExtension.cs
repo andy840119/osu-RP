@@ -44,13 +44,19 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 
         public static void Play(this IAmKaraokeField karaokeField)
         {
-            //karaokeField.WorkingBeatmap.Track.Start();
+            karaokeField.WorkingBeatmap.Track.Start();
+            
+        }
+
+        public static bool IsPlaying(this IAmKaraokeField karaokeField)
+        {
+            return karaokeField.WorkingBeatmap.Track.IsRunning;
         }
 
         public static void Pause(this IAmKaraokeField karaokeField)
         {
             //Play and pause are the same
-            //karaokeField.WorkingBeatmap.Track.Stop();
+            karaokeField.WorkingBeatmap.Track.Stop();
         }
 
         public static void NavigateToTime(this IAmKaraokeField karaokeField, double value)
@@ -79,6 +85,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         public static void AdjustlyricsOffset(this IAmKaraokeField karaokeField, double value)
         {
             //TODO : maybe use offset ?
+            //1. adjust config.GetBindable<double>(OsuSetting.AudioOffset); ,but will change the offset to another modes,
+            //2. get offsetClock from player
+           
         }
 
         /// <summary>
@@ -104,6 +113,12 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             return ((hitObjects.Last() as IHasEndTime)?.EndTime ?? hitObjects.Last().StartTime) + 1;
         }
 
+        /// <summary>
+        /// total time of the song
+        /// calculate from first hitObject to last
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <returns></returns>
         public static double TotalTime(this IAmKaraokeField karaokeField)
         {
             return karaokeField.LastObjectTime() - karaokeField.FirstObjectTime();
@@ -126,7 +141,14 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             for (int i = 0; i < listObjects.Count; i++)
             {
                 if (listObjects[i].StartTime >= currentTime)
-                    return listObjects[i-1];
+                {
+                    if (i == 0)
+                    {
+                        return null;
+                    }
+                    return listObjects[i - 1];
+                }
+                    
             }
 
             return null;
@@ -149,6 +171,11 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             return -1;
         }
 
+        /// <summary>
+        /// get list HitObjects
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <returns></returns>
         public static List<HitObject> GetListHitObjects(this IAmKaraokeField karaokeField)
         {
             return karaokeField.WorkingBeatmap.Beatmap.HitObjects;
