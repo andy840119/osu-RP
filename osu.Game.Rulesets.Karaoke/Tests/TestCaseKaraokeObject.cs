@@ -11,6 +11,9 @@ using osu.Game.Rulesets.Karaoke.Objects.Drawables;
 using osu.Game.Screens.Play.ReplaySettings;
 using osu.Game.Tests.Visual;
 using OpenTK;
+using osu.Game.Rulesets.Karaoke.Helps;
+using osu.Framework.Timing;
+using osu.Framework.Graphics.Containers;
 
 namespace osu.Game.Rulesets.Karaoke.Tests
 {
@@ -18,64 +21,44 @@ namespace osu.Game.Rulesets.Karaoke.Tests
     [Ignore("getting CI working")]
     internal class TestCaseKaraokeObject : OsuTestCase
     {
-        /// <summary>
-        /// Drawable Object
-        /// </summary>
-        public DrawableKaraokeObject DrawableKaraokeObject { get; set; }
-
-        public KaraokeObject KaraokeObject { get; set; }
+        private FramedClock framedClock;
+        private Container playfieldContainer;
+        private Vector2 appearPosition;
 
         [BackgroundDependencyLoader]
         private void load(RulesetStore rulesets)
         {
-            ExampleContainer container;
+            var rateAdjustClock = new StopwatchClock(true);
+            framedClock = new FramedClock(rateAdjustClock);
 
-            KaraokeObject = new KaraokeObject();
-            KaraokeObject.MainText.Text = "終わるまでは終わらないよ";
-            KaraokeObject.Position = new Vector2(300, 150);
-            KaraokeObject.ListSubTextObject.Add(new TextObject
+            AddStep(@"KaraokeObject_Demo001", () => loadHitobjects(DemoKaraokeObject.GenerateDemo001()));
+
+            AddStep(@"ResetPosition", () => { appearPosition = new Vector2(0, -200); });
+
+            framedClock.ProcessFrame();
+
+            var clockAdjustContainer = new Container
             {
-                Text = "お",
-                Position = new Vector2(13, 10)
-            });
-            KaraokeObject.ListSubTextObject.Add(new TextObject
-            {
-                Text = "お",
-                Position = new Vector2(278, 10)
-            });
-
-            DrawableKaraokeObject = new DrawableKaraokeObject(KaraokeObject)
-            {
-                Position = KaraokeObject.Position
-            };
-
-
-            Add(container = new ExampleContainer());
-
-            var slider = new SettingsSlider<double>()
-            {
-                LabelText = "Background dim",
-                Bindable = new BindableDouble
+                RelativeSizeAxes = Axes.Both,
+                Clock = framedClock,
+                Children = new[]
                 {
-                    MinValue = 0,
-                    MaxValue = 1000,
-                    Default = 500,
-                    Value = DrawableKaraokeObject.Progress,
-                },
-            };
-            slider.Bindable.ValueChanged += (v) => { DrawableKaraokeObject.Progress = v; };
-
-            Children = new Drawable[]
-            {
-                slider,
+                    playfieldContainer = new KaraokeInputManager(rulesets.GetRuleset(0)) { RelativeSizeAxes = Axes.Both },
+                }
             };
 
-            Add(DrawableKaraokeObject);
+            Add(clockAdjustContainer);
         }
 
-        private class ExampleContainer : ReplayGroup
+        private void loadHitobjects(KaraokeObject karaokeObject)
         {
-            protected override string Title => @"example";
+            karaokeObject.StartTime = framedClock.CurrentTime + 160;
+            playfieldContainer.Add(new DrawableKaraokeObject(karaokeObject)
+            {
+                Position = karaokeObject.Position+appearPosition,
+            });
+
+            appearPosition = appearPosition + new Vector2(0, 100);
         }
     }
 }

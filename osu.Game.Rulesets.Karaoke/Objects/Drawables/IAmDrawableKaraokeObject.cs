@@ -4,6 +4,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 {
     public interface IAmDrawableKaraokeObject
     {
-        KaraokeObject HitObject { get; }
+        //KaraokeObject HitObject { get; }
     }
 }

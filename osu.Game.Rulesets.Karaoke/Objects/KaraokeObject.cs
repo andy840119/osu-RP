@@ -12,7 +12,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
     /// base karaoke object
     /// contain single sentence , a main text and several additional text
     /// </summary>
-    public class KaraokeObject : HitObject, IHasPosition ,IHasCombo//, IHasEndTime
+    public class KaraokeObject : HitObject, IHasPosition ,IHasCombo, IHasEndTime
     {
         /// <inheritdoc />
         /// <summary>
@@ -59,7 +59,10 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// record list time where position goes
         /// </summary>
-        public List<ProgressPoint> ListProgressPoint { get; set; } = new List<ProgressPoint>();
+        public List<ProgressPoint> ListProgressPoint { get; set; } = new List<ProgressPoint>()
+        {
+            new ProgressPoint(0,0),
+        };
 
         /// <summary>
         /// the index of singer 
@@ -77,40 +80,26 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// The time at which the HitObject ends.
         /// </summary>
-        public double EndTime { get; set; }
+        public double EndTime => StartTime + Duration;
 
         /// <summary>
         /// The duration of the HitObject.
         /// </summary>
-        public double Duration => EndTime - StartTime;
+        public double Duration { get; set; }
 
+        /// <summary>
+        /// new combo
+        /// </summary>
         public virtual bool NewCombo { get; set; }
 
+        /// <summary>
+        /// combo index，will be assign by beatmap post process or other extension?
+        /// </summary>
         public int ComboIndex { get; set; }
-    }
-
-    /// <summary>
-    /// Karaoke object extension.
-    /// </summary>
-    public static class KaraokeObjectExtension
-    {
-        /// <summary>
-        /// will filter if has same languate
-        /// </summary>
-        /// <param name="karaokeObject">Karaoke object.</param>
-        public static bool AddNewTranslate(this KaraokeObject karaokeObject)
-        {
-            return false;
-        }
 
         /// <summary>
-        /// will check if this progress point is valid
+        /// will automatically assign position by singer index and combo
         /// </summary>
-        /// <returns><c>true</c>, if progress point was added, <c>false</c> otherwise.</returns>
-        /// <param name="karaokeObject">Karaoke object.</param>
-        public static bool AddProgressPoint(this KaraokeObject karaokeObject)
-        {
-            return false;
-        }
+        public bool IsDefaultPosition { get; set; }
     }
 }

@@ -4,6 +4,7 @@
 using System.Linq;
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces;
+using osu.Game.Rulesets.Karaoke.Objects.Extension;
 using osu.Game.Rulesets.Objects.Drawables;
 using OpenTK.Graphics;
 
@@ -12,11 +13,20 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
     /// <summary>
     /// Karaoke Text
     /// </summary>
-    public class DrawableKaraokeObject : DrawableHitObject<KaraokeObject> ,IAmDrawableKaraokeObject
+    public class DrawableKaraokeObject : DrawableHitObject<KaraokeObject> , IAmDrawableKaraokeObject
     {
+        //will calculate bu extension
+        //簡單來說，preemptive time會是前兩個物件到目前物件開始中間間隔時間
+        //就是上個台詞消失後下下句就會在它的位置出現
         public const float TIME_PREEMPT = 600;
-        public const float TIME_FADEIN = 400;
-        public const float TIME_FADEOUT = 500;
+
+        public const float TIME_FADEIN = 100;
+        public const float TIME_FADEOUT = 100;
+
+        /// <summary>
+        /// if want to update the progress each time
+        /// </summary>
+        public bool ProgressUpdateByTime = true;
 
         protected TextsAndMask TextsAndMaskPiece = new TextsAndMask();
 
@@ -50,11 +60,15 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         protected override void Update()
         {
             base.Update();
+
+            if (!ProgressUpdateByTime)
+                return;
+
             double currentTime = Time.Current;
-            if(currentTime> HitObject.StartTime && currentTime< HitObject.EndTime)
+            if(HitObject.IsInTime(currentTime))
             {
                 //TODO : update progress by 
-
+                Progress = HitObject.GetProgressByTime(currentTime- HitObject.StartTime);
             }
         }
 
@@ -99,14 +113,17 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 
         protected virtual void UpdateCurrentState(ArmedState state)
         {
+            if (!ProgressUpdateByTime)
+                return;
+
+            //delay
+            var sequence = this.Delay(HitObject.Duration).FadeOut(TIME_FADEOUT);
+            Expire();
         }
 
         protected virtual void MovingMask(float newValue)
         {
             TextsAndMaskPiece.MovingMask(newValue);
         }
-
-        private KaraokeInputManager karaokeActionInputManager;
-        internal KaraokeInputManager KaraokeActionInputManager => karaokeActionInputManager ?? (karaokeActionInputManager = GetContainingInputManager() as KaraokeInputManager);
     }
 }
