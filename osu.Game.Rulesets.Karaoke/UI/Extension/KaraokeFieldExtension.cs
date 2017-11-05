@@ -13,14 +13,33 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 {
     public static class KaraokeFieldExtension
     {
+        /// <summary>
+        /// if the number is larger , will have more preemp time
+        /// </summary>
         public static double PrepareTime = 0;
 
+        public static double Speed { get; set; } = 1;
+
+        public static double Tone { get; set; } = 1;
+
+        public static double Offset { get; set; } = 0;
+
+        public static double Volumn { get; set; } = 1;
+
+        /// <summary>
+        /// NavigationToFirst
+        /// </summary>
+        /// <param name="karaokeField"></param>
         public static void NavigationToFirst(this IAmKaraokeField karaokeField)
         {
             double firstObject = karaokeField.FirstObjectTime();
             karaokeField.NavigateToTime(firstObject- PrepareTime);
         }
 
+        /// <summary>
+        /// NavigationToPrevious
+        /// </summary>
+        /// <param name="karaokeField"></param>
         public static void NavigationToPrevious(this IAmKaraokeField karaokeField)
         {
             int nowObjectIndex = karaokeField.FindObjectIndexByCurrentTime();
@@ -31,6 +50,10 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             }
         }
 
+        /// <summary>
+        /// NavigationToNext
+        /// </summary>
+        /// <param name="karaokeField"></param>
         public static void NavigationToNext(this IAmKaraokeField karaokeField)
         {
             int nowObjectIndex = karaokeField.FindObjectIndexByCurrentTime();
@@ -42,34 +65,63 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             }
         }
 
+        /// <summary>
+        /// Play //TODO : still need to implement
+        /// </summary>
+        /// <param name="karaokeField"></param>
         public static void Play(this IAmKaraokeField karaokeField)
         {
-            karaokeField.WorkingBeatmap.Track.Start();
-            
+            //karaokeField.WorkingBeatmap.Track.Start();
+            karaokeField.WorkingBeatmap.Track.Rate = Speed;
+            karaokeField.WorkingBeatmap.Track.Volume.Value = Volumn;
         }
 
+        /// <summary>
+        /// check is playing //TODO : still need to implement
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <returns></returns>
         public static bool IsPlaying(this IAmKaraokeField karaokeField)
         {
             return karaokeField.WorkingBeatmap.Track.IsRunning;
         }
 
+        /// <summary>
+        /// pause the song //TODO : still need to implement
+        /// </summary>
+        /// <param name="karaokeField"></param>
         public static void Pause(this IAmKaraokeField karaokeField)
         {
             //Play and pause are the same
-            karaokeField.WorkingBeatmap.Track.Stop();
+            //karaokeField.WorkingBeatmap.Track.Stop();
+
+            //use stupid method instead;
+            karaokeField.WorkingBeatmap.Track.Rate = 0.1;
+            Volumn = karaokeField.WorkingBeatmap.Track.Volume.Value;
+            karaokeField.WorkingBeatmap.Track.Volume.Value = 0;
         }
 
+        /// <summary>
+        /// navigatte to target time
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <param name="value"></param>
         public static void NavigateToTime(this IAmKaraokeField karaokeField, double value)
         {
             karaokeField.WorkingBeatmap.Track.Seek(value);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <param name="value"></param>
         public static void AdjustSpeed(this IAmKaraokeField karaokeField, double value)
         {
-            //TODO : 修正因為Slider 拉動太快造成歌曲重來
             //refrence : IAdjustableClock.cs
-            //karaokeField.WorkingBeatmap.Track.Reset();
-            karaokeField.WorkingBeatmap.Track.Rate = value;
+            //TODO : fix if slide to fast will let song restart 
+            Speed = value;
+            karaokeField.WorkingBeatmap.Track.Rate = Speed;
         }
 
         public static void AdjustTone(this IAmKaraokeField karaokeField, double value)
@@ -77,17 +129,23 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             if (karaokeField.WorkingBeatmap.Track is IHasPitchAdjust pitchAdjustTrack)
             {
                 //karaokeField.WorkingBeatmap.Track.Reset();
-                pitchAdjustTrack.PitchAdjust = value;
+                Tone = value;
+                pitchAdjustTrack.PitchAdjust = Tone;
             }
 
         }
 
+        /// <summary>
+        /// Adjust offset
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <param name="value"></param>
         public static void AdjustlyricsOffset(this IAmKaraokeField karaokeField, double value)
         {
             //TODO : maybe use offset ?
             //1. adjust config.GetBindable<double>(OsuSetting.AudioOffset); ,but will change the offset to another modes,
             //2. get offsetClock from player
-           
+            Offset = value;
         }
 
         /// <summary>
@@ -133,6 +191,11 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             return karaokeField.WorkingBeatmap.Track.CurrentTime;
         }
 
+        /// <summary>
+        /// FindObjectByCurrentTime
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <returns></returns>
         public static HitObject FindObjectByCurrentTime(this IAmKaraokeField karaokeField)
         {
             double currentTime = karaokeField.GetCurrentTime();
@@ -140,7 +203,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 
             for (int i = 0; i < listObjects.Count; i++)
             {
-                if (listObjects[i].StartTime >= currentTime)
+                if (listObjects[i].StartTime >= currentTime + PrepareTime)
                 {
                     if (i == 0)
                     {
@@ -154,6 +217,11 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             return null;
         }
 
+        /// <summary>
+        /// FindObjectIndexByCurrentTime
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <returns></returns>
         public static int FindObjectIndexByCurrentTime(this IAmKaraokeField karaokeField)
         {
             HitObject hitObject = karaokeField.FindObjectByCurrentTime();

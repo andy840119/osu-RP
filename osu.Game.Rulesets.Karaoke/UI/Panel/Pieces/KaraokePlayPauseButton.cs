@@ -7,11 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using osu.Framework.Graphics;
+using OpenTK.Graphics;
+using osu.Framework.Extensions.Color4Extensions;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 {
     public class KaraokePlayPauseButton : KaraokeButton
     {
+        private KaraokePlayState _state;
+
         //use as show icon
         //From MusicController.cs
         private IconButton playButton;
@@ -24,6 +28,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                 Origin = Anchor.Centre,
                 Scale = new Vector2(1.0f),
                 IconScale = new Vector2(1.0f),
+                HoverColour = Color4.Yellow.Opacity(0.2f),
                 //Action = play,
             });
         }
@@ -35,6 +40,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         {
             set
             {
+                _state = value;
                 switch (value)
                 {
                     case KaraokePlayState.Play:
@@ -47,6 +53,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                         break;
                 }
             }
+            get => _state;
         }
     }
 

@@ -113,6 +113,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
            
         }
 
+
         public KaraokePanelOverlay(IAmKaraokeField playField = null)
         {
             PlayField = playField;
@@ -245,7 +246,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                          //TODO :
                                          if(playField!=null)
                                          {
-                                             if(playField.IsPlaying())
+                                             if(PlayPauseButton.KaraokeShowingState== KaraokePlayState.Pause)
                                              {
                                                  playField?.Pause();
                                                  PlayPauseButton.KaraokeShowingState= KaraokePlayState.Play;
