@@ -1,5 +1,7 @@
-﻿using System;
-namespace osu.Game.Rulesets.Karaoke
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+namespace osu.Game.Rulesets.Karaoke.Mods
 {
     /// <summary>
     /// if click this mod
@@ -9,7 +11,6 @@ namespace osu.Game.Rulesets.Karaoke
     /// </summary>
     public class KaraokeTutorial
     {
-       
     }
 
     /// <summary>
@@ -17,23 +18,20 @@ namespace osu.Game.Rulesets.Karaoke
     /// even you are not open it in the config
     /// </summary>
     public class KaraokeTranslate
-    { 
-    
+    {
     }
 
     /// <summary>
     /// will hide the lyrics
     /// </summary>
     public class KaraokeHidden
-    { 
-    
+    {
     }
 
     /// <summary>
     /// not even shows any lyrics
     /// </summary>
     public class KaraokeCloseLyrics
-    { 
-    
+    {
     }
 }

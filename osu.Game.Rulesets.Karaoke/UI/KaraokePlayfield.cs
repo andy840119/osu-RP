@@ -1,24 +1,20 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
-using System.Linq;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Timing;
+using osu.Game.Beatmaps;
+using osu.Game.Graphics.UserInterface;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Karaoke.Judgements;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
-using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Connections;
-using osu.Game.Rulesets.Karaoke.UI.Cursor;
+using osu.Game.Rulesets.Karaoke.UI.Interface;
+using osu.Game.Rulesets.Karaoke.UI.Panel;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.UI;
 using OpenTK;
-using osu.Game.Beatmaps;
-using osu.Game.Graphics.UserInterface;
-using osu.Framework.Timing;
-using osu.Game.Rulesets.Karaoke.UI.Interface;
-using osu.Game.Rulesets.Karaoke.UI.Panel;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -40,7 +36,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public static readonly Vector2 BASE_SIZE = new Vector2(512, 384);
 
-        
+
         public override Vector2 Size
         {
             get
@@ -51,11 +47,11 @@ namespace osu.Game.Rulesets.Karaoke.UI
                 return new Vector2(aspectSize.X / parentSize.X, aspectSize.Y / parentSize.Y) * base.Size;
             }
         }
-        
 
-        public KaraokePlayfield(Ruleset ruleset, WorkingBeatmap beatmap) : base(BASE_SIZE.X)
+
+        public KaraokePlayfield(Ruleset ruleset, WorkingBeatmap beatmap)
+            : base(BASE_SIZE.X)
         {
-           
             Ruleset = ruleset;
             WorkingBeatmap = beatmap;
 
@@ -78,40 +74,37 @@ namespace osu.Game.Rulesets.Karaoke.UI
                 {
                     RelativeSizeAxes = Axes.Both,
                     Depth = -2,
-                    Clock=new FramedClock(new StopwatchClock(true)),
-                    Children=new Drawable[]
+                    Clock = new FramedClock(new StopwatchClock(true)),
+                    Children = new Drawable[]
                     {
-                         new OsuButton()
-                         {
+                        new OsuButton()
+                        {
                             Origin = Anchor.Centre,
                             Anchor = Anchor.Centre,
-                            
-                            Position=new Vector2(110,100),
-                            Width=70,
-                            Height=30,
-                            Text="Panel",
-                            Action=()=>
-                            {
-                                karaokePanelOverlay.ToggleVisibility();
-                            }
-                         }
+
+                            Position = new Vector2(110, 100),
+                            Width = 70,
+                            Height = 30,
+                            Text = "Panel",
+                            Action = () => { karaokePanelOverlay.ToggleVisibility(); }
+                        }
                     }
                 },
-                karaokePanelOverlay=new KaraokePanelOverlay(this)
+                karaokePanelOverlay = new KaraokePanelOverlay(this)
                 {
-                    Clock=new FramedClock(new StopwatchClock(true)),
+                    Clock = new FramedClock(new StopwatchClock(true)),
                     RelativeSizeAxes = Axes.X,
                     Origin = Anchor.BottomCentre,
                     Anchor = Anchor.BottomCentre,
-                    Position=new Vector2(-100,-100),
-                    Scale=new Vector2(1.0f),
+                    Position = new Vector2(-100, -100),
+                    Scale = new Vector2(1.0f),
                     Depth = -1.5f,
                 },
                 new KaraokeHotkeyPanel(karaokePanelOverlay)
                 {
                     RelativeSizeAxes = Axes.Both,
                     Depth = -2,
-                    Clock=new FramedClock(new StopwatchClock(true)),
+                    Clock = new FramedClock(new StopwatchClock(true)),
                 },
             });
         }
@@ -135,7 +128,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public override void PostProcess()
         {
-            return ;
+            return;
             //connectionLayer.HitObjects = HitObjects.Objects
             //    .Select(d => d.HitObject)
             //    .OrderBy(h => h.StartTime).OfType<OsuHitObject>();

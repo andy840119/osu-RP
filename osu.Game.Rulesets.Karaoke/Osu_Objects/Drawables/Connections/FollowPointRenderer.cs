@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Connections
     public class FollowPointRenderer : ConnectionRenderer<OsuHitObject>
     {
         private int pointDistance = 32;
+
         /// <summary>
         /// Determines how much space there is between points.
         /// </summary>
@@ -27,6 +28,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Connections
         }
 
         private int preEmpt = 800;
+
         /// <summary>
         /// Follow points to the next hitobject start appearing for this many milliseconds before an hitobject's end time.
         /// </summary>
@@ -42,6 +44,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Connections
         }
 
         private IEnumerable<OsuHitObject> hitObjects;
+
         public override IEnumerable<OsuHitObject> HitObjects
         {
             get { return hitObjects; }

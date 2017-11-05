@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using osu.Game.Rulesets.Objects.Types;
 using OpenTK;
 
@@ -33,6 +31,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// size of the font
         /// </summary>
-        public virtual int FontSize { get; set; } = 30;//default subText size is 30
+        public virtual int FontSize { get; set; } = 30; //default subText size is 30
     }
 }

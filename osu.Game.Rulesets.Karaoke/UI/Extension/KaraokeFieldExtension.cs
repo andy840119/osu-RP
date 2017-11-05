@@ -1,13 +1,12 @@
-﻿using osu.Framework.Audio;
-using osu.Framework.Timing;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using System.Collections.Generic;
+using System.Linq;
+using osu.Framework.Audio;
 using osu.Game.Rulesets.Karaoke.UI.Interface;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Extension
 {
@@ -33,7 +32,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         public static void NavigationToFirst(this IAmKaraokeField karaokeField)
         {
             double firstObject = karaokeField.FirstObjectTime();
-            karaokeField.NavigateToTime(firstObject- PrepareTime);
+            karaokeField.NavigateToTime(firstObject - PrepareTime);
         }
 
         /// <summary>
@@ -46,7 +45,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             if (nowObjectIndex > 1)
             {
                 var list = karaokeField.GetListHitObjects();
-                karaokeField.NavigateToTime(list[nowObjectIndex-1].StartTime- PrepareTime);
+                karaokeField.NavigateToTime(list[nowObjectIndex - 1].StartTime - PrepareTime);
             }
         }
 
@@ -59,7 +58,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             int nowObjectIndex = karaokeField.FindObjectIndexByCurrentTime();
             var list = karaokeField.GetListHitObjects();
 
-            if (nowObjectIndex < list.Count-1)
+            if (nowObjectIndex < list.Count - 1)
             {
                 karaokeField.NavigateToTime(list[nowObjectIndex + 1].StartTime - PrepareTime);
             }
@@ -132,7 +131,6 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
                 Tone = value;
                 pitchAdjustTrack.PitchAdjust = Tone;
             }
-
         }
 
         /// <summary>
@@ -211,7 +209,6 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
                     }
                     return listObjects[i - 1];
                 }
-                    
             }
 
             return null;

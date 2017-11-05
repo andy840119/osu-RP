@@ -1,10 +1,9 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Input;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Beatmaps;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Karaoke.Replays;
@@ -31,7 +30,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         protected override BeatmapProcessor<OsuHitObject> CreateBeatmapProcessor() => new KaraokeBeatmapProcessor();
 
-        protected override Playfield CreatePlayfield() => new KaraokePlayfield(Ruleset,WorkingBeatmap);
+        protected override Playfield CreatePlayfield() => new KaraokePlayfield(Ruleset, WorkingBeatmap);
 
         public override PassThroughInputManager CreateInputManager() => new KaraokeInputManager(Ruleset.RulesetInfo);
 

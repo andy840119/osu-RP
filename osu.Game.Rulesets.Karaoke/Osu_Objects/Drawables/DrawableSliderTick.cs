@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using osu.Framework.Graphics;
@@ -24,7 +24,8 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables
 
         public override bool DisplayJudgement => false;
 
-        public DrawableSliderTick(SliderTick sliderTick) : base(sliderTick)
+        public DrawableSliderTick(SliderTick sliderTick)
+            : base(sliderTick)
         {
             this.sliderTick = sliderTick;
 

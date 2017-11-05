@@ -1,9 +1,8 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections;
 using System.Collections.Generic;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
@@ -58,8 +57,7 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
                     }
 
                     onScreen.Enqueue(latest);
-                }
-                while (onScreen.Peek().TimeUntilHit > 0); // Keep adding new objects on screen while there is still time before we have to hit the next one.
+                } while (onScreen.Peek().TimeUntilHit > 0); // Keep adding new objects on screen while there is still time before we have to hit the next one.
 
                 if (onScreen.Count == 0) break; // We have reached the end of the map and enumerated all the objects.
                 yield return onScreen.Dequeue(); // Remove and return objects one by one that had to be hit before the latest one appeared.

@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,6 @@ using System.Linq;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Game.Beatmaps;
 using osu.Game.Graphics;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Replays;
 using osu.Game.Rulesets.Karaoke.UI;
@@ -25,7 +24,6 @@ namespace osu.Game.Rulesets.Karaoke.Mods
 
     public class OsuModEasy : ModEasy
     {
-
     }
 
     public class OsuModHidden : ModHidden
@@ -91,7 +89,6 @@ namespace osu.Game.Rulesets.Karaoke.Mods
 
     public class OsuModPerfect : ModPerfect
     {
-
     }
 
     public class OsuModSpunOut : Mod

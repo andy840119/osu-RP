@@ -1,8 +1,7 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Types;
 using OpenTK;
@@ -13,7 +12,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
     /// base karaoke object
     /// contain single sentence , a main text and several additional text
     /// </summary>
-    public class KaraokeObject : HitObject, IHasPosition ,IHasEndTime
+    public class KaraokeObject : HitObject, IHasPosition, IHasEndTime
     {
         /// <summary>
         /// position
@@ -43,10 +42,10 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// Main text
         /// </summary>
-        public TextObject MainText { get; set; } =new TextObject()
+        public TextObject MainText { get; set; } = new TextObject()
         {
-            FontSize = 70,//default Main text Size is 70
-            Position = new Vector2(0,30),//default position
+            FontSize = 70, //default Main text Size is 70
+            Position = new Vector2(0, 30), //default position
         };
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// record list time where position goes
         /// </summary>
-        public List<ProgressPoint> ListProgressPoint { get; set; }=new List<ProgressPoint>();
+        public List<ProgressPoint> ListProgressPoint { get; set; } = new List<ProgressPoint>();
 
         /// <summary>
         /// the index of singer 
@@ -75,13 +74,12 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// The time at which the HitObject ends.
         /// </summary>
-        public double EndTime { get; set;}
+        public double EndTime { get; set; }
 
         /// <summary>
         /// The duration of the HitObject.
         /// </summary>
         public double Duration => EndTime - StartTime;
-
     }
 
     /// <summary>

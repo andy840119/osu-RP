@@ -1,14 +1,12 @@
-﻿using OpenTK;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
+using osu.Framework.Extensions.Color4Extensions;
+using osu.Framework.Graphics;
 using osu.Game.Graphics;
 using osu.Game.Graphics.UserInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using osu.Framework.Graphics;
+using OpenTK;
 using OpenTK.Graphics;
-using osu.Framework.Extensions.Color4Extensions;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 {
@@ -22,7 +20,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 
         public KaraokePlayPauseButton()
         {
-            this.Add(playButton = new IconButton
+            Add(playButton = new IconButton
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

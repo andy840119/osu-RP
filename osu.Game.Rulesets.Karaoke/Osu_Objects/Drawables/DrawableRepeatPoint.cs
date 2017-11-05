@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using osu.Framework.Graphics;
@@ -20,7 +20,8 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables
 
         public override bool RemoveWhenNotAlive => false;
 
-        public DrawableRepeatPoint(RepeatPoint repeatPoint, DrawableSlider drawableSlider) : base(repeatPoint)
+        public DrawableRepeatPoint(RepeatPoint repeatPoint, DrawableSlider drawableSlider)
+            : base(repeatPoint)
         {
             this.repeatPoint = repeatPoint;
             this.drawableSlider = drawableSlider;

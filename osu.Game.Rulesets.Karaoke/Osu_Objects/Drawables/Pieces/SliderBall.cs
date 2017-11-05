@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Linq;
 using osu.Framework.Graphics;
@@ -16,6 +16,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Pieces
         private const float width = 128;
 
         private Color4 accentColour = Color4.Black;
+
         /// <summary>
         /// The colour that is used for the slider ball.
         /// </summary>
@@ -102,6 +103,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Pieces
         public override bool ReceiveMouseInputAt(Vector2 screenSpacePos) => canCurrentlyTrack || base.ReceiveMouseInputAt(screenSpacePos);
 
         private bool tracking;
+
         public bool Tracking
         {
             get { return tracking; }
@@ -124,7 +126,8 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Pieces
 
             // Make sure to use the base version of ReceiveMouseInputAt so that we correctly check the position.
             if (Time.Current < slider.EndTime)
-                Tracking = canCurrentlyTrack && lastState != null && base.ReceiveMouseInputAt(lastState.Mouse.NativeState.Position) && ((Parent as DrawableSlider)?.KaraokeActionInputManager?.PressedActions.Any(x => x == KaraokeAction.LeftButton || x == KaraokeAction.RightButton) ?? false);
+                Tracking = canCurrentlyTrack && lastState != null && base.ReceiveMouseInputAt(lastState.Mouse.NativeState.Position)
+                           && ((Parent as DrawableSlider)?.KaraokeActionInputManager?.PressedActions.Any(x => x == KaraokeAction.LeftButton || x == KaraokeAction.RightButton) ?? false);
         }
 
         public void UpdateProgress(double progress, int repeat)

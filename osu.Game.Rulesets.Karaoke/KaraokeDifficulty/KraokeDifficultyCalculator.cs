@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,6 @@ using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Beatmaps;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Skills;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
@@ -17,7 +16,8 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
         private const int section_length = 400;
         private const double difficulty_multiplier = 0.0675;
 
-        public OsuDifficultyCalculator(Beatmap beatmap) : base(beatmap)
+        public OsuDifficultyCalculator(Beatmap beatmap)
+            : base(beatmap)
         {
         }
 

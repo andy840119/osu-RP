@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Objects.Drawables;
-using osu.Framework.Configuration;
+using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 {
@@ -24,7 +18,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         public const float TIME_FADEIN = 400;
         public const float TIME_FADEOUT = 500;
 
-        protected TextsAndMask TextsAndMaskPiece=new TextsAndMask();
+        protected TextsAndMask TextsAndMaskPiece = new TextsAndMask();
 
         protected double _nowProgress;
 
@@ -32,7 +26,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             : base(hitObject)
         {
             Alpha = 0;
-            TextsAndMaskPiece.SetColor(OpenTK.Graphics.Color4.Blue);
+            TextsAndMaskPiece.SetColor(Color4.Blue);
 
             TextsAndMaskPiece.AddText(hitObject.MainText);
             foreach (var singleText in hitObject.ListSubTextObject)
@@ -43,7 +37,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             TextsAndMaskPiece.SetWidth(hitObject.Width);
             TextsAndMaskPiece.SetHeight(hitObject.Height);
 
-            
 
             Width = hitObject.Width;
             Height = hitObject.Height;
@@ -91,7 +84,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 
         protected virtual void UpdateCurrentState(ArmedState state)
         {
-
         }
 
         protected virtual void MovingMask(float newValue)

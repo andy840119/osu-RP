@@ -1,10 +1,8 @@
-﻿using System;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using OpenTK;
@@ -71,13 +69,13 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
         protected class SingleSideOfAndMask : Container
         {
             private List<TextObject> _listText = new List<TextObject>();
-            private List<Drawable> _listDrawableText=new List<Drawable>();
+            private List<Drawable> _listDrawableText = new List<Drawable>();
             private Color4 _textColor = new Color4();
             private float _height;
 
             public SingleSideOfAndMask()
             {
-               // UpdateChild();
+                // UpdateChild();
             }
 
             public void AddText(TextObject textObject)
@@ -106,24 +104,24 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
             public void SetHeight(float height)
             {
                 _height = height;
-                this.Height = _height;
+                Height = _height;
             }
 
             public void SetMaskStartAndEndPosition(float startPositionX, float endPositionX)
             {
-                this.Position = new Vector2(startPositionX, 0);
+                Position = new Vector2(startPositionX, 0);
 
                 for (int i = 0; i < Children.Count; i++)
                 {
-                    Children[i].Position= _listText[i].Position- this.Position;
+                    Children[i].Position = _listText[i].Position - Position;
                 }
-                this.Width= endPositionX - startPositionX;
+                Width = endPositionX - startPositionX;
             }
 
             public void SetColor(Color4 color)
             {
                 _textColor = color;
-                this.Colour = _textColor;
+                Colour = _textColor;
             }
 
             protected OsuSpriteText GetTextByTextObject(TextObject textObject)
@@ -144,5 +142,4 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
             }
         }
     }
-
 }

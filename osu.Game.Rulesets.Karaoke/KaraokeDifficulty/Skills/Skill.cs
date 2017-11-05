@@ -1,11 +1,10 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Utils;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Skills

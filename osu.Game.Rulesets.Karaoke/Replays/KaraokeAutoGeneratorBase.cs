@@ -1,10 +1,9 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Replays;
 using osu.Game.Users;
@@ -20,6 +19,7 @@ namespace osu.Game.Rulesets.Karaoke.Replays
         /// Constants (for spinners).
         /// </summary>
         protected static readonly Vector2 SPINNER_CENTRE = new Vector2(256, 192);
+
         protected const float SPIN_RADIUS = 50;
 
         /// <summary>
@@ -52,6 +52,7 @@ namespace osu.Game.Rulesets.Karaoke.Replays
         #endregion
 
         #region Utilities
+
         protected double ApplyModsToTime(double v) => v;
         protected double ApplyModsToRate(double v) => v;
 

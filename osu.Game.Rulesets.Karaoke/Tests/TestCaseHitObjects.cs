@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -7,7 +7,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Timing;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -34,7 +33,11 @@ namespace osu.Game.Rulesets.Karaoke.Tests
             AddStep(@"slider", () => loadHitobjects(HitObjectType.Slider));
             AddStep(@"spinner", () => loadHitobjects(HitObjectType.Spinner));
 
-            AddToggleStep("Auto", state => { auto = state; loadHitobjects(mode); });
+            AddToggleStep("Auto", state =>
+            {
+                auto = state;
+                loadHitobjects(mode);
+            });
             AddSliderStep("Playback speed", 0.0, 2.0, 0.5, v => rateAdjustClock.Rate = v);
 
             framedClock.ProcessFrame();

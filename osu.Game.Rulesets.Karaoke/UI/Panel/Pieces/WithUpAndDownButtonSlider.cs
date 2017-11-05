@@ -1,10 +1,9 @@
-﻿using osu.Game.Graphics.UserInterface;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using osu.Framework.Graphics;
+using osu.Game.Graphics.UserInterface;
 using OpenTK;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
@@ -34,10 +33,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         public float MinValue
         {
             get => CurrentNumber.MinValue;
-            set
-            {
-                CurrentNumber.MinValue = value;
-            }
+            set { CurrentNumber.MinValue = value; }
         }
 
         /// <summary>
@@ -46,10 +42,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         public float MaxValue
         {
             get => CurrentNumber.MaxValue;
-            set
-            {
-                CurrentNumber.MaxValue = value;
-            }
+            set { CurrentNumber.MaxValue = value; }
         }
 
         /// <summary>
@@ -58,10 +51,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         public float Value
         {
             get => CurrentNumber.Value;
-            set
-            {
-                CurrentNumber.Value = value;
-            }
+            set { CurrentNumber.Value = value; }
         }
 
         /// <summary>
@@ -97,7 +87,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             {
                 Position = new Vector2(-10, 0),
                 Origin = Anchor.CentreRight,
-                Anchor= Anchor.CentreLeft,
+                Anchor = Anchor.CentreLeft,
                 Width = ButtonZixe,
                 Height = ButtonZixe,
                 Text = "-",
@@ -124,15 +114,11 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                     Value = newValue;
                 }
             });
-           
-
         }
+
         public override string TooltipText
         {
-            get
-            {
-                return Current.Value.ToString(@"0.## stars");
-            }
+            get { return Current.Value.ToString(@"0.## stars"); }
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -32,7 +32,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     LabelText = "Karaoke Effect",
                     //Bindable = config.GetBindable<bool>(OsuSetting.SnakingOutSliders)
                 },
-                 new SettingsCheckbox
+                new SettingsCheckbox
                 {
                     LabelText = "Enable HotKey",
                     //Bindable = config.GetBindable<bool>(OsuSetting.SnakingOutSliders)

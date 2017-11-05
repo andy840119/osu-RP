@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
@@ -32,6 +32,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Pieces
         public double? SnakedEnd { get; private set; }
 
         private Color4 accentColour;
+
         /// <summary>
         /// Used to colour the path.
         /// </summary>
@@ -52,6 +53,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Pieces
         private int textureWidth => (int)PathWidth * 2;
 
         private readonly Slider slider;
+
         public SliderBody(Slider s)
         {
             slider = s;
@@ -145,6 +147,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables.Pieces
         }
 
         private readonly List<Vector2> currentCurve = new List<Vector2>();
+
         private bool updateSnaking(double p0, double p1)
         {
             if (SnakedStart == p0 && SnakedEnd == p1) return false;

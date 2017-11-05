@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace osu.Game.Rulesets.Karaoke.Tools.Translator
 {
@@ -18,9 +16,8 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
         /// <param name="sourceLangCode"></param>
         /// <param name="targetLangCode"></param>
         /// <param name="message"></param>
-        public void Translate(string sourceLangCode,string targetLangCode,string message)
+        public void Translate(string sourceLangCode, string targetLangCode, string message)
         {
-
             string url = "https://translation.googleapis.com/language/translate/v2?key=YOUR_API_KEY";
             url += "&source=" + sourceLangCode;
             url += "&target=" + targetLangCode;

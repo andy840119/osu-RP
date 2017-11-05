@@ -1,12 +1,11 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Diagnostics;
 using osu.Framework.Graphics;
 using osu.Framework.MathUtils;
 using osu.Game.Beatmaps;
-using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects;
 using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -93,17 +92,20 @@ namespace osu.Game.Rulesets.Karaoke.Replays
             // Make the cursor stay at a hitObject as long as possible (mainly for autopilot).
             if (h.StartTime - h.HitWindowFor(HitResult.Miss) > endTime + h.HitWindowFor(HitResult.Meh) + 50)
             {
-                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Meh), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
+                if (!(prev is Spinner) && h.StartTime - endTime < 1000)
+                    AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Meh), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
                 if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(HitResult.Miss), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
             }
             else if (h.StartTime - h.HitWindowFor(HitResult.Meh) > endTime + h.HitWindowFor(HitResult.Meh) + 50)
             {
-                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Meh), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
+                if (!(prev is Spinner) && h.StartTime - endTime < 1000)
+                    AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Meh), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
                 if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(HitResult.Meh), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
             }
             else if (h.StartTime - h.HitWindowFor(HitResult.Good) > endTime + h.HitWindowFor(HitResult.Good) + 50)
             {
-                if (!(prev is Spinner) && h.StartTime - endTime < 1000) AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Good), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
+                if (!(prev is Spinner) && h.StartTime - endTime < 1000)
+                    AddFrameToReplay(new ReplayFrame(endTime + h.HitWindowFor(HitResult.Good), prev.StackedEndPosition.X, prev.StackedEndPosition.Y, ReplayButtonState.None));
                 if (!(h is Spinner)) AddFrameToReplay(new ReplayFrame(h.StartTime - h.HitWindowFor(HitResult.Good), h.StackedPosition.X, h.StackedPosition.Y, ReplayButtonState.None));
             }
         }
@@ -211,7 +213,7 @@ namespace osu.Game.Rulesets.Karaoke.Replays
             // Only "snap" to hitcircles if they are far enough apart. As the time between hitcircles gets shorter the snapping threshold goes up.
             if (timeDifference > 0 && // Sanity checks
                 ((lastPosition - targetPos).Length > hitObjectRadius * (1.5 + 100.0 / timeDifference) || // Either the distance is big enough
-                timeDifference >= 266)) // ... or the beats are slow enough to tap anyway.
+                 timeDifference >= 266)) // ... or the beats are slow enough to tap anyway.
             {
                 // Perform eased movement
                 for (double time = lastFrame.Time + FrameDelay; time < targetTime; time += FrameDelay)

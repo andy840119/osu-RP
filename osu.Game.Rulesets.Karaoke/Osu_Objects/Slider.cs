@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Collections.Generic;
@@ -49,6 +49,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects
         public int RepeatCount { get; set; } = 1;
 
         private int stackHeight;
+
         public override int StackHeight
         {
             get { return stackHeight; }
@@ -131,6 +132,7 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects
                 }
             }
         }
+
         public IEnumerable<RepeatPoint> RepeatPoints
         {
             get

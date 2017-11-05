@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using osu.Framework.Graphics;
@@ -21,7 +21,8 @@ namespace osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables
         private readonly NumberPiece number;
         private readonly GlowPiece glow;
 
-        public DrawableHitCircle(OsuHitObject h) : base(h)
+        public DrawableHitCircle(OsuHitObject h)
+            : base(h)
         {
             Origin = Anchor.Centre;
 

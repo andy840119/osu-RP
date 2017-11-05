@@ -1,12 +1,11 @@
-﻿using osu.Game.Graphics.UserInterface;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using  osu.Game.Graphics;
-using osu.Game.Graphics.Sprites;
 using osu.Framework.Graphics;
+using osu.Game.Graphics.Sprites;
+using osu.Game.Graphics.UserInterface;
+using OpenTK;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 {
@@ -38,7 +37,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             Add(NowTimeSpriteText = new OsuSpriteText
             {
                 //Position = new Vector2(startXPositin + 240, oneLayerYPosition),
-                Position=new OpenTK.Vector2(-10,-2),
+                Position = new Vector2(-10, -2),
                 Text = "--:--",
                 UseFullGlyphHeight = false,
                 Origin = Anchor.CentreRight,
@@ -54,7 +53,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
             {
                 //Position = new Vector2(startXPositin + 240, oneLayerYPosition),
                 //Position = new Vector2(startXPositin + 600, oneLayerYPosition),
-                Position = new OpenTK.Vector2(35,-2),
+                Position = new Vector2(35, -2),
                 Text = "--:--",
                 UseFullGlyphHeight = false,
                 Origin = Anchor.CentreRight,
@@ -64,14 +63,11 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                 //ShadowColour = _textColor,
                 //BorderColour = _textColor,
             });
-
         }
+
         public double StartTime
         {
-            set
-            {
-                CurrentNumber.MinValue = value;
-            }
+            set { CurrentNumber.MinValue = value; }
         }
 
         public double EndTime
@@ -94,10 +90,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 
         public override string TooltipText
         {
-            get
-            {
-                return GetTimeFormat((int)CurrentNumber.Value / 1000);
-            }
+            get { return GetTimeFormat((int)CurrentNumber.Value / 1000); }
         }
 
         /// <summary>
@@ -120,7 +113,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 
         protected string GetTimeFormat(int second)
         {
-            return  (second / 60).ToString("D2") + ":" + (second % 60).ToString("D2");
+            return (second / 60).ToString("D2") + ":" + (second % 60).ToString("D2");
         }
     }
 }

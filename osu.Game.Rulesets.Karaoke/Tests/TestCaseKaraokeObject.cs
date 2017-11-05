@@ -1,19 +1,13 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Timing;
-using osu.Game.Configuration;
-using osu.Game.Graphics.UserInterface;
 using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
-using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
-using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Screens.Play;
 using osu.Game.Screens.Play.ReplaySettings;
 using osu.Game.Tests.Visual;
 using OpenTK;
@@ -36,13 +30,13 @@ namespace osu.Game.Rulesets.Karaoke.Tests
         {
             ExampleContainer container;
 
-            KaraokeObject =new KaraokeObject();
+            KaraokeObject = new KaraokeObject();
             KaraokeObject.MainText.Text = "終わるまでは終わらないよ";
-            KaraokeObject.Position=new Vector2(300,150);
+            KaraokeObject.Position = new Vector2(300, 150);
             KaraokeObject.ListSubTextObject.Add(new TextObject
             {
-                Text="お",
-                Position=new Vector2(13,10)
+                Text = "お",
+                Position = new Vector2(13, 10)
             });
             KaraokeObject.ListSubTextObject.Add(new TextObject
             {
@@ -69,10 +63,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
                     Value = DrawableKaraokeObject.Progress,
                 },
             };
-            slider.Bindable.ValueChanged+=  (v) =>
-            {
-                DrawableKaraokeObject.Progress = v;
-            };
+            slider.Bindable.ValueChanged += (v) => { DrawableKaraokeObject.Progress = v; };
 
             Children = new Drawable[]
             {
