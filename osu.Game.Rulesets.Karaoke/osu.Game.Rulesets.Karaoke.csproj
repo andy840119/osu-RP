@@ -123,6 +123,9 @@
     <Compile Include="UI\Panel\Pieces\WithUpAndDownButtonSlider.cs" />
     <Compile Include="Objects\Drawables\Pieces\TranslateString.cs" />
     <Compile Include="Mods\KaraokeMod.cs" />
+    <Compile Include="Objects\Drawables\Pieces\ProgressPointBar.cs" />
+    <Compile Include="Objects\Drawables\IAmDrawableKaraokeObject.cs" />
+    <Compile Include="Objects\Extension\KaraokeObjectExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\osu.licenseheader">
@@ -145,6 +148,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Objects\Extension\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -12,7 +12,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
     /// <summary>
     /// Karaoke Text
     /// </summary>
-    public class DrawableKaraokeObject : DrawableHitObject<KaraokeObject>
+    public class DrawableKaraokeObject : DrawableHitObject<KaraokeObject> ,IAmDrawableKaraokeObject
     {
         public const float TIME_PREEMPT = 600;
         public const float TIME_FADEIN = 400;
@@ -47,9 +47,24 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             };
         }
 
+        protected override void Update()
+        {
+            base.Update();
+            double currentTime = Time.Current;
+            if(currentTime> HitObject.StartTime && currentTime< HitObject.EndTime)
+            {
+                //TODO : update progress by 
+
+            }
+        }
+
+        /// <summary>
+        /// progress
+        /// </summary>
+        /// <value>The progress.</value>
         public double Progress
         {
-            get => new double();
+            get => _nowProgress;
             set
             {
                 _nowProgress = value;

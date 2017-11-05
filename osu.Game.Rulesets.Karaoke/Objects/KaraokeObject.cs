@@ -77,12 +77,12 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// The time at which the HitObject ends.
         /// </summary>
-        //public double EndTime { get; set; }
+        public double EndTime { get; set; }
 
         /// <summary>
         /// The duration of the HitObject.
         /// </summary>
-        //public double Duration => EndTime - StartTime;
+        public double Duration => EndTime - StartTime;
 
         public virtual bool NewCombo { get; set; }
 

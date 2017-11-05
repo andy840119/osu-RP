@@ -8,6 +8,16 @@ namespace osu.Game.Rulesets.Karaoke.Objects
     /// </summary>
     public class ProgressPoint
     {
+        public ProgressPoint()
+        {
+            
+        }
+
+        public ProgressPoint(double time,float pointX)
+        {
+            RelativeTime = time;
+            X = pointX;
+        }
         /// <summary>
         /// relative to word's strt time
         /// </summary>
