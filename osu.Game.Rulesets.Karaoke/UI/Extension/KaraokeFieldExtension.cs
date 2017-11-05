@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Audio;
 using osu.Framework.Timing;
 using osu.Game.Rulesets.Karaoke.UI.Interface;
+using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Types;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,33 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 {
     public static class KaraokeFieldExtension
     {
+        public static double PrepareTime = 0;
+
         public static void NavigationToFirst(this IAmKaraokeField karaokeField)
         {
-
+            double firstObject = karaokeField.FirstObjectTime();
+            karaokeField.NavigateToTime(firstObject- PrepareTime);
         }
 
         public static void NavigationToPrevious(this IAmKaraokeField karaokeField)
         {
-
+            int nowObjectIndex = karaokeField.FindObjectIndexByCurrentTime();
+            if (nowObjectIndex > 1)
+            {
+                var list = karaokeField.GetListHitObjects();
+                karaokeField.NavigateToTime(list[nowObjectIndex-1].StartTime- PrepareTime);
+            }
         }
 
         public static void NavigationToNext(this IAmKaraokeField karaokeField)
         {
+            int nowObjectIndex = karaokeField.FindObjectIndexByCurrentTime();
+            var list = karaokeField.GetListHitObjects();
 
+            if (nowObjectIndex < list.Count-1)
+            {
+                karaokeField.NavigateToTime(list[nowObjectIndex + 1].StartTime - PrepareTime);
+            }
         }
 
         public static void Play(this IAmKaraokeField karaokeField)
@@ -63,7 +78,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 
         public static void AdjustlyricsOffset(this IAmKaraokeField karaokeField, double value)
         {
-
+            //TODO : maybe use offset ?
         }
 
         /// <summary>
@@ -85,13 +100,13 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         /// <returns></returns>
         public static double LastObjectTime(this IAmKaraokeField karaokeField)
         {
-            var hitObjects = karaokeField.WorkingBeatmap.Beatmap.HitObjects;
+            var hitObjects = karaokeField.GetListHitObjects();
             return ((hitObjects.Last() as IHasEndTime)?.EndTime ?? hitObjects.Last().StartTime) + 1;
         }
 
         public static double TotalTime(this IAmKaraokeField karaokeField)
         {
-            return LastObjectTime(karaokeField) - FirstObjectTime(karaokeField);
+            return karaokeField.LastObjectTime() - karaokeField.FirstObjectTime();
         }
 
         /// <summary>
@@ -101,6 +116,42 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         public static double GetCurrentTime(this IAmKaraokeField karaokeField)
         {
             return karaokeField.WorkingBeatmap.Track.CurrentTime;
+        }
+
+        public static HitObject FindObjectByCurrentTime(this IAmKaraokeField karaokeField)
+        {
+            double currentTime = karaokeField.GetCurrentTime();
+            var listObjects = karaokeField.GetListHitObjects();
+
+            for (int i = 0; i < listObjects.Count; i++)
+            {
+                if (listObjects[i].StartTime >= currentTime)
+                    return listObjects[i-1];
+            }
+
+            return null;
+        }
+
+        public static int FindObjectIndexByCurrentTime(this IAmKaraokeField karaokeField)
+        {
+            HitObject hitObject = karaokeField.FindObjectByCurrentTime();
+            if (hitObject == null)
+                return -1;
+
+            var listObjects = karaokeField.GetListHitObjects();
+            for (int i = 0; i < listObjects.Count; i++)
+            {
+                if (listObjects[i] == hitObject)
+                    return i;
+            }
+
+            //404
+            return -1;
+        }
+
+        public static List<HitObject> GetListHitObjects(this IAmKaraokeField karaokeField)
+        {
+            return karaokeField.WorkingBeatmap.Beatmap.HitObjects;
         }
     }
 }

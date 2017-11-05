@@ -278,7 +278,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                                     MinValue=0.5f,
                                     MaxValue=1.5f,
                                     Value=1,
-                                    KeyboardStep=0.1f,
+                                    KeyboardStep=0.05f,
                                     OnValueChanged = (eaa,newValue)=>
                                     {
                                         playField?.AdjustSpeed(newValue);
