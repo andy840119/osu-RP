@@ -35,7 +35,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// width
         /// </summary>
-        public float Width { get; set; } = 1024;
+        public float Width { get; set; } = 700;
 
         /// <summary>
         /// height
@@ -47,7 +47,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// </summary>
         public TextObject MainText { get; set; } = new TextObject()
         {
-            FontSize = 70, //default Main text Size is 70
+            FontSize = 50, //default Main text Size is 70
             Position = new Vector2(0, 30), //default position
         };
 

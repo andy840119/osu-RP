@@ -10,6 +10,7 @@ using osu.Game.Rulesets.Karaoke.UI;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Types;
 using OpenTK;
+using osu.Game.Rulesets.Karaoke.Helps;
 
 namespace osu.Game.Rulesets.Karaoke.Beatmaps
 {
@@ -60,6 +61,41 @@ namespace osu.Game.Rulesets.Karaoke.Beatmaps
                     NewCombo = comboData?.NewCombo ?? false
                 };
             }
+        }
+
+        /// <summary>
+        /// Performs the conversion of a Beatmap using this Beatmap Converter.
+        /// </summary>
+        /// <param name="original">The un-converted Beatmap.</param>
+        /// <returns>The converted Beatmap.</returns>
+        protected override Beatmap<KaraokeObject> ConvertBeatmap(Beatmap original)
+        {
+            //TODO : ・ｽﾒ考Mania・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
+            var newBratmaps = new Beatmap<KaraokeObject>()
+            {
+                BeatmapInfo = original.BeatmapInfo,
+                ControlPointInfo = original.ControlPointInfo,
+                HitObjects = Convert(original.HitObjects),
+            };
+            //newBratmaps.HitObjects.BindingAll();
+            return newBratmaps;
+        }
+
+        protected List<KaraokeObject> Convert(List<HitObject> originalHitOjects)
+        {
+            List<KaraokeObject> listRerturn = new List<KaraokeObject>();
+
+            for (int i= 0;i<originalHitOjects.Count;i++)
+            {
+                if (i%5==4)
+                {
+                    double duration = originalHitOjects[i].StartTime - originalHitOjects[i - 4].StartTime;
+                    var karaokeObject = DemoKaraokeObject.GenerateWithStartAndDuration(originalHitOjects[i].StartTime, duration);
+                    listRerturn.Add(karaokeObject);
+                }
+            }
+
+            return listRerturn;
         }
     }
 }

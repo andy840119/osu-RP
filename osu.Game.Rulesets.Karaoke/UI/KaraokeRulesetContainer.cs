@@ -14,6 +14,7 @@ using osu.Game.Rulesets.Replays;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.UI;
 using OpenTK;
+using osu.Game.Rulesets.Karaoke.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -37,6 +38,11 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         protected override DrawableHitObject<KaraokeObject> GetVisualRepresentation(KaraokeObject h)
         {
+            if (h is KaraokeObject karaokeObject)
+            {
+                return new DrawableKaraokeObject(karaokeObject);
+            }
+
             var circle = h as HitCircle;
             if (circle != null)
                 return new DrawableHitCircle(circle);

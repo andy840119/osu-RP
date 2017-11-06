@@ -58,9 +58,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             int nowObjectIndex = karaokeField.FindObjectIndexByCurrentTime();
             var list = karaokeField.GetListHitObjects();
 
-            if (nowObjectIndex < list.Count - 1)
+            if (nowObjectIndex < list.Count - 2)
             {
-                karaokeField.NavigateToTime(list[nowObjectIndex + 1].StartTime - PrepareTime);
+                karaokeField.NavigateToTime(list[nowObjectIndex + 2].StartTime - PrepareTime);
             }
         }
 

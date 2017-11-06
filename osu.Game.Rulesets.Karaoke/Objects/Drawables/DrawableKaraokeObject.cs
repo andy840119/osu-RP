@@ -36,6 +36,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             : base(hitObject)
         {
             Alpha = 0;
+
             TextsAndMaskPiece.SetColor(Color4.Blue);
 
             TextsAndMaskPiece.AddText(hitObject.MainText);
@@ -69,6 +70,14 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             {
                 //TODO : update progress by 
                 Progress = HitObject.GetProgressByTime(currentTime- HitObject.StartTime);
+
+                //this.Show();
+                //Alpha = 1;
+            }
+            else
+            {
+                //this.Hide();
+                //Alpha = 0;
             }
         }
 
@@ -88,17 +97,22 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 
         protected sealed override void UpdateState(ArmedState state)
         {
+            
             FinishTransforms();
 
+            
             using (BeginAbsoluteSequence(HitObject.StartTime - TIME_PREEMPT, true))
             {
                 UpdateInitialState();
 
                 UpdatePreemptState();
 
+                
                 using (BeginDelayedSequence(TIME_PREEMPT + (Judgements.FirstOrDefault()?.TimeOffset ?? 0), true))
                     UpdateCurrentState(state);
+                    
             }
+            
         }
 
         protected virtual void UpdateInitialState()
@@ -117,8 +131,9 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
                 return;
 
             //delay
-            var sequence = this.Delay(HitObject.Duration).FadeOut(TIME_FADEOUT);
-            Expire();
+            var sequence = this.Delay(HitObject.Duration).FadeOut(TIME_FADEOUT);//andy840119 : violate method
+
+            //Expire();
         }
 
         protected virtual void MovingMask(float newValue)

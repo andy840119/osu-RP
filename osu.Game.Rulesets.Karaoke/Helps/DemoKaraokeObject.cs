@@ -63,5 +63,29 @@ namespace osu.Game.Rulesets.Karaoke.Helps
 
             return karaokeObject;
         }
+
+        public static KaraokeObject GenerateWithStartAndDuration(double startTime,double duration)
+        {
+            var karaokeObject = new KaraokeObject();
+            karaokeObject.MainText.Text = "終わるまでは終わらないよ";
+            karaokeObject.Position = new Vector2(300, 150);
+            karaokeObject.ListSubTextObject.Add(new TextObject
+            {
+                Text = "お",
+                Position = new Vector2(13, 10)
+            });
+            karaokeObject.ListSubTextObject.Add(new TextObject
+            {
+                Text = "お",
+                Position = new Vector2(278, 10)
+            });
+            karaokeObject.StartTime = startTime;
+            karaokeObject.Duration = duration;
+
+            karaokeObject.AddProgressPoint(new ProgressPoint(0, 0));
+            karaokeObject.AddProgressPoint(new ProgressPoint(duration, 550));
+
+            return karaokeObject;
+        }
     }
 }
