@@ -54,7 +54,7 @@
       <HintPath>..\packages\Google.Apis.Translate.v2.1.30.0.875\lib\net45\Google.Apis.Translate.v2.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
@@ -134,8 +134,9 @@
     <Compile Include="Tests\TestCaseKaraokePanel.cs" />
     <Compile Include="Tests\TestCasePlayField.cs" />
     <Compile Include="Tests\TestCaseTranslate.cs" />
-    <Compile Include="Tools\Translator\GoogleTranslateCode.cs" />
+    <Compile Include="Tools\Translator\TranslateCode.cs" />
     <Compile Include="Tools\Translator\GoogleTranslator.cs" />
+    <Compile Include="Tools\Translator\TranslateorBase.cs" />
     <Compile Include="UI\Cursor\CursorTrail.cs" />
     <Compile Include="UI\Cursor\GameplayCursor.cs" />
     <Compile Include="UI\Extension\PlayFieldExtension.cs" />

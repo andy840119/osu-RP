@@ -27,5 +27,15 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
             //JsonData jsonData = (new JavaScriptSerializer()).Deserialize<JsonData>(json);
             //txtTarget.Text = jsonData.Data.Translations[0].TranslatedText;
         }
+
+        /// <summary>
+        /// get langCode by 
+        /// </summary>
+        /// <param name="langIndex"></param>
+        /// <returns></returns>
+        public string GetLangCodeFromLangIndex(TranslateCode langIndex)
+        {
+            return "";
+        }
     }
 }

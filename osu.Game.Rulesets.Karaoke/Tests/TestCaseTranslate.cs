@@ -11,6 +11,7 @@ using osu.Game.Graphics.Sprites;
 using NUnit.Framework;
 using osu.Framework.Graphics;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace osu.Game.Rulesets.Karaoke.Tests
 {
@@ -23,14 +24,31 @@ namespace osu.Game.Rulesets.Karaoke.Tests
         {
             //Run();
 
-            Translate("en", "zh-TW", "Hello world!!");
+            Translate("", "zh-TW", "倪好 world!===");
 
 
         }
 
-        
+        public class Translation
+        {
+            public string translatedText { get; set; }
+        }
+
+        public class Data
+        {
+            public List<Translation> translations { get; set; }
+        }
+
+        public class RootObject
+        {
+            public Data data { get; set; }
+        }
+
+
         public void Translate(string sourceLangCode, string targetLangCode, string message)
         {
+            //TODO : add try catch
+
             string url = "https://translation.googleapis.com/language/translate/";
             url += "v2?key=" + "AIzaSyB9tomdvp8WmySkEWIhjhVYO3rkhzKOPMc";
             url += "&source=" + sourceLangCode;
@@ -39,12 +57,13 @@ namespace osu.Game.Rulesets.Karaoke.Tests
             WebClient client = new WebClient();
             client.Encoding = System.Text.Encoding.UTF8;
             string json = client.DownloadString(url);
-            //JsonData jsonData = (new JavaScriptSerializer()).Deserialize<JsonData>(json);
-            //txtTarget.Text = jsonData.Data.Translations[0].TranslatedText;
+
+
+            RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(json);
 
             Add(new OsuSpriteText
             {
-                Text = json,
+                Text = rootObject?.data?.translations?.FirstOrDefault().translatedText,
                 //Font = @"Venera",
                 UseFullGlyphHeight = false,
                 Anchor = Anchor.TopLeft,
