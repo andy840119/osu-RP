@@ -11,7 +11,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 {
     [TestFixture]
     [Ignore("getting CI working")]
-    internal class TestCaseKaraokePanel : OsuTestCase
+    public class TestCaseKaraokePanel : OsuTestCase
     {
         /// <summary>
         /// Drawable Object

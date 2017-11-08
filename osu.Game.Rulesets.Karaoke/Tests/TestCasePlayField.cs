@@ -8,7 +8,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 {
     [TestFixture]
     [Ignore("getting CI working")]
-    internal class TestCasePlayField : TestCasePlayer
+    public class TestCasePlayField : TestCasePlayer
     {
     }
 }

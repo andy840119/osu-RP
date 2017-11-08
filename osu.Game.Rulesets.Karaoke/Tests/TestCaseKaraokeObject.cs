@@ -19,7 +19,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 {
     [TestFixture]
     [Ignore("getting CI working")]
-    internal class TestCaseKaraokeObject : OsuTestCase
+    public class TestCaseKaraokeObject : OsuTestCase
     {
         private FramedClock framedClock;
         private Container playfieldContainer;
