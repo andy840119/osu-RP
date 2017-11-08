@@ -71,8 +71,8 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
                 //TODO : update progress by 
                 Progress = HitObject.GetProgressByTime(currentTime- HitObject.StartTime);
 
-                //this.Show();
-                //Alpha = 1;
+                this.Show();
+                Alpha = 1;
             }
             else
             {
@@ -131,7 +131,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
                 return;
 
             //delay
-            var sequence = this.Delay(HitObject.Duration).FadeOut(TIME_FADEOUT);//andy840119 : violate method
+            var sequence = this.Delay(HitObject.Duration).FadeOut(TIME_FADEOUT);
 
             //Expire();
         }

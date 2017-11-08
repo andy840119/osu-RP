@@ -15,6 +15,8 @@ using osu.Game.Rulesets.Karaoke.UI.Panel;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.UI;
 using OpenTK;
+using osu.Game.Rulesets.Karaoke.UI.Extension;
+using osu.Game.Rulesets.Karaoke.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -25,6 +27,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
     {
         public Ruleset Ruleset { get; set; }
         public WorkingBeatmap WorkingBeatmap { get; set; }
+
+        public KaraokeRulesetContainer KaraokeRulesetContainer { get; set; }
 
         private readonly Container approachCircles;
         private readonly Container judgementLayer;
@@ -49,11 +53,12 @@ namespace osu.Game.Rulesets.Karaoke.UI
         }
 
 
-        public KaraokePlayfield(Ruleset ruleset, WorkingBeatmap beatmap)
+        public KaraokePlayfield(Ruleset ruleset, WorkingBeatmap beatmap, KaraokeRulesetContainer container)
             : base(BASE_SIZE.X)
         {
             Ruleset = ruleset;
             WorkingBeatmap = beatmap;
+            KaraokeRulesetContainer = container;
 
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
@@ -119,6 +124,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
         {
             h.Depth = (float)h.HitObject.StartTime;
 
+            this.UpdateObjectAutomaticallyPosition(h as DrawableKaraokeObject);
+
             var c = h as IDrawableHitObjectWithProxiedApproach;
             if (c != null)
                 approachCircles.Add(c.ProxiedLayer.CreateProxy());
@@ -128,10 +135,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public override void PostProcess()
         {
-            return;
-            //connectionLayer.HitObjects = HitObjects.Objects
-            //    .Select(d => d.HitObject)
-            //    .OrderBy(h => h.StartTime).OfType<OsuHitObject>();
+            
         }
 
         public override void OnJudgement(DrawableHitObject judgedObject, Judgement judgement)

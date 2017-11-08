@@ -12,5 +12,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Interface
     {
         Ruleset Ruleset { get; }
         WorkingBeatmap WorkingBeatmap { get; }
+
+        KaraokeRulesetContainer KaraokeRulesetContainer { get; }
     }
 }

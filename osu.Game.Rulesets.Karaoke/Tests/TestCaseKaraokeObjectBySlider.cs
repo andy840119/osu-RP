@@ -31,7 +31,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
         {
             ExampleContainer container;
 
-            KaraokeObject = DemoKaraokeObject.WithoutProgressPoint();
+            KaraokeObject = DemoKaraokeObject.GenerateDemo001();
 
             DrawableKaraokeObject = new DrawableKaraokeObject(KaraokeObject)
             {
@@ -43,14 +43,15 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 
             var slider = new SettingsSlider<double>()
             {
-                LabelText = "Background dim",
+                LabelText = "Background dim ",
                 Bindable = new BindableDouble
                 {
                     MinValue = 0,
-                    MaxValue = 1000,
-                    Default = 500,
+                    MaxValue = 500,
+                    Default = 300,
                     Value = DrawableKaraokeObject.Progress,
                 },
+                Width=0.5f
             };
             slider.Bindable.ValueChanged += (v) => { DrawableKaraokeObject.Progress = v; };
 

@@ -32,7 +32,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         protected override BeatmapProcessor<KaraokeObject> CreateBeatmapProcessor() => new KaraokeBeatmapProcessor();
 
-        protected override Playfield CreatePlayfield() => new KaraokePlayfield(Ruleset, WorkingBeatmap);
+        protected override Playfield CreatePlayfield() => new KaraokePlayfield(Ruleset, WorkingBeatmap ,this);
 
         public override PassThroughInputManager CreateInputManager() => new KaraokeInputManager(Ruleset.RulesetInfo);
 

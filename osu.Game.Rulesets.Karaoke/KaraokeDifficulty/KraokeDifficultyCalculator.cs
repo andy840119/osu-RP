@@ -24,8 +24,8 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
 
         protected override void PreprocessHitObjects()
         {
-            foreach (OsuHitObject h in Objects)
-                (h as Slider)?.Curve?.Calculate();
+            //foreach (OsuHitObject h in Objects)
+            //    (h as Slider)?.Curve?.Calculate();
         }
 
         protected override double CalculateInternal(Dictionary<string, string> categoryDifficulty)
