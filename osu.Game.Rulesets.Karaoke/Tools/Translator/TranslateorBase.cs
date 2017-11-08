@@ -17,14 +17,21 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
         //notified translate multi string 
         public EventHandler<List<string>> OnTranslateMultiStringSuccess { get; set; }
 
-        public EventHandler OnTranslateFail { get; set; }
+        //if fail ,get error message
+        public EventHandler<string> OnTranslateFail { get; set; }
 
         //translate single streing 
         public abstract void Translate(TranslateCode sourceLangeCode, TranslateCode targetLangCode, string translateString);
 
         //translate multi string at the same thme
         public abstract void Translate(TranslateCode sourceLangeCode, TranslateCode targetLangCode, List<string> translateString);
+    }
 
-
+    /// <summary>
+    /// Translator Type
+    /// </summary>
+    public enum TranslatorType
+    {
+        google,
     }
 }
