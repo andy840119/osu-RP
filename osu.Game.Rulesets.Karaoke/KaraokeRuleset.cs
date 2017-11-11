@@ -28,19 +28,14 @@ namespace osu.Game.Rulesets.Karaoke
 
         public override IEnumerable<KeyBinding> GetDefaultKeyBindings(int variant = 0) => new[]
         {
-            //TODO : will remove
-            new KeyBinding(InputKey.Z, KaraokeAction.LeftButton),
-            new KeyBinding(InputKey.X, KaraokeAction.RightButton),
-            new KeyBinding(InputKey.MouseLeft, KaraokeAction.LeftButton),
-            new KeyBinding(InputKey.MouseRight, KaraokeAction.RightButton),
-
             new KeyBinding(InputKey.Number1, KaraokeAction.FirstLyric),
             new KeyBinding(InputKey.Keypad1, KaraokeAction.FirstLyric),
 
             new KeyBinding(InputKey.Left, KaraokeAction.PreviousLyric),
             new KeyBinding(InputKey.Right, KaraokeAction.NextLyric),
 
-            new KeyBinding(InputKey.Space, KaraokeAction.PlayAndPause),
+            new KeyBinding(InputKey.Enter, KaraokeAction.PlayAndPause),
+            new KeyBinding(InputKey.KeypadEnter, KaraokeAction.PlayAndPause),
 
             new KeyBinding(InputKey.Q, KaraokeAction.IncreaseSpeed),
             new KeyBinding(InputKey.A, KaraokeAction.DecreaseSpeed),
@@ -53,6 +48,8 @@ namespace osu.Game.Rulesets.Karaoke
             new KeyBinding(InputKey.E, KaraokeAction.IncreaseLyricAppearTime),
             new KeyBinding(InputKey.D, KaraokeAction.DecreaseLyricAppearTime),
             new KeyBinding(InputKey.C, KaraokeAction.ResetLyricAppearTime),
+
+            new KeyBinding(InputKey.P, KaraokeAction.OpenPanel),
         };
 
         public override IEnumerable<BeatmapStatistic> GetBeatmapStatistics(WorkingBeatmap beatmap) => new[]

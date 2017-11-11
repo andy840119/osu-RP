@@ -72,6 +72,10 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel
                 case KaraokeAction.ResetLyricAppearTime:
                     KaraokePanelOverlay.LyricOffectSlider.ResetToDefauleValue();
                     break;
+
+                case KaraokeAction.OpenPanel:
+                    KaraokePanelOverlay.ToggleVisibility(); ;
+                    break;
             }
 
             return false;

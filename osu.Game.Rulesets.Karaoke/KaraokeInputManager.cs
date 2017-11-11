@@ -38,5 +38,7 @@ namespace osu.Game.Rulesets.Karaoke
         [Description("Increase Lyric Appear Time")] IncreaseLyricAppearTime, //E
         [Description("Decrease Lyric Appear Time")] DecreaseLyricAppearTime, //D
         [Description("Reset Lyric Appear Time")] ResetLyricAppearTime, //C
+
+        [Description("Panel key")] OpenPanel, //P
     }
 }
