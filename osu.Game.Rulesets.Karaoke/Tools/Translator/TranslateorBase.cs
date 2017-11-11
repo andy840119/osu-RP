@@ -11,6 +11,8 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
     /// </summary>
     public abstract class TranslateorBase
     {
+        protected abstract Dictionary<TranslateCode, string> LangToCodeDictionary { get; }
+
         //notified translate single string 
         public EventHandler<string> OnTranslateSuccess { get; set; }
 

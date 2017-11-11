@@ -19,7 +19,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel
         }
 
         /// <summary>
-        /// TODO : implenent
+        /// 
         /// </summary>
         /// <returns><c>true</c>, if pressed was oned, <c>false</c> otherwise.</returns>
         /// <param name="action">Action.</param>

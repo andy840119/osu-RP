@@ -12,6 +12,7 @@ using NUnit.Framework;
 using osu.Framework.Graphics;
 using System.Net;
 using Newtonsoft.Json;
+using osu.Game.Rulesets.Karaoke.Tools.Translator;
 
 namespace osu.Game.Rulesets.Karaoke.Tests
 {
@@ -24,52 +25,12 @@ namespace osu.Game.Rulesets.Karaoke.Tests
         {
             //Run();
 
-            Translate("", "zh-TW", "倪好 world!===");
-
-
-        }
-
-       
-
-       
-
-        public class RootObject
-        {
-            public Data data { get; set; }
-
-            public class Data
+            GoogleTranslator googleTranslator = new GoogleTranslator();
+            googleTranslator.OnTranslateSuccess += (a, totalTranslate) =>
             {
-                public List<Translation> translations { get; set; }
-
-                public class Translation
-                {
-                    public string translatedText { get; set; }
-                }
-            }
-        }
-
-
-        public void Translate(string sourceLangCode, string targetLangCode, string message)
-        {
-            try
-            {
-                //TODO : add try catch
-
-                string url = "https://translation.googleapis.com/language/translate/";
-                url += "v2?key=" + "AIzaSyB9tomdvp8WmySkEWIhjhVYO3rkhzKOPMc";
-                url += "&source=" + sourceLangCode;
-                url += "&target=" + targetLangCode;
-                url += "&q=" + message;
-                WebClient client = new WebClient();
-                client.Encoding = System.Text.Encoding.UTF8;
-                string json = client.DownloadString(url);
-
-
-                RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(json);
-
                 Add(new OsuSpriteText
                 {
-                    Text = rootObject?.data?.translations?.FirstOrDefault().translatedText,
+                    Text = totalTranslate,
                     //Font = @"Venera",
                     UseFullGlyphHeight = false,
                     Anchor = Anchor.TopLeft,
@@ -80,14 +41,12 @@ namespace osu.Game.Rulesets.Karaoke.Tests
                     Position = new OpenTK.Vector2(100, 100),
                     //BorderColour = _textColor,
                 });
-
-            }
-            catch(Exception e)
+            };
+            googleTranslator.OnTranslateFail += (a, errorMessage) =>
             {
-
                 Add(new OsuSpriteText
                 {
-                    Text = e.Message,
+                    Text = errorMessage,
                     //Font = @"Venera",
                     UseFullGlyphHeight = false,
                     Anchor = Anchor.TopLeft,
@@ -98,9 +57,12 @@ namespace osu.Game.Rulesets.Karaoke.Tests
                     Position = new OpenTK.Vector2(100, 100),
                     //BorderColour = _textColor,
                 });
-            }
-           
+            };
+
+            googleTranslator.Translate(TranslateCode.English, TranslateCode.Chinese_Traditional, "倪好 world!===");
+
         }
+       
         
 
         /*
