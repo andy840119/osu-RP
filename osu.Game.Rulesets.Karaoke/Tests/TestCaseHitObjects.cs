@@ -114,8 +114,8 @@ namespace osu.Game.Rulesets.Karaoke.Tests
             h.Anchor = Anchor.Centre;
             h.Depth = depth++;
 
-            if (auto)
-                h.State = ArmedState.Hit;
+            //if (auto)
+             //   h.State = ArmedState.Hit;
 
             playfieldContainer.Add(h);
             var proxyable = h as IDrawableHitObjectWithProxiedApproach;
