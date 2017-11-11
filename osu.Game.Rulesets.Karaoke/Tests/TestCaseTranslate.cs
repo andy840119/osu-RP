@@ -47,33 +47,55 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 
         public void Translate(string sourceLangCode, string targetLangCode, string message)
         {
-            //TODO : add try catch
-
-            string url = "https://translation.googleapis.com/language/translate/";
-            url += "v2?key=" + "AIzaSyB9tomdvp8WmySkEWIhjhVYO3rkhzKOPMc";
-            url += "&source=" + sourceLangCode;
-            url += "&target=" + targetLangCode;
-            url += "&q=" + message;
-            WebClient client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-            string json = client.DownloadString(url);
-
-
-            RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(json);
-
-            Add(new OsuSpriteText
+            try
             {
-                Text = rootObject?.data?.translations?.FirstOrDefault().translatedText,
-                //Font = @"Venera",
-                UseFullGlyphHeight = false,
-                Anchor = Anchor.TopLeft,
-                Origin = Anchor.TopLeft,
-                TextSize = 20,
-                Alpha = 1,
-                //ShadowColour = _textColor,
-                Position = new OpenTK.Vector2(100, 100),
-                //BorderColour = _textColor,
-            });
+                //TODO : add try catch
+
+                string url = "https://translation.googleapis.com/language/translate/";
+                url += "v2?key=" + "AIzaSyB9tomdvp8WmySkEWIhjhVYO3rkhzKOPMc";
+                url += "&source=" + sourceLangCode;
+                url += "&target=" + targetLangCode;
+                url += "&q=" + message;
+                WebClient client = new WebClient();
+                client.Encoding = System.Text.Encoding.UTF8;
+                string json = client.DownloadString(url);
+
+
+                RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(json);
+
+                Add(new OsuSpriteText
+                {
+                    Text = rootObject?.data?.translations?.FirstOrDefault().translatedText,
+                    //Font = @"Venera",
+                    UseFullGlyphHeight = false,
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+                    TextSize = 20,
+                    Alpha = 1,
+                    //ShadowColour = _textColor,
+                    Position = new OpenTK.Vector2(100, 100),
+                    //BorderColour = _textColor,
+                });
+
+            }
+            catch(Exception e)
+            {
+
+                Add(new OsuSpriteText
+                {
+                    Text = e.Message,
+                    //Font = @"Venera",
+                    UseFullGlyphHeight = false,
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+                    TextSize = 20,
+                    Alpha = 1,
+                    //ShadowColour = _textColor,
+                    Position = new OpenTK.Vector2(100, 100),
+                    //BorderColour = _textColor,
+                });
+            }
+           
         }
         
 
