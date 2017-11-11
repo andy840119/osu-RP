@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <LangVersion>Latest</LangVersion>
+    <LangVersion>Default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <LangVersion>Latest</LangVersion>
+    <LangVersion>Default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Google.Apis, Version=1.30.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
@@ -93,32 +93,7 @@
     <Compile Include="Objects\KaraokeObject.cs" />
     <Compile Include="Objects\ProgressPoint.cs" />
     <Compile Include="Objects\TextObject.cs" />
-    <Compile Include="Osu_Objects\Drawables\DrawableOsuHitObject.cs" />
-    <Compile Include="Osu_Objects\Drawables\Connections\ConnectionRenderer.cs" />
-    <Compile Include="Osu_Objects\Drawables\Connections\FollowPointRenderer.cs" />
     <Compile Include="Judgements\KaraokeJudgement.cs" />
-    <Compile Include="Osu_Objects\Drawables\DrawableRepeatPoint.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\ApproachCircle.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\SpinnerBackground.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\CirclePiece.cs" />
-    <Compile Include="Osu_Objects\Drawables\DrawableSlider.cs" />
-    <Compile Include="Osu_Objects\Drawables\Connections\FollowPoint.cs" />
-    <Compile Include="Osu_Objects\Drawables\DrawableSpinner.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\ExplodePiece.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\FlashPiece.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\GlowPiece.cs" />
-    <Compile Include="Osu_Objects\Drawables\DrawableOsuJudgement.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\NumberPiece.cs" />
-    <Compile Include="Osu_Objects\Drawables\DrawableSliderTick.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\RingPiece.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\SpinnerDisc.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\SpinnerSpmCounter.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\SpinnerTicks.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\TrianglesPiece.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\SliderBall.cs" />
-    <Compile Include="Osu_Objects\Drawables\Pieces\SliderBody.cs" />
-    <Compile Include="Osu_Objects\RepeatPoint.cs" />
-    <Compile Include="Osu_Objects\SliderTick.cs" />
     <Compile Include="KaraokeDifficulty\KraokeDifficultyCalculator.cs" />
     <Compile Include="KaraokeDifficulty\Preprocessing\OsuDifficultyBeatmap.cs" />
     <Compile Include="KaraokeDifficulty\Preprocessing\OsuDifficultyHitObject.cs" />
@@ -128,7 +103,6 @@
     <Compile Include="KaraokeDifficulty\Utils\History.cs" />
     <Compile Include="KaraokeInputManager.cs" />
     <Compile Include="Replays\KaraokeReplayInputHandler.cs" />
-    <Compile Include="Tests\TestCaseHitObjects.cs" />
     <Compile Include="Tests\TestCaseKaraokeObject.cs" />
     <Compile Include="Tests\TestCaseKaraokeObjectBySlider.cs" />
     <Compile Include="Tests\TestCaseKaraokePanel.cs" />
@@ -149,13 +123,7 @@
     <Compile Include="UI\KaraokeRulesetContainer.cs" />
     <Compile Include="UI\KaraokePlayfield.cs" />
     <Compile Include="KaraokeRuleset.cs" />
-    <Compile Include="Osu_Objects\HitCircle.cs" />
-    <Compile Include="Osu_Objects\Drawables\DrawableHitCircle.cs" />
-    <Compile Include="Osu_Objects\OsuHitObject.cs" />
-    <Compile Include="Osu_Objects\Slider.cs" />
-    <Compile Include="Osu_Objects\Spinner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Mods\OsuMod.cs" />
     <Compile Include="Replays\KaraokeAutoGenerator.cs" />
     <Compile Include="Replays\KaraokeAutoGeneratorBase.cs" />
     <Compile Include="Objects\KaraokeTranslateString.cs" />

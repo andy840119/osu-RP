@@ -97,27 +97,19 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
 
         protected sealed override void UpdateState(ArmedState state)
         {
-            
-            FinishTransforms();
 
-            
-            using (BeginAbsoluteSequence(HitObject.StartTime - TIME_PREEMPT, true))
+            double transformTime = HitObject.StartTime - TIME_PREEMPT;
+
+            base.ApplyTransformsAt(transformTime, true);
+            base.ClearTransformsAfter(transformTime, true);
+
+            using (BeginAbsoluteSequence(transformTime, true))
             {
-                UpdateInitialState();
-
                 UpdatePreemptState();
 
-                
                 using (BeginDelayedSequence(TIME_PREEMPT + (Judgements.FirstOrDefault()?.TimeOffset ?? 0), true))
                     UpdateCurrentState(state);
-                    
             }
-            
-        }
-
-        protected virtual void UpdateInitialState()
-        {
-            Hide();
         }
 
         protected virtual void UpdatePreemptState()
@@ -131,7 +123,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
                 return;
 
             //delay
-            var sequence = this.Delay(HitObject.Duration).FadeOut(TIME_FADEOUT);
+            var sequence = this.Delay(HitObject.Duration).FadeOut(TIME_FADEOUT).Expire();
 
             //Expire();
         }
