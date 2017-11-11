@@ -137,6 +137,7 @@
     <Compile Include="Objects\Drawables\Pieces\ProgressPointBar.cs" />
     <Compile Include="Objects\Drawables\IAmDrawableKaraokeObject.cs" />
     <Compile Include="Objects\Extension\KaraokeObjectExtension.cs" />
+    <Compile Include="UI\Tool\KaraokeFieldTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\osu.licenseheader">

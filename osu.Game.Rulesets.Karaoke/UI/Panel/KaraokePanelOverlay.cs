@@ -273,6 +273,10 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel
                     },
                 },
             };
+
+            //initialize value
+            this.SpeedSlider.Value = PlayField.GetSpeed();
+            this.ToneSlider.Value = PlayField.GetTone();
         }
     }
 }

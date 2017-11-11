@@ -11,7 +11,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
     /// <summary>
     /// it's a slider with up and down button
     /// </summary>
-    public class WithUpAndDownButtonSlider : OsuSliderBar<float>
+    public class WithUpAndDownButtonSlider : OsuSliderBar<double>
     {
         public EventHandler<double> OnValueChanged;
 
@@ -30,7 +30,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         /// <summary>
         /// max value
         /// </summary>
-        public float MinValue
+        public double MinValue
         {
             get => CurrentNumber.MinValue;
             set { CurrentNumber.MinValue = value; }
@@ -39,7 +39,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         /// <summary>
         /// min value
         /// </summary>
-        public float MaxValue
+        public double MaxValue
         {
             get => CurrentNumber.MaxValue;
             set { CurrentNumber.MaxValue = value; }
@@ -48,7 +48,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
         /// <summary>
         /// now value
         /// </summary>
-        public float Value
+        public double Value
         {
             get => CurrentNumber.Value;
             set { CurrentNumber.Value = value; }
@@ -94,7 +94,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                 TooltipText = "Decrease",
                 Action = () =>
                 {
-                    float newValue = Value - KeyboardStep;
+                    double newValue = Value - KeyboardStep;
                     Value = newValue;
                 }
             });
@@ -110,7 +110,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
                 TooltipText = "Increase",
                 Action = () =>
                 {
-                    float newValue = Value + KeyboardStep;
+                    double newValue = Value + KeyboardStep;
                     Value = newValue;
                 }
             });
@@ -118,7 +118,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Panel.Pieces
 
         public override string TooltipText
         {
-            get { return Current.Value.ToString(@"0.## stars"); }
+            get { return Current.Value.ToString(@"0.##"); }
         }
 
         /// <summary>

@@ -123,6 +123,11 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             karaokeField.WorkingBeatmap.Track.Rate = Speed;
         }
 
+        public static double GetSpeed(this IAmKaraokeField karaokeField)
+        {
+            return karaokeField.WorkingBeatmap.Track.Rate;
+        }
+
         public static void AdjustTone(this IAmKaraokeField karaokeField, double value)
         {
             if (karaokeField.WorkingBeatmap.Track is IHasPitchAdjust pitchAdjustTrack)
@@ -132,6 +137,16 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
                 pitchAdjustTrack.PitchAdjust = Tone;
             }
         }
+
+        public static double GetTone(this IAmKaraokeField karaokeField)
+        {
+            if (karaokeField.WorkingBeatmap.Track is IHasPitchAdjust pitchAdjustTrack)
+            {
+                return pitchAdjustTrack.PitchAdjust;
+            }
+            return 1;
+        }
+
 
         /// <summary>
         /// Adjust offset

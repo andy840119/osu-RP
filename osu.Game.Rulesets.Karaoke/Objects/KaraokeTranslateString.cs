@@ -10,9 +10,13 @@ namespace osu.Game.Rulesets.Karaoke.Objects
     {
         public KaraokeTranslateString()
         {
+
         }
 
-        //TODO : not sure will let user define thie position of translate string ?
+        /// <summary>
+        /// Lang code
+        /// </summary>
+        public string LangCode { get; set; }
 
         /// <summary>
         /// TODO : get the language Code

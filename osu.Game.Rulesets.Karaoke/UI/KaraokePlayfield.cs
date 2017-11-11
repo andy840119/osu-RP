@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using System.Collections.Generic;
+using NUnit.Framework;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Timing;
@@ -8,6 +10,7 @@ using osu.Game.Beatmaps;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Karaoke.Judgements;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.UI.Interface;
 using osu.Game.Rulesets.Karaoke.UI.Panel;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -15,6 +18,8 @@ using osu.Game.Rulesets.UI;
 using OpenTK;
 using osu.Game.Rulesets.Karaoke.UI.Extension;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables;
+using osu.Game.Rulesets.Karaoke.Tools.Translator;
+using osu.Game.Rulesets.Karaoke.UI.Tool;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -25,12 +30,12 @@ namespace osu.Game.Rulesets.Karaoke.UI
     {
         public Ruleset Ruleset { get; set; }
         public WorkingBeatmap WorkingBeatmap { get; set; }
-
         public KaraokeRulesetContainer KaraokeRulesetContainer { get; set; }
+        public KaraokeFieldTool KaraokeFieldTool { get; }=new KaraokeFieldTool();
+        public List<IAmDrawableKaraokeObject> ListDrawableKaraokeObject { get; set; }=new List<IAmDrawableKaraokeObject>();
 
-        private readonly Container approachCircles;
         private readonly Container judgementLayer;
-        private readonly Container connectionLayer;
+        private readonly Container KaraokecontrolLayer;
 
         private readonly KaraokePanelOverlay karaokePanelOverlay;
 
@@ -68,12 +73,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     RelativeSizeAxes = Axes.Both,
                     Depth = 1,
                 },
-                approachCircles = new Container
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = -1,
-                },
-                connectionLayer = new Container
+                KaraokecontrolLayer = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
                     Depth = -2,
@@ -110,6 +110,14 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     Clock = new FramedClock(new StopwatchClock(true)),
                 },
             });
+
+            KaraokeFieldTool.Translateor.OnTranslateMultiStringSuccess += (a, multiSting) =>
+            {
+                for (int i = 0; i < multiSting.Count; i++)
+                {
+                    ListDrawableKaraokeObject[i].AddTranslate(TranslateCode.Chinese_Traditional, multiSting[i]);
+                }
+            };
         }
 
         protected override void LoadComplete()
@@ -122,18 +130,29 @@ namespace osu.Game.Rulesets.Karaoke.UI
         {
             h.Depth = (float)h.HitObject.StartTime;
 
+            //update position
             this.UpdateObjectAutomaticallyPosition(h as DrawableKaraokeObject);
 
-            var c = h as IDrawableHitObjectWithProxiedApproach;
-            if (c != null)
-                approachCircles.Add(c.ProxiedLayer.CreateProxy());
+            //add to list
+            ListDrawableKaraokeObject.Add(h as DrawableKaraokeObject);
 
             base.Add(h);
         }
 
         public override void PostProcess()
         {
-            
+            bool needTranslate = true;
+
+            if (needTranslate)
+            {
+                var listTranslateString = new List<string>();
+                foreach (var singleKaraokeObject in ListDrawableKaraokeObject)
+                {
+                    listTranslateString.Add(singleKaraokeObject.KaraokeObject.MainText.Text);
+                }
+                //translate list string 
+                KaraokeFieldTool.Translateor.Translate(TranslateCode.Default, TranslateCode.Chinese_Traditional, listTranslateString);
+            }
         }
 
         public override void OnJudgement(DrawableHitObject judgedObject, Judgement judgement)

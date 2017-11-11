@@ -12,6 +12,9 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
 {
     public class GoogleTranslator : TranslateorBase
     {
+        //我勸你不要亂幹人家的API Key喔
+        protected string ApiKey = "AIzaSyB9tomdvp8WmySkEWIhjhVYO3rkhzKOPMc";
+
         protected override Dictionary<TranslateCode, string> LangToCodeDictionary
         {
             get
@@ -142,10 +145,8 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
         {
             try
             {
-                //TODO : add try catch
-
                 string url = "https://translation.googleapis.com/language/translate/";
-                url += "v2?key=" + "AIzaSyB9tomdvp8WmySkEWIhjhVYO3rkhzKOPMc";
+                url += "v2?key="  + ApiKey;
                 url += "&source=" + LangToCodeDictionary[sourceLangeCode];
                 url += "&target=" + LangToCodeDictionary[targetLangCode];
                 url += "&q=" + translateString;
@@ -162,9 +163,46 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
             }
         }
 
-        public override void Translate(TranslateCode sourceLangeCode, TranslateCode targetLangCode, List<string> translateString)
+        /// <summary>
+        /// translate multi string
+        /// </summary>
+        /// <param name="sourceLangeCode"></param>
+        /// <param name="targetLangCode"></param>
+        /// <param name="translateListString"></param>
+        public override void Translate(TranslateCode sourceLangeCode, TranslateCode targetLangCode, List<string> translateListString)
         {
-            //throw new NotImplementedException();
+            try
+            {
+                string url = "https://translation.googleapis.com/language/translate/";
+                url += "v2?key=" + ApiKey;
+                url += "&source=" + LangToCodeDictionary[sourceLangeCode];
+                url += "&target=" + LangToCodeDictionary[targetLangCode];
+
+                foreach (var singleString in translateListString)
+                {
+                    url += "&q=" + singleString;
+                }
+
+                WebClient client = new WebClient();
+                client.Encoding = System.Text.Encoding.UTF8;
+                string json = client.DownloadString(url);
+                RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(json);
+
+                List<RootObject.Data.Translation> listTranslate = rootObject?.data?.translations;
+
+                List<string> returnString=new List<string>();
+
+                foreach (var single in listTranslate)
+                {
+                    returnString.Add(single.translatedText);
+                }
+
+                OnTranslateMultiStringSuccess?.Invoke(this, returnString);
+            }
+            catch (Exception e)
+            {
+                OnTranslateFail?.Invoke(this, e.Message);
+            }
         }
 
 
@@ -180,6 +218,7 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
                 public class Translation
                 {
                     public string translatedText { get; set; }
+                    public string detectedSourceLanguage { get; set; }
                 }
             }
         }

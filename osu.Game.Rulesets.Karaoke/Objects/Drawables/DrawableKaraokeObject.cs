@@ -3,9 +3,12 @@
 
 using System.Linq;
 using osu.Framework.Graphics;
+using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces;
 using osu.Game.Rulesets.Karaoke.Objects.Extension;
+using osu.Game.Rulesets.Karaoke.Tools.Translator;
 using osu.Game.Rulesets.Objects.Drawables;
+using OpenTK;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
@@ -19,16 +22,26 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         //簡單來說，preemptive time會是前兩個物件到目前物件開始中間間隔時間
         //就是上個台詞消失後下下句就會在它的位置出現
         public const float TIME_PREEMPT = 600;
-
         public const float TIME_FADEIN = 100;
         public const float TIME_FADEOUT = 100;
+
+        public KaraokeObject KaraokeObject => HitObject;
 
         /// <summary>
         /// if want to update the progress each time
         /// </summary>
         public bool ProgressUpdateByTime = true;
 
-        protected TextsAndMask TextsAndMaskPiece = new TextsAndMask();
+        public TextsAndMask TextsAndMaskPiece { get; set; } = new TextsAndMask();
+        public OsuSpriteText TranslateText { get; set; }= new OsuSpriteText
+        {
+            UseFullGlyphHeight = false,
+            Anchor = Anchor.TopLeft,
+            Origin = Anchor.TopLeft,
+            TextSize = 25,
+            Alpha = 1,
+            Position = new Vector2(0,80),
+        };
 
         private double _nowProgress;
 
@@ -55,7 +68,9 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             Children = new Drawable[]
             {
                 TextsAndMaskPiece,
+                TranslateText,
             };
+
         }
 
         protected override void Update()
@@ -131,6 +146,13 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         protected virtual void MovingMask(float newValue)
         {
             TextsAndMaskPiece.MovingMask(newValue);
+        }
+
+        public void AddTranslate(TranslateCode code, string translateResult)
+        {
+            //Add and show translate in here
+            TranslateText.Text = translateResult;
+            
         }
     }
 }
