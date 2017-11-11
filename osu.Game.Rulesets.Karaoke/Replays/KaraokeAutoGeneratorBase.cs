@@ -4,14 +4,14 @@
 using System;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Replays;
 using osu.Game.Users;
 using OpenTK;
 
 namespace osu.Game.Rulesets.Karaoke.Replays
 {
-    public abstract class KaraokeAutoGeneratorBase : AutoGenerator<OsuHitObject>
+    public abstract class KaraokeAutoGeneratorBase : AutoGenerator<KaraokeObject>
     {
         #region Constants
 
@@ -34,14 +34,14 @@ namespace osu.Game.Rulesets.Karaoke.Replays
         protected Replay Replay;
         protected List<ReplayFrame> Frames => Replay.Frames;
 
-        protected KaraokeAutoGeneratorBase(Beatmap<OsuHitObject> beatmap)
+        protected KaraokeAutoGeneratorBase(Beatmap<KaraokeObject> beatmap)
             : base(beatmap)
         {
             Replay = new Replay
             {
                 User = new User
                 {
-                    Username = @"Autoplay",
+                    Username = @"Karaoke!",
                 }
             };
 

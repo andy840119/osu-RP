@@ -3,7 +3,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
+using osu.Game.Rulesets.Karaoke.Objects;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
 {
@@ -20,7 +20,7 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
         /// Creates an enumerator, which preprocesses a list of <see cref="OsuHitObject"/>s recieved as input, wrapping them as
         /// <see cref="OsuDifficultyHitObject"/> which contains extra data required for difficulty calculation.
         /// </summary>
-        public OsuDifficultyBeatmap(List<OsuHitObject> objects)
+        public OsuDifficultyBeatmap(List<KaraokeObject> objects)
         {
             // Sort OsuHitObjects by StartTime - they are not correctly ordered in some cases.
             // This should probably happen before the objects reach the difficulty calculator.
@@ -66,10 +66,10 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private IEnumerator<OsuDifficultyHitObject> createDifficultyObjectEnumerator(List<OsuHitObject> objects)
+        private IEnumerator<OsuDifficultyHitObject> createDifficultyObjectEnumerator(List<KaraokeObject> objects)
         {
             // We will process OsuHitObjects in groups of three to form a triangle, so we can calculate an angle for each object.
-            OsuHitObject[] triangle = new OsuHitObject[3];
+            KaraokeObject[] triangle = new KaraokeObject[3];
 
             // OsuDifficultyHitObject construction requires three components, an extra copy of the first OsuHitObject is used at the beginning.
             if (objects.Count > 1)

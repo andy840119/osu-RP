@@ -7,8 +7,6 @@ using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Karaoke.Judgements;
 using osu.Game.Rulesets.Karaoke.Objects;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
-using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.UI;
@@ -28,7 +26,6 @@ namespace osu.Game.Rulesets.Karaoke.Scoring
         private float hpDrainRate;
 
         private readonly Dictionary<HitResult, int> scoreResultCounts = new Dictionary<HitResult, int>();
-        private readonly Dictionary<ComboResult, int> comboResultCounts = new Dictionary<ComboResult, int>();
 
         protected override void SimulateAutoplay(Beatmap<KaraokeObject> beatmap)
         {
@@ -36,19 +33,11 @@ namespace osu.Game.Rulesets.Karaoke.Scoring
 
             foreach (var obj in beatmap.HitObjects)
             {
-                var slider = obj as Slider;
+                var slider = obj;
                 if (slider != null)
                 {
                     // Head
                     AddJudgement(new KaraokeJudgement { Result = HitResult.Great });
-
-                    // Ticks
-                    foreach (var unused in slider.Ticks)
-                        AddJudgement(new KaraokeJudgement { Result = HitResult.Great });
-
-                    //Repeats
-                    foreach (var unused in slider.RepeatPoints)
-                        AddJudgement(new KaraokeJudgement { Result = HitResult.Great });
                 }
 
                 AddJudgement(new KaraokeJudgement { Result = HitResult.Great });
@@ -60,7 +49,6 @@ namespace osu.Game.Rulesets.Karaoke.Scoring
             base.Reset(storeResults);
 
             scoreResultCounts.Clear();
-            comboResultCounts.Clear();
         }
 
         public override void PopulateScore(Score score)
@@ -82,7 +70,6 @@ namespace osu.Game.Rulesets.Karaoke.Scoring
             if (judgement.Result != HitResult.None)
             {
                 scoreResultCounts[judgement.Result] = scoreResultCounts.GetOrDefault(judgement.Result) + 1;
-                comboResultCounts[osuJudgement.Combo] = comboResultCounts.GetOrDefault(osuJudgement.Combo) + 1;
             }
 
             switch (judgement.Result)

@@ -5,11 +5,8 @@ using System;
 using System.Collections.Generic;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Objects;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
-using osu.Game.Rulesets.Karaoke.UI;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Types;
-using OpenTK;
 using osu.Game.Rulesets.Karaoke.Helps;
 
 namespace osu.Game.Rulesets.Karaoke.Beatmaps
@@ -18,6 +15,7 @@ namespace osu.Game.Rulesets.Karaoke.Beatmaps
     {
         protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasPosition) };
 
+        
         protected override IEnumerable<KaraokeObject> ConvertHitObject(HitObject original, Beatmap beatmap)
         {
             var curveData = original as IHasCurve;
@@ -25,6 +23,10 @@ namespace osu.Game.Rulesets.Karaoke.Beatmaps
             var positionData = original as IHasPosition;
             var comboData = original as IHasCombo;
 
+
+            yield return (KaraokeObject)original;
+
+            /*
             if (curveData != null)
             {
                 yield return new Slider
@@ -61,7 +63,10 @@ namespace osu.Game.Rulesets.Karaoke.Beatmaps
                     NewCombo = comboData?.NewCombo ?? false
                 };
             }
+            
+            */
         }
+        
 
         /// <summary>
         /// Performs the conversion of a Beatmap using this Beatmap Converter.

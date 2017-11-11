@@ -10,7 +10,7 @@ using osu.Game.Graphics;
 using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty;
 using osu.Game.Rulesets.Karaoke.Mods;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
+using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.UI;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.UI;
@@ -63,13 +63,13 @@ namespace osu.Game.Rulesets.Karaoke
             new BeatmapStatistic
             {
                 Name = @"Circle count",
-                Content = beatmap.Beatmap.HitObjects.Count(h => h is HitCircle).ToString(),
+                Content = beatmap.Beatmap.HitObjects.Count(h => h is KaraokeObject).ToString(),
                 Icon = FontAwesome.fa_dot_circle_o
             },
             new BeatmapStatistic
             {
                 Name = @"Slider count",
-                Content = beatmap.Beatmap.HitObjects.Count(h => h is Slider).ToString(),
+                Content = beatmap.Beatmap.HitObjects.Count(h => h is KaraokeObject).ToString(),
                 Icon = FontAwesome.fa_circle_o
             }
         };
@@ -78,60 +78,54 @@ namespace osu.Game.Rulesets.Karaoke
         {
             switch (type)
             {
-                case ModType.DifficultyReduction:
+                case ModType.DifficultyReduction://general setting of karaoke
                     return new Mod[]
                     {
-                        new OsuModEasy(),
-                        new OsuModNoFail(),
+                        new KaraokeTutorial(),
                         new MultiMod
                         {
                             Mods = new Mod[]
                             {
-                                new OsuModHalfTime(),
-                                new OsuModDaycore(),
+                                new KaraokeOpenTranslate(),
+                                new KaraokeCloseTranslate(),
+                            },
+                        },
+                        new MultiMod
+                        {
+                            Mods = new Mod[]
+                            {
+                                new KaraokeEasy(),
+                                new KaraokeDoubleTime(),
+                            },
+                        },
+                        new MultiMod
+                        {
+                            Mods = new Mod[]
+                            {
+                                new CloseVocal(),
+                                new OpenVocal(),
                             },
                         },
                     };
 
-                case ModType.DifficultyIncrease:
+                case ModType.DifficultyIncrease:// pecial setting or effect
                     return new Mod[]
                     {
-                        new OsuModHardRock(),
+                        new KaraokeHidden(),
                         new MultiMod
                         {
                             Mods = new Mod[]
                             {
-                                new OsuModSuddenDeath(),
-                                new OsuModPerfect(),
+                                new KaraokeTransparentLyrics(),
+                                new KaraokeCloseLyrics(),
                             },
                         },
-                        new MultiMod
-                        {
-                            Mods = new Mod[]
-                            {
-                                new OsuModDoubleTime(),
-                                new OsuModNightcore(),
-                            },
-                        },
-                        new OsuModHidden(),
-                        new OsuModFlashlight(),
                     };
 
-                case ModType.Special:
+                case ModType.Special://only event mod
                     return new Mod[]
                     {
-                        new OsuModRelax(),
-                        new OsuModAutopilot(),
-                        new OsuModSpunOut(),
-                        new MultiMod
-                        {
-                            Mods = new Mod[]
-                            {
-                                new OsuModAutoplay(),
-                                new ModCinema(),
-                            },
-                        },
-                        new OsuModTarget(),
+                        new ChristmasMod(),//sing the song when christmas
                     };
 
                 default:

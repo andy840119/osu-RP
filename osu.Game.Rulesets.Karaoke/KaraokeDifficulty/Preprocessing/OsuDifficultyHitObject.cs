@@ -2,7 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
+using osu.Game.Rulesets.Karaoke.Objects;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
 {
@@ -14,7 +14,7 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
         /// <summary>
         /// The <see cref="OsuHitObject"/> this <see cref="OsuDifficultyHitObject"/> refers to.
         /// </summary>
-        public OsuHitObject BaseObject { get; }
+        public KaraokeObject BaseObject { get; }
 
         /// <summary>
         /// Normalized distance from the <see cref="OsuHitObject.StackedPosition"/> of the previous <see cref="OsuDifficultyHitObject"/>.
@@ -33,12 +33,12 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
 
         private const int normalized_radius = 52;
 
-        private readonly OsuHitObject[] t;
+        private readonly KaraokeObject[] t;
 
         /// <summary>
         /// Initializes the object calculating extra data required for difficulty calculation.
         /// </summary>
-        public OsuDifficultyHitObject(OsuHitObject[] triangle)
+        public OsuDifficultyHitObject(KaraokeObject[] triangle)
         {
             t = triangle;
             BaseObject = t[0];
@@ -49,15 +49,7 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing
 
         private void setDistances()
         {
-            // We will scale distances by this factor, so we can assume a uniform CircleSize among beatmaps.
-            double scalingFactor = normalized_radius / BaseObject.Radius;
-            if (BaseObject.Radius < 30)
-            {
-                double smallCircleBonus = Math.Min(30 - BaseObject.Radius, 5) / 50;
-                scalingFactor *= 1 + smallCircleBonus;
-            }
-
-            Distance = (t[0].StackedPosition - t[1].StackedPosition).Length * scalingFactor;
+           
         }
 
         private void setTimingValues()

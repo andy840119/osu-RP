@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Preprocessing;
 using osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Utils;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
+using osu.Game.Rulesets.Karaoke.Objects;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Skills
 {
@@ -41,7 +41,8 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty.Skills
         public void Process(OsuDifficultyHitObject current)
         {
             currentStrain *= strainDecay(current.DeltaTime);
-            if (!(current.BaseObject is Spinner))
+
+            if (!(current.BaseObject is KaraokeObject))
                 currentStrain += StrainValueOf(current) * SkillMultiplier;
 
             currentSectionPeak = Math.Max(currentStrain, currentSectionPeak);

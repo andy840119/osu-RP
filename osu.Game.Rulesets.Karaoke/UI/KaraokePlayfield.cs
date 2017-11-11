@@ -8,8 +8,6 @@ using osu.Game.Beatmaps;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Karaoke.Judgements;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
-using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Karaoke.UI.Interface;
 using osu.Game.Rulesets.Karaoke.UI.Panel;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -141,18 +139,11 @@ namespace osu.Game.Rulesets.Karaoke.UI
         public override void OnJudgement(DrawableHitObject judgedObject, Judgement judgement)
         {
             var osuJudgement = (KaraokeJudgement)judgement;
-            var osuObject = (OsuHitObject)judgedObject.HitObject;
 
             if (!judgedObject.DisplayJudgement)
                 return;
 
-            DrawableOsuJudgement explosion = new DrawableOsuJudgement(osuJudgement)
-            {
-                Origin = Anchor.Centre,
-                Position = osuObject.StackedEndPosition + osuJudgement.PositionOffset
-            };
-
-            judgementLayer.Add(explosion);
+            //judgementLayer.Add(explosion);
         }
     }
 }

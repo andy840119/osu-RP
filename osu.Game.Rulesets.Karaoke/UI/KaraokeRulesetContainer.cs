@@ -5,8 +5,6 @@ using osu.Framework.Input;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Objects;
-using osu.Game.Rulesets.Karaoke.Osu_Objects;
-using osu.Game.Rulesets.Karaoke.Osu_Objects.Drawables;
 using osu.Game.Rulesets.Karaoke.Replays;
 using osu.Game.Rulesets.Karaoke.Scoring;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -42,18 +40,6 @@ namespace osu.Game.Rulesets.Karaoke.UI
             {
                 return new DrawableKaraokeObject(karaokeObject);
             }
-
-            var circle = h as HitCircle;
-            if (circle != null)
-                return new DrawableHitCircle(circle);
-
-            var slider = h as Slider;
-            if (slider != null)
-                return new DrawableSlider(slider);
-
-            var spinner = h as Spinner;
-            if (spinner != null)
-                return new DrawableSpinner(spinner);
             return null;
         }
 
