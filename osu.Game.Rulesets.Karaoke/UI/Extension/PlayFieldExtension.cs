@@ -1,10 +1,13 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Audio;
+using osu.Game.Rulesets.Karaoke.Mods;
 using osu.Game.Rulesets.Karaoke.UI.Interface;
+using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Objects.Types;
 
@@ -147,7 +150,6 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             return 1;
         }
 
-
         /// <summary>
         /// Adjust offset
         /// </summary>
@@ -259,6 +261,37 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         public static List<HitObject> GetListHitObjects(this IAmKaraokeField karaokeField)
         {
             return karaokeField.WorkingBeatmap.Beatmap.HitObjects;
+        }
+
+        /// <summary>
+        /// if this beatmap need translate
+        /// </summary>
+        /// <param name="karaokeField"></param>
+        /// <returns></returns>
+        public static bool NeedTranslate(this IAmKaraokeField karaokeField)
+        {
+            if (karaokeField.WorkingBeatmap.Mods.Value.OfType<KaraokeOpenTranslate>().Any())
+            {
+                return true;
+            }
+
+            if (karaokeField.WorkingBeatmap.Mods.Value.OfType<KaraokeCloseTranslate>().Any())
+            {
+                return false;
+            }
+
+            //TODO : get karaoke setting
+            return true;
+        }
+
+        public static bool EnableHotKey(this IAmKaraokeField karaokeField)
+        {
+            return true;
+        }
+
+        public static bool ShowPanel(this IAmKaraokeField karaokeField)
+        {
+
         }
     }
 }

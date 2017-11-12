@@ -38,11 +38,11 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         }
 
         /// <summary>
-        /// update the preemptive time
+        /// automatically update preemptive time
         /// </summary>
         /// <param name="karaokeField"></param>
         /// <param name="karaokeObject"></param>
-        public static void UpdateObjectPreemptiveTime(this IAmKaraokeField karaokeField, KaraokeObject karaokeObject)
+        public static void UpdateObjectPreemptiveTime(this IAmKaraokeField karaokeField, DrawableKaraokeObject karaokeObject)
         {
 
         }
