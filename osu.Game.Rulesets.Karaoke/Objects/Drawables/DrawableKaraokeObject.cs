@@ -3,12 +3,11 @@
 
 using System.Linq;
 using osu.Framework.Graphics;
-using osu.Game.Graphics.Sprites;
+using osu.Framework.Graphics.Colour;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces;
 using osu.Game.Rulesets.Karaoke.Objects.Extension;
 using osu.Game.Rulesets.Karaoke.Tools.Translator;
 using osu.Game.Rulesets.Objects.Drawables;
-using OpenTK;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
@@ -18,30 +17,54 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
     /// </summary>
     public class DrawableKaraokeObject : DrawableHitObject<KaraokeObject> , IAmDrawableKaraokeObject
     {
-        //will calculate bu extension
-        //簡單來說，preemptive time會是前兩個物件到目前物件開始中間間隔時間
-        //就是上個台詞消失後下下句就會在它的位置出現
-        public const float TIME_PREEMPT = 600;
+        //Private
+        private KaraokeTemplate _template;
+        private KaraokeSinger _singer;
+        private double _preemptiveTime = 600;
+
+        //Const
         public const float TIME_FADEIN = 100;
         public const float TIME_FADEOUT = 100;
 
+        //Object
         public KaraokeObject KaraokeObject => HitObject;
 
-        /// <summary>
-        /// if want to update the progress each time
-        /// </summary>
-        public bool ProgressUpdateByTime = true;
-
-        public TextsAndMask TextsAndMaskPiece { get; set; } = new TextsAndMask();
-        public OsuSpriteText TranslateText { get; set; }= new OsuSpriteText
+        public KaraokeTemplate Template
         {
-            UseFullGlyphHeight = false,
-            Anchor = Anchor.TopLeft,
-            Origin = Anchor.TopLeft,
-            TextSize = 25,
-            Alpha = 1,
-            Position = new Vector2(0,80),
-        };
+            get => _template;
+            set
+            {
+                _template = value;
+                UpdateDrawable();
+            }
+        }
+
+        public KaraokeSinger Singer
+        {
+            get => _singer;
+            set
+            {
+                _singer = value;
+                UpdateDrawable();
+            }
+        }
+
+        public double PreemptiveTime
+        {
+            get => _preemptiveTime;
+            set
+            {
+                _preemptiveTime = value;
+                UpdateDrawable();
+            }
+        }
+
+        public bool ProgressUpdateByTime { get; set; } = true;
+
+        //Drawable
+        public TextsAndMask TextsAndMaskPiece { get; set; } = new TextsAndMask();
+
+        public KaraokeText TranslateText { get; set; } = new KaraokeText(null);
 
         private double _nowProgress;
 
@@ -50,20 +73,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         {
             Alpha = 0;
 
-            TextsAndMaskPiece.SetColor(Color4.Blue);
-
-            TextsAndMaskPiece.AddText(hitObject.MainText);
-            foreach (var singleText in hitObject.ListSubTextObject)
-            {
-                TextsAndMaskPiece.AddText(singleText);
-            }
-
-            TextsAndMaskPiece.SetWidth(hitObject.Width);
-            TextsAndMaskPiece.SetHeight(hitObject.Height);
-
-
-            Width = hitObject.Width;
-            Height = hitObject.Height;
+            UpdateDrawable();
 
             Children = new Drawable[]
             {
@@ -71,6 +81,46 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
                 TranslateText,
             };
 
+        }
+
+        /// <summary>
+        /// update view
+        /// </summary>
+        protected void UpdateDrawable()
+        {
+            //Color
+            Color4 textColor = Singer?.LytricColor ?? Color4.Blue;
+            Color4 backgroundColor = Singer?.LytricBackgroundColor ?? Color4.White;
+            TextsAndMaskPiece.SetColor(textColor, backgroundColor);
+
+            //Text
+            TextsAndMaskPiece.ClearAllText();
+            TextsAndMaskPiece.AddText(Template?.MainText + KaraokeObject.MainText);//main text
+            foreach (var singleText in KaraokeObject.ListSubTextObject)
+            {
+                TextsAndMaskPiece.AddText(Template?.SubText + singleText);//subtext
+            }
+
+            //translate text
+            TranslateText.TextObject = Template?.TranslateText;
+            TranslateText.Colour = Template?.TranslateTextColor ?? Color4.White;
+
+            float width = KaraokeObject.Width ?? (Template?.Width ?? 700);
+            float height = KaraokeObject.Height ?? (Template?.Height ?? 100);
+            SetWidth(width);
+            SetHeight(height);
+        }
+
+        public void SetWidth(float width)
+        {
+            TextsAndMaskPiece.SetWidth(width);
+            Width = width;
+        }
+
+        public void SetHeight(float height)
+        {
+            TextsAndMaskPiece.SetHeight(height);
+            Height = height;
         }
 
         protected override void Update()
@@ -83,7 +133,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             double currentTime = Time.Current;
             if(HitObject.IsInTime(currentTime))
             {
-                //TODO : update progress by 
+                //Update progress
                 Progress = HitObject.GetProgressByTime(currentTime- HitObject.StartTime);
 
                 this.Show();
@@ -113,7 +163,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         protected sealed override void UpdateState(ArmedState state)
         {
 
-            double transformTime = HitObject.StartTime - TIME_PREEMPT;
+            double transformTime = HitObject.StartTime - PreemptiveTime;
 
             base.ApplyTransformsAt(transformTime, true);
             base.ClearTransformsAfter(transformTime, true);
@@ -122,7 +172,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             {
                 UpdatePreemptState();
 
-                using (BeginDelayedSequence(TIME_PREEMPT + (Judgements.FirstOrDefault()?.TimeOffset ?? 0), true))
+                using (BeginDelayedSequence(PreemptiveTime + (Judgements.FirstOrDefault()?.TimeOffset ?? 0), true))
                     UpdateCurrentState(state);
             }
         }
@@ -143,16 +193,12 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             //Expire();
         }
 
-        protected virtual void MovingMask(float newValue)
-        {
-            TextsAndMaskPiece.MovingMask(newValue);
-        }
-
         public void AddTranslate(TranslateCode code, string translateResult)
         {
             //Add and show translate in here
             TranslateText.Text = translateResult;
             
         }
+
     }
 }

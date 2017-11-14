@@ -14,6 +14,21 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         KaraokeObject KaraokeObject { get; }
 
         /// <summary>
+        /// Template
+        /// </summary>
+        KaraokeTemplate Template { get; set; }
+
+        /// <summary>
+        /// singer
+        /// </summary>
+        KaraokeSinger Singer { get; set; }
+
+        /// <summary>
+        /// set preemptive time
+        /// </summary>
+        double PreemptiveTime { get; set; }
+
+        /// <summary>
         /// show text and mask
         /// </summary>
         TextsAndMask TextsAndMaskPiece { get; set; }
@@ -21,7 +36,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         /// <summary>
         /// translate text
         /// </summary>
-        OsuSpriteText TranslateText { get; set; }
+        KaraokeText TranslateText { get; set; }
 
         /// <summary>
         /// add translate
@@ -29,5 +44,9 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
         /// <param name="code"></param>
         /// <param name="translateResult"></param>
         void AddTranslate(TranslateCode code, string translateResult);
+
+       
+
+        
     }
 }

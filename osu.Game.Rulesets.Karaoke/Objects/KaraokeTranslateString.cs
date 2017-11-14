@@ -18,16 +18,5 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// </summary>
         public string LangCode { get; set; }
 
-        /// <summary>
-        /// TODO : get the language Code
-        /// </summary>
-        /// <value>The lang.</value>
-        public string Lang { get; set; }
-
-        /// <summary>
-        /// user cannot override the fint size
-        /// </summary>
-        /// <value>The size of the font.</value>
-        public override int FontSize => 30;
     }
 }

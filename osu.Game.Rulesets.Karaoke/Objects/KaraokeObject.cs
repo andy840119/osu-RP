@@ -14,9 +14,29 @@ namespace osu.Game.Rulesets.Karaoke.Objects
     /// </summary>
     public class KaraokeObject : HitObject, IHasPosition ,IHasCombo, IHasEndTime
     {
+        /// <summary>
+        /// template Index
+        /// if null , will use all the 
+        /// </summary>
+        public int? TemplateIndex { get; set; } = 0;
+
+        /// <summary>
+        /// position Index
+        /// if null , will be auto allogate
+        /// </summary>
+        public int? PositionIndex { get; set; } = null;
+
+        /// <summary>
+        /// the index of singer 
+        /// Default is singler1;
+        /// Each singer has different Text color
+        /// </summary>
+        public int SingerIndex { get; set; } = 0;
+
         /// <inheritdoc />
         /// <summary>
-        /// position
+        /// if template !=null will relative to template's position
+        /// else, will be absolute position
         /// </summary>
         public Vector2 Position { get; set; }
 
@@ -24,31 +44,39 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// X position
         /// </summary>
-        public float X => Position.X;
+        public float X
+        {
+            get => Position.X;
+            set => Position = new Vector2(value, Y);
+        }
 
         /// <inheritdoc />
         /// <summary>
         /// Y position
         /// </summary>
-        public float Y => Position.Y;
+        public float Y
+        {
+            get => Position.Y;
+            set => Position = new Vector2(X, value);
+        }
 
         /// <summary>
         /// width
         /// </summary>
-        public float Width { get; set; } = 700;
+        public float? Width { get; set; }
 
         /// <summary>
         /// height
         /// </summary>
-        public float Height { get; set; } = 100;
+        public float? Height { get; set; }
 
         /// <summary>
         /// Main text
         /// </summary>
         public TextObject MainText { get; set; } = new TextObject()
         {
-            FontSize = 50, //default Main text Size is 70
-            Position = new Vector2(0, 30), //default position
+            //FontSize = 50, //default Main text Size is 70
+            //Position = new Vector2(0, 30), //default position
         };
 
         /// <summary>
@@ -63,13 +91,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         {
             new ProgressPoint(0,0),
         };
-
-        /// <summary>
-        /// the index of singer 
-        /// Default is singler1;
-        /// Each singer has different Text color
-        /// </summary>
-        public int SingerIndex { get; set; } = 0;
 
         /// <summary>
         /// all the translate for a single language
@@ -98,13 +119,8 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         public int ComboIndex { get; set; }
 
         /// <summary>
-        /// will automatically assign position by singer index and combo
+        /// if value is null ,use automatically generated preemptive time;
         /// </summary>
-        public bool IsDefaultPosition { get; set; }
-
-        /// <summary>
-        /// if value is -1 ,use automatically generated preemptive time;
-        /// </summary>
-        public double PreemptiveTime { get; set; } = -1;
+        public double? PreemptiveTime { get; set; }
     }
 }

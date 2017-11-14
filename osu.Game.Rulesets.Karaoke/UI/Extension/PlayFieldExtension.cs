@@ -13,12 +13,15 @@ using osu.Game.Rulesets.Objects.Types;
 
 namespace osu.Game.Rulesets.Karaoke.UI.Extension
 {
+    /// <summary>
+    /// get the "state" of playField
+    /// </summary>
     public static class PlayFieldExtension
     {
         /// <summary>
         /// if the number is larger , will have more preemp time
         /// </summary>
-        public static double PrepareTime = 0;
+        public static double PrepareTime { get; set; } = 0;
 
         public static double Speed { get; set; } = 1;
 
@@ -227,7 +230,6 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
                     return listObjects[i - 1];
                 }
             }
-
             return null;
         }
 
@@ -253,15 +255,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             return -1;
         }
 
-        /// <summary>
-        /// get list HitObjects
-        /// </summary>
-        /// <param name="karaokeField"></param>
-        /// <returns></returns>
-        public static List<HitObject> GetListHitObjects(this IAmKaraokeField karaokeField)
-        {
-            return karaokeField.WorkingBeatmap.Beatmap.HitObjects;
-        }
+       
 
         /// <summary>
         /// if this beatmap need translate
@@ -289,9 +283,9 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
             return true;
         }
 
-        public static bool ShowPanel(this IAmKaraokeField karaokeField)
+        public static bool ShowPanelAtBeginning(this IAmKaraokeField karaokeField)
         {
-
+            return false;
         }
     }
 }

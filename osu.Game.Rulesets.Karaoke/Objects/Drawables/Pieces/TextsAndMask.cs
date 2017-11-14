@@ -41,6 +41,12 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
             RightSideText.RemoveText(textObject);
         }
 
+        public void ClearAllText()
+        {
+            LeftSideText.ClearAllText();
+            RightSideText.ClearAllText();
+        }
+
         public void SetWidth(float width)
         {
             _maskWidth = width;
@@ -59,24 +65,20 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
             RightSideText.SetMaskStartAndEndPosition(newValue, _maskWidth);
         }
 
-        public void SetColor(Color4 color)
+        public void SetColor(Color4 color,Color4 backgroundColor)
         {
             LeftSideText.SetColor(color);
             //Right side is white
             RightSideText.SetColor(Color4.White);
         }
 
+        
+
         protected class SingleSideOfAndMask : Container
         {
             private List<TextObject> _listText = new List<TextObject>();
             private List<Drawable> _listDrawableText = new List<Drawable>();
-            private Color4 _textColor = new Color4();
             private float _height;
-
-            public SingleSideOfAndMask()
-            {
-                // UpdateChild();
-            }
 
             public void AddText(TextObject textObject)
             {
@@ -90,12 +92,18 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
                 UpdateChild();
             }
 
+            public void ClearAllText()
+            {
+                _listText.Clear();
+                UpdateChild();
+            }
+
             protected void UpdateChild()
             {
                 _listDrawableText.Clear();
                 foreach (var singleText in _listText)
                 {
-                    _listDrawableText.Add(GetTextByTextObject(singleText));
+                    _listDrawableText.Add(new KaraokeText(singleText));
                 }
                 Children = _listDrawableText.ToArray();
                 Masking = true;
@@ -120,25 +128,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
             public void SetColor(Color4 color)
             {
-                _textColor = color;
-                Colour = _textColor;
-            }
-
-            protected OsuSpriteText GetTextByTextObject(TextObject textObject)
-            {
-                return new OsuSpriteText
-                {
-                    Text = textObject.Text,
-                    //Font = @"Venera",
-                    UseFullGlyphHeight = false,
-                    Anchor = Anchor.TopLeft,
-                    Origin = Anchor.TopLeft,
-                    TextSize = textObject.FontSize,
-                    Alpha = 1,
-                    //ShadowColour = _textColor,
-                    Position = textObject.Position,
-                    //BorderColour = _textColor,
-                };
+                Colour = color;
             }
         }
     }

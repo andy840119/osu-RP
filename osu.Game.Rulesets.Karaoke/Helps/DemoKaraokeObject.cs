@@ -22,12 +22,12 @@ namespace osu.Game.Rulesets.Karaoke.Helps
             karaokeObject.ListSubTextObject.Add(new TextObject
             {
                 Text = "お",
-                Position = new Vector2(10, 20)
+                X=10,
             });
             karaokeObject.ListSubTextObject.Add(new TextObject
             {
                 Text = "お",
-                Position = new Vector2(200, 20)
+                X=200,
             });
 
             return karaokeObject;
@@ -45,12 +45,12 @@ namespace osu.Game.Rulesets.Karaoke.Helps
             karaokeObject.ListSubTextObject.Add(new TextObject
             {
                 Text = "お",
-                Position = new Vector2(10, 20)
+                X=10,
             });
             karaokeObject.ListSubTextObject.Add(new TextObject
             {
                 Text = "お",
-                Position = new Vector2(200, 20)
+                X=200,
             });
 
             karaokeObject.AddProgressPoint(new ProgressPoint(0, 0));
@@ -72,12 +72,12 @@ namespace osu.Game.Rulesets.Karaoke.Helps
             karaokeObject.ListSubTextObject.Add(new TextObject
             {
                 Text = "お",
-                Position = new Vector2(7, 20)
+                X=10,
             });
             karaokeObject.ListSubTextObject.Add(new TextObject
             {
                 Text = "お",
-                Position = new Vector2(200, 20)
+                X=200,
             });
             karaokeObject.StartTime = startTime;
             karaokeObject.Duration = duration;

@@ -127,6 +127,9 @@ namespace osu.Game.Rulesets.Karaoke.UI
         {
             h.Depth = (float)h.HitObject.StartTime;
 
+            //update template
+            this.UpdateObjectTemplate(h as DrawableKaraokeObject);
+
             //update position
             this.UpdateObjectAutomaticallyPosition(h as DrawableKaraokeObject);
 
@@ -138,8 +141,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
 
         public override void PostProcess()
         {
-            bool needTranslate = true;
 
+            bool needTranslate = true;
             if (needTranslate)
             {
                 var listTranslateString = new List<string>();

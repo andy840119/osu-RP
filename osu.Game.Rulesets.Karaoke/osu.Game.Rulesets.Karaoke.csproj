@@ -89,8 +89,12 @@
     <Compile Include="Beatmaps\KaraokeBeatmapProcessor.cs" />
     <Compile Include="Mods\KaraokeMod2017.cs" />
     <Compile Include="Objects\Drawables\DrawableKaraokeObject.cs" />
+    <Compile Include="Objects\Drawables\Pieces\KaraokeText.cs" />
     <Compile Include="Objects\Drawables\Pieces\TextsAndMask.cs" />
     <Compile Include="Objects\KaraokeObject.cs" />
+    <Compile Include="Objects\KaraokePosition.cs" />
+    <Compile Include="Objects\KaraokeSinger.cs" />
+    <Compile Include="Objects\KaraokeTemplate.cs" />
     <Compile Include="Objects\ProgressPoint.cs" />
     <Compile Include="Objects\TextObject.cs" />
     <Compile Include="Judgements\KaraokeJudgement.cs" />
