@@ -65,7 +65,7 @@ namespace osu.Game.Rulesets.RP
         /// </summary>
         /// <param name="beatmap"></param>
         /// <returns></returns>
-        public override Game.Beatmaps.DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap) => new RpDifficultyCalculator(beatmap);
+        public override Game.Beatmaps.DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap, Mod[] mods = null) => new RpDifficultyCalculator(beatmap, mods);
 
         /// <summary>
         ///     Description

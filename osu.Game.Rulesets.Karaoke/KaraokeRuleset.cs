@@ -132,7 +132,7 @@ namespace osu.Game.Rulesets.Karaoke
 
         public override Drawable CreateIcon() => new SpriteIcon { Icon = FontAwesome.fa_question_circle_o };
 
-        public override DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap) => new KaraokeDifficultyCalculator(beatmap);
+        public override DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap, Mod[] mods = null) => new KaraokeDifficultyCalculator(beatmap,mods);
 
         public override string Description => "カラオケ!";
 

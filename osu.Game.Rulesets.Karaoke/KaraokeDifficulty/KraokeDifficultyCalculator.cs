@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Beatmaps;
 using osu.Game.Rulesets.Karaoke.Objects;
+using osu.Game.Rulesets.Mods;
 
 namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
 {
@@ -13,8 +14,13 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
         private const int section_length = 400;
         private const double difficulty_multiplier = 0.0675;
 
-        public KaraokeDifficultyCalculator(Beatmap beatmap)
+        public KaraokeDifficultyCalculator(Beatmap beatmap, Mod[] mods = null)
             : base(beatmap)
+        {
+        }
+
+        public KaraokeDifficultyCalculator(Beatmap beatmap)
+          : base(beatmap)
         {
         }
 
@@ -24,7 +30,7 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
             //    (h as Slider)?.Curve?.Calculate();
         }
 
-        protected override double CalculateInternal(Dictionary<string, string> categoryDifficulty)
+        public override double Calculate(Dictionary<string, string> categoryDifficulty = null)
         {
             //TODO : implement
             return 1.5;
@@ -70,6 +76,6 @@ namespace osu.Game.Rulesets.Karaoke.KaraokeDifficulty
             */
         }
 
-        protected override BeatmapConverter<KaraokeObject> CreateBeatmapConverter() => new KaraokeBeatmapConverter();
+        protected override BeatmapConverter<KaraokeObject> CreateBeatmapConverter(Beatmap beatmap) => new KaraokeBeatmapConverter();
     }
 }
