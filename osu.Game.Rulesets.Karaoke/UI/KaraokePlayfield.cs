@@ -20,6 +20,7 @@ using osu.Game.Rulesets.Karaoke.UI.Extension;
 using osu.Game.Rulesets.Karaoke.Objects.Drawables;
 using osu.Game.Rulesets.Karaoke.Tools.Translator;
 using osu.Game.Rulesets.Karaoke.UI.Tool;
+using osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -69,6 +70,12 @@ namespace osu.Game.Rulesets.Karaoke.UI
                 {
                     RelativeSizeAxes = Axes.Both,
                     Depth = 1,
+                },
+                 new SnowVisualisation
+                {
+                   Clock = new FramedClock(new StopwatchClock(true)),
+                   RelativeSizeAxes = Axes.Both,
+                   Depth = 1,
                 },
                 KaraokecontrolLayer = new Container
                 {

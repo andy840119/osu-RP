@@ -21,7 +21,6 @@ namespace osu.Game.Rulesets.Karaoke.Mods
         public override string Description => "Singing karaoke at home and nobody give you a shit.";
 
         public override double ScoreMultiplier => 1;
-
        
         public void ApplyToRulesetContainer(RulesetContainer<KaraokeObject> rulesetContainer)
         {
