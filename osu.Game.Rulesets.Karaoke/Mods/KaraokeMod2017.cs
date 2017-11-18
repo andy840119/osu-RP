@@ -23,7 +23,7 @@ namespace osu.Game.Rulesets.Karaoke.Mods
         public override double ScoreMultiplier => 1;
 
         //TODO : texturePath
-        public string TexturePath => "Play/Karaoke/Layer/Snow";
+        public string TexturePath => @"Play/Karaoke/Layer/Snow/Snow";
 
         public void ApplyToRulesetContainer(RulesetContainer<KaraokeObject> rulesetContainer)
         {

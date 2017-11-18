@@ -78,6 +78,8 @@ namespace osu.Game.Rulesets.Karaoke.UI
                    Clock = new FramedClock(new StopwatchClock(true)),
                    RelativeSizeAxes = Axes.Both,
                    Depth = 1,
+                   Width=900,
+                   Position=new Vector2(-200,0),
                 },
                 KaraokecontrolLayer = new Container
                 {

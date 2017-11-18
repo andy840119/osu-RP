@@ -24,73 +24,75 @@ namespace osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect
     public class SnowVisualisationLayer : Container
     {
         private TextureStore texture;
-        private Container spriteManager = new Container();
-        private int HeightScaled = 450;//480;
-        private int WidthScaled = 512;//854
-        private float Ratio = 1;
-        private bool SixtyFramesPerSecondFrame = true;
-        private Vector2 CursorPosition = new Vector2(100, 100);
-        private bool MenuSnowValue = true;
-        private bool KiaiEnabled = true;
-        private float currentAlpha = 0;
-        private float FrameRatio = 1;//?
-        private int expireTime = 10000;//
 
-        private const int res = 1;
-        private int piles_count = 854 / res + 1;
+        public bool MenuSnowValue { get; set; } = true;
+        public int SnowExpireTime { get; set; } = 10000;
+        public Vector2 CursorPosition { get; set; } = new Vector2(100, 100);
+        public float CursorAffectRatio { get; set; } = 1;
+        public bool IsKiai { get; set; } = false;
+        public bool Active { get; set; } = true;
+        public float Speed { get; set; } = 1;
+        public String TexturePath { get; set; } = @"Play/Karaoke/Layer/Snow/Snow";
+        private Container snowContainer = new Container();
 
+        private int piles_count = 854 + 1;
         private float[] piles;
-        private Vector2 mouseLast;
+        private Vector2 lastCursorPosition;
 
         /// <summary>
-        /// public override void Initialize()
+        /// initialize
         /// </summary>
         public SnowVisualisationLayer()
         {
             piles = new float[piles_count];
+            Width = 512;
+            Height = 450;
 
             this.Children = new Drawable[]
-                {
-                    spriteManager,
-                };
-
-            //flake.Additive = true;
-            //flake.AlwaysDraw = true;
+            {
+                snowContainer,
+            };
         }
 
+        /// <summary>
+        /// dispose
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
+            snowContainer.Dispose();
             base.Dispose(disposing);
         }
 
-        
-
+        /// <summary>
+        /// update
+        /// </summary>
         protected override void Update()
         {
 
             double currentTime = this.Time.Current; 
 
-            if (SixtyFramesPerSecondFrame)//GameBase.SixtyFramesPerSecondFrame
+            if (Active)//GameBase.SixtyFramesPerSecondFrame
             {
-                if (spriteManager.Children.Count > 0)
+                if (snowContainer.Children.Count > 0)
                 {
-                    Vector2 mouseNow = CursorPosition / Ratio;
-                    if (mouseLast != Vector2.Zero && mouseLast != mouseNow)
+                    Vector2 mouseNow = CursorPosition / CursorAffectRatio;
+                    if (lastCursorPosition != Vector2.Zero && lastCursorPosition != mouseNow)
                     {
-                        spriteManager.Children.ToList().ForEach(s =>
+                        snowContainer.Children.ToList().ForEach(s =>
                         {
                             if (s is SnowSpitie sp)
                             {
                                 if (sp.AlwaysDraw)
-                                    sp.TagNumeric += (int)((mouseNow.X - mouseLast.X) * 10);
+                                    sp.TagNumeric += (int)((mouseNow.X - lastCursorPosition.X) * 10);
                             }
                         });
                     }
-                    mouseLast = mouseNow;
+                    lastCursorPosition = mouseNow;
 
                     for (int i = 0; i < piles_count; i++)
                     {
-                        if (piles[i] > 0 && piles[i] < HeightScaled)
+                        if (piles[i] > 0 && piles[i] < Height)
                             piles[i] += 0.05f;
                     }
                 }
@@ -103,7 +105,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect
                     int left = 65535;//Utils.LowWord32(word);
                     int right = 65535;//Utils.HighWord32(word);
 
-                    float currentAlpha = KiaiEnabled ? 0.5f : Math.Min(0.5f, Math.Max(0.1f, (left + right - 30000) / 35536f)) * 0.4f;
+                    float currentAlpha = IsKiai ? 0.5f : Math.Min(0.5f, Math.Max(0.1f, (left + right - 30000) / 35536f)) * 0.4f;
                     if (RNG.NextDouble() > 1 - currentAlpha)
                     {
                         SnowSpitie newFlake = new SnowSpitie()
@@ -118,39 +120,37 @@ namespace osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect
                             CreateTime = currentTime,
                             Scale= new Vector2(0.3f, 0.3f),
                         };
-                        newFlake.Position = new Vector2(RNG.NextSingle(WidthScaled), -50);//GameBase.WindowManager.WidthScaled
+                        newFlake.Position = new Vector2(RNG.NextSingle(Width), -50);//GameBase.WindowManager.WidthScaled
                         newFlake.Alpha = RNG.NextSingle(0.7f);
                         newFlake.TagNumeric = RNG.Next(-500, 500);
                         newFlake.Tag = RNG.Next(-2, 2);
-                        spriteManager.Add(newFlake);
+                        snowContainer.Add(newFlake);
                     }
                 }
             }
 
-           
-
-            spriteManager.Children.ToList().ForEach(s =>
+            snowContainer.Children.ToList().ForEach(s =>
             {
                 SnowSpitie sp = s as SnowSpitie;
 
                 if (!sp.AlwaysDraw)
                     return;
 
-                bool inRange = sp.Position.X >= 0 && sp.Position.X < WidthScaled;
+                bool inRange = sp.Position.X >= 0 && sp.Position.X < Width;
 
-                int pileIndex = (int)Math.Min(piles_count - 1, Math.Max(0, s.Position.X / res));
+                int pileIndex = (int)Math.Min(piles_count - 1, Math.Max(0, s.Position.X ));
 
                 float pileHeight = inRange ? piles[pileIndex] : 0;
 
                 float bottom = sp.Position.Y + sp.Scale.X * (sp.DrawHeight / 1.6f / 2);
 
                 //if touch bottom
-                if (bottom >= HeightScaled || (pileHeight > 0 && pileHeight <= bottom)) 
+                if (bottom >= Height || (pileHeight > 0 && pileHeight <= bottom)) 
                 {
                     sp.Tag = 0;
                     sp.TagNumeric = 0;
                     sp.AlwaysDraw = false;
-                    sp.FadeOut(expireTime).Expire();//60000
+                    sp.FadeOut(SnowExpireTime).Expire();//60000
 
                     if (!inRange)
                         return;
@@ -161,15 +161,15 @@ namespace osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect
                 if (sp.TagNumeric != 0 || (int)sp.Tag != 0)
                 {
                     sp.TagNumeric += (int)sp.Tag;
-                    sp.X += sp.TagNumeric / 5000f * FrameRatio;
-                    sp.Y += 1 * FrameRatio;
-                    sp.Rotation += sp.TagNumeric / 10000f * FrameRatio * 0.4f;
+                    sp.X += sp.TagNumeric / 5000f * Speed;
+                    sp.Y += 1 * Speed;
+                    sp.Rotation += sp.TagNumeric / 10000f * Speed * 0.4f;
                 }
 
                 //recycle
-                if (sp.CreateTime + expireTime < currentTime)
+                if (sp.CreateTime + SnowExpireTime < currentTime)
                 {
-                    spriteManager.Children.ToList().Remove(s);
+                    snowContainer.Children.ToList().Remove(s);
                 }
 
             });
