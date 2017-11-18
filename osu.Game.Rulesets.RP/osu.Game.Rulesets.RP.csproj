@@ -64,6 +64,7 @@
     <Compile Include="Extension\Vector2Extension.cs" />
     <Compile Include="KeyManager\RpInputManager.cs" />
     <Compile Include="Mods\2017\RpMod2017.cs" />
+    <Compile Include="Mods\ModInterface.cs" />
     <Compile Include="Objects\Attribute\BaseRpObjectAttribute.cs" />
     <Compile Include="Objects\Drawables\Calculator\PathPrecentageCounter.cs" />
     <Compile Include="Objects\Drawables\Component\ApproachCircle.cs" />

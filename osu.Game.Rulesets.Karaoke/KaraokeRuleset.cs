@@ -14,6 +14,7 @@ using osu.Game.Rulesets.Karaoke.Objects;
 using osu.Game.Rulesets.Karaoke.UI;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.UI;
+using osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces;
 
 namespace osu.Game.Rulesets.Karaoke
 {
@@ -130,7 +131,7 @@ namespace osu.Game.Rulesets.Karaoke
             }
         }
 
-        public override Drawable CreateIcon() => new SpriteIcon { Icon = FontAwesome.fa_question_circle_o };
+        public override Drawable CreateIcon() => new ImagePicec(@"Icon/Icon");
 
         public override DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap, Mod[] mods = null) => new KaraokeDifficultyCalculator(beatmap,mods);
 

@@ -88,7 +88,9 @@
     <Compile Include="Beatmaps\KaraokeBeatmapConverter.cs" />
     <Compile Include="Beatmaps\KaraokeBeatmapProcessor.cs" />
     <Compile Include="Mods\KaraokeMod2017.cs" />
+    <Compile Include="Mods\ModInterface.cs" />
     <Compile Include="Objects\Drawables\DrawableKaraokeObject.cs" />
+    <Compile Include="Objects\Drawables\Pieces\ImagePicec.cs" />
     <Compile Include="Objects\Drawables\Pieces\KaraokeText.cs" />
     <Compile Include="Objects\Drawables\Pieces\TextsAndMask.cs" />
     <Compile Include="Objects\KaraokeObject.cs" />
@@ -165,7 +167,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Play\Karaoke\Layer\Snow\Snow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Icon\Icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -12,7 +12,7 @@ namespace osu.Game.Rulesets.Karaoke.Mods
     /// <summary>
     /// Event mod in 2017
     /// </summary>
-    public class ChristmasMod : Mod//, IApplicableMod<KaraokeObject>
+    public class ChristmasMod : Mod , ICanSnow //, IApplicableMod<KaraokeObject>
     {
         public override string Name => "Happy Christmas!";
 
@@ -21,7 +21,10 @@ namespace osu.Game.Rulesets.Karaoke.Mods
         public override string Description => "Singing karaoke at home and nobody give you a shit.";
 
         public override double ScoreMultiplier => 1;
-       
+
+        //TODO : texturePath
+        public string TexturePath => "Play/Karaoke/Layer/Snow";
+
         public void ApplyToRulesetContainer(RulesetContainer<KaraokeObject> rulesetContainer)
         {
             //TODO : add snow effect on playField

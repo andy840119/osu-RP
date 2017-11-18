@@ -108,7 +108,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect
                     {
                         SnowSpitie newFlake = new SnowSpitie()
                         {
-                            Texture= texture.Get(@"Play/osu/approachcircle"),
+                            Texture= texture.Get(@"Play/Karaoke/Layer/Snow/Snow"),//64*64
                             Origin = Anchor.Centre,
                             Anchor = Anchor.Centre,
                             Colour = Color4.White,
@@ -116,7 +116,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect
                             Depth = 1,
                             AlwaysDraw = true,//as alwaysDraw ?
                             CreateTime = currentTime,
-                            //Scale= new Vector2(0.1f, 0.1f),
+                            Scale= new Vector2(0.3f, 0.3f),
                         };
                         newFlake.Position = new Vector2(RNG.NextSingle(WidthScaled), -50);//GameBase.WindowManager.WidthScaled
                         newFlake.Alpha = RNG.NextSingle(0.7f);
