@@ -1,8 +1,12 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using OpenTK;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Timing;
 using osu.Game.Graphics;
+using osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect;
 using osu.Game.Rulesets.Mods;
 
 namespace osu.Game.Rulesets.Karaoke.Mods
@@ -148,5 +152,31 @@ namespace osu.Game.Rulesets.Karaoke.Mods
         public override FontAwesome Icon => FontAwesome.fa_osu_mod_suddendeath;
         public override bool Ranked => true;
     }
+
+    /// <summary>
+    /// snow mod
+    /// </summary>
+    public class SnowMod : Mod, IHasLayer
+    {
+        public override string Name => "Snow";
+        public override string ShortenedName => "SW";
+        public override double ScoreMultiplier => 1.0f;
+        public virtual string TextureLayer => @"Play/Karaoke/Layer/Snow/Snow";
+
+        public Container CreateNewLayer()
+        {
+            return new SnowVisualisationLayer
+            {
+                Clock = new FramedClock(new StopwatchClock(true)),
+                RelativeSizeAxes = Axes.Both,
+                Depth = 1,
+                Width = 900,
+                Position = new Vector2(-200, 0),
+                TexturePath = TextureLayer,
+            };
+        }
+    }
+
+
 
 }

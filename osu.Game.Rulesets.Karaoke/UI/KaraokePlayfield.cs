@@ -21,6 +21,8 @@ using osu.Game.Rulesets.Karaoke.Objects.Drawables;
 using osu.Game.Rulesets.Karaoke.Tools.Translator;
 using osu.Game.Rulesets.Karaoke.UI.Tool;
 using osu.Game.Rulesets.Karaoke.UI.Layer.ShowEffect;
+using System.Linq;
+using osu.Game.Rulesets.Karaoke.Mods;
 
 namespace osu.Game.Rulesets.Karaoke.UI
 {
@@ -73,14 +75,6 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     RelativeSizeAxes = Axes.Both,
                     Depth = 1,
                 },
-                snowVisualisationLayer= new SnowVisualisationLayer
-                {
-                   Clock = new FramedClock(new StopwatchClock(true)),
-                   RelativeSizeAxes = Axes.Both,
-                   Depth = 1,
-                   Width=900,
-                   Position=new Vector2(-200,0),
-                },
                 KaraokecontrolLayer = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
@@ -118,6 +112,16 @@ namespace osu.Game.Rulesets.Karaoke.UI
                     Clock = new FramedClock(new StopwatchClock(true)),
                 },
             });
+
+            //create all layer if contains in mod
+            foreach (var singleMod in WorkingBeatmap.Mods.Value)
+            {
+                if (singleMod is IHasLayer iHasLayer)
+                {
+                    this.Add(iHasLayer.CreateNewLayer());
+                    break;
+                }
+            }
 
             KaraokeFieldTool.Translateor.OnTranslateMultiStringSuccess += (a, multiSting) =>
             {
