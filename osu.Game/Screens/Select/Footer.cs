@@ -2,6 +2,8 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
@@ -11,7 +13,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input;
 using osu.Game.Graphics.UserInterface;
-using osu.Game.Screens.Menu;
 
 namespace osu.Game.Screens.Select
 {
@@ -29,11 +30,8 @@ namespace osu.Game.Screens.Select
         private const float padding = 80;
 
         public Action OnBack;
-        public Action OnStart;
 
-        private readonly FillFlowContainer buttons;
-
-        public OsuLogo StartButton;
+        private readonly FillFlowContainer<FooterButton> buttons;
 
         /// <param name="text">Text on the button.</param>
         /// <param name="colour">Colour of the button.</param>
@@ -43,29 +41,46 @@ namespace osu.Game.Screens.Select
         /// <para>Higher depth to be put on the left, and lower to be put on the right.</para>
         /// <para>Notice this is different to <see cref="Options.BeatmapOptionsOverlay"/>!</para>
         /// </param>
-        public void AddButton(string text, Color4 colour, Action action, Key? hotkey = null, float depth = 0)
+        public void AddButton(string text, Color4 colour, Action action, Key? hotkey = null, float depth = 0) => buttons.Add(new FooterButton
         {
-            var button = new FooterButton
+            Text = text,
+            Height = play_song_select_button_height,
+            Width = play_song_select_button_width,
+            Depth = depth,
+            SelectedColour = colour,
+            DeselectedColour = colour.Opacity(0.5f),
+            Hotkey = hotkey,
+            Hovered = updateModeLight,
+            HoverLost = updateModeLight,
+            Action = action,
+        });
+
+        private readonly List<OverlayContainer> overlays = new List<OverlayContainer>();
+
+        /// <param name="text">Text on the button.</param>
+        /// <param name="colour">Colour of the button.</param>
+        /// <param name="hotkey">Hotkey of the button.</param>
+        /// <param name="overlay">The <see cref="OverlayContainer"/> to be toggled by this button.</param>
+        /// <param name="depth">
+        /// <para>Higher depth to be put on the left, and lower to be put on the right.</para>
+        /// <para>Notice this is different to <see cref="Options.BeatmapOptionsOverlay"/>!</para>
+        /// </param>
+        public void AddButton(string text, Color4 colour, OverlayContainer overlay, Key? hotkey = null, float depth = 0)
+        {
+            overlays.Add(overlay);
+            AddButton(text, colour, () =>
             {
-                Text = text,
-                Height = play_song_select_button_height,
-                Width = play_song_select_button_width,
-                Depth = depth,
-                SelectedColour = colour,
-                DeselectedColour = colour.Opacity(0.5f),
-                Hotkey = hotkey,
-            };
-
-            button.Hovered = () => updateModeLight(button);
-            button.HoverLost = () => updateModeLight();
-            button.Action = action;
-            buttons.Add(button);
+                foreach (var o in overlays)
+                {
+                    if (o == overlay)
+                        o.ToggleVisibility();
+                    else
+                        o.Hide();
+                }
+            }, hotkey, depth);
         }
 
-        private void updateModeLight(FooterButton button = null)
-        {
-            modeLight.FadeColour(button?.SelectedColour ?? Color4.Transparent, TRANSITION_LENGTH, EasingTypes.OutQuint);
-        }
+        private void updateModeLight() => modeLight.FadeColour(buttons.FirstOrDefault(b => b.IsHovered)?.SelectedColour ?? Color4.Transparent, TRANSITION_LENGTH, Easing.OutQuint);
 
         public Footer()
         {
@@ -87,13 +102,6 @@ namespace osu.Game.Screens.Select
                     Height = 3,
                     Position = new Vector2(0, -3),
                 },
-                StartButton = new OsuLogo
-                {
-                    Anchor = Anchor.BottomRight,
-                    Scale = new Vector2(0.4f),
-                    Position = new Vector2(-70, -25),
-                    Action = () => OnStart?.Invoke()
-                },
                 new BackButton
                 {
                     Anchor = Anchor.BottomLeft,
@@ -111,7 +119,7 @@ namespace osu.Game.Screens.Select
                     Spacing = new Vector2(padding, 0),
                     Children = new Drawable[]
                     {
-                        buttons = new FillFlowContainer
+                        buttons = new FillFlowContainer<FooterButton>
                         {
                             Direction = FillDirection.Horizontal,
                             Spacing = new Vector2(0.2f, 0),
@@ -123,8 +131,6 @@ namespace osu.Game.Screens.Select
 
             updateModeLight();
         }
-
-        protected override bool InternalContains(Vector2 screenSpacePos) => base.InternalContains(screenSpacePos) || StartButton.Contains(screenSpacePos);
 
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args) => true;
 

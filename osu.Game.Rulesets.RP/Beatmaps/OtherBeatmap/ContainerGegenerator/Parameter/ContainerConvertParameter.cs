@@ -1,3 +1,6 @@
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
 using osu.Game.Rulesets.RP.Objects;
 
@@ -23,6 +26,6 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Parame
         /// <summary>
         ///     all of the container class
         /// </summary>
-        public List<RpContainerLineGroup> ListObjectContainer = new List<RpContainerLineGroup>();
+        public List<RpContainerGroup> ListObjectContainer = new List<RpContainerGroup>();
     }
 }

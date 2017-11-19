@@ -10,20 +10,21 @@ using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.Mods
 {
-    public abstract class ModAutoplay<T> : ModAutoplay, IApplicableMod<T>
+    public abstract class ModAutoplay<T> : ModAutoplay, IApplicableToRulesetContainer<T>
         where T : HitObject
     {
         protected abstract Score CreateReplayScore(Beatmap<T> beatmap);
 
-        public void ApplyToHitRenderer(HitRenderer<T> hitRenderer)
+        public virtual void ApplyToRulesetContainer(RulesetContainer<T> rulesetContainer)
         {
-            hitRenderer.SetReplay(CreateReplayScore(hitRenderer.Beatmap)?.Replay);
+            rulesetContainer.SetReplay(CreateReplayScore(rulesetContainer.Beatmap)?.Replay);
         }
     }
 
     public class ModAutoplay : Mod
     {
         public override string Name => "Autoplay";
+        public override string ShortenedName => "AT";
         public override FontAwesome Icon => FontAwesome.fa_osu_mod_auto;
         public override string Description => "Watch a perfect automated play through the song";
         public override double ScoreMultiplier => 0;

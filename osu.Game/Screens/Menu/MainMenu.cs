@@ -2,11 +2,13 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Input;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Input;
 using osu.Framework.Screens;
+using osu.Game.Beatmaps;
 using osu.Game.Graphics.Containers;
 using osu.Game.Screens.Backgrounds;
 using osu.Game.Screens.Charts;
@@ -22,10 +24,12 @@ namespace osu.Game.Screens.Menu
     {
         private readonly ButtonSystem buttons;
 
-        internal override bool ShowOverlays => buttons.State != MenuState.Initial;
+        public override bool ShowOverlays => buttons.State != MenuState.Initial;
 
-        private readonly BackgroundScreen background;
+        private readonly BackgroundScreenDefault background;
         private Screen songSelect;
+
+        private readonly MenuSideFlashes sideFlashes;
 
         protected override BackgroundScreen CreateBackground() => background;
 
@@ -47,21 +51,24 @@ namespace osu.Game.Screens.Menu
                             OnEdit = delegate { Push(new Editor()); },
                             OnSolo = delegate { Push(consumeSongSelect()); },
                             OnMulti = delegate { Push(new Lobby()); },
-                            OnExit = delegate { Exit(); },
-                        },
-                        new MenuSideFlashes(),
+                            OnExit = Exit,
+                        }
                     }
-                }
+                },
+                sideFlashes = new MenuSideFlashes(),
             };
         }
 
-        [BackgroundDependencyLoader]
-        private void load(OsuGame game)
+        [BackgroundDependencyLoader(true)]
+        private void load(OsuGame game = null)
         {
             LoadComponentAsync(background);
 
-            buttons.OnSettings = game.ToggleSettings;
-            buttons.OnDirect = game.ToggleDirect;
+            if (game != null)
+            {
+                buttons.OnSettings = game.ToggleSettings;
+                buttons.OnDirect = game.ToggleDirect;
+            }
 
             preloadSongSelect();
         }
@@ -83,16 +90,57 @@ namespace osu.Game.Screens.Menu
         {
             base.OnEntering(last);
             buttons.FadeInFromZero(500);
-            if (last is Intro && Beatmap != null)
+
+            var track = Beatmap.Value.Track;
+            var metadata = Beatmap.Value.Metadata;
+
+            if (last is Intro && track != null)
             {
-                if (!Beatmap.Track.IsRunning)
+                if (!track.IsRunning)
                 {
-                    Beatmap.Track.Seek(Beatmap.Metadata.PreviewTime);
-                    if (Beatmap.Metadata.PreviewTime == -1)
-                        Beatmap.Track.Seek(Beatmap.Track.Length * 0.4f);
-                    Beatmap.Track.Start();
+                    track.Seek(metadata.PreviewTime != -1 ? metadata.PreviewTime : 0.4f * track.Length);
+                    track.Start();
                 }
             }
+
+            Beatmap.ValueChanged += beatmap_ValueChanged;
+        }
+
+        protected override void LogoArriving(OsuLogo logo, bool resuming)
+        {
+            base.LogoArriving(logo, resuming);
+
+            buttons.SetOsuLogo(logo);
+
+            logo.FadeColour(Color4.White, 100, Easing.OutQuint);
+            logo.FadeIn(100, Easing.OutQuint);
+
+            if (resuming)
+            {
+                buttons.State = MenuState.TopLevel;
+
+                const float length = 300;
+
+                Content.FadeIn(length, Easing.OutQuint);
+                Content.MoveTo(new Vector2(0, 0), length, Easing.OutQuint);
+
+                sideFlashes.Delay(length).FadeIn(64, Easing.InQuint);
+            }
+        }
+
+        protected override void LogoSuspending(OsuLogo logo)
+        {
+            logo.FadeOut(300, Easing.InSine)
+                .ScaleTo(0.2f, 300, Easing.InSine)
+                .OnComplete(l => buttons.SetOsuLogo(null));
+        }
+
+        private void beatmap_ValueChanged(WorkingBeatmap newValue)
+        {
+            if (!IsCurrentScreen)
+                return;
+
+            background.Next();
         }
 
         protected override void OnSuspending(Screen next)
@@ -103,23 +151,20 @@ namespace osu.Game.Screens.Menu
 
             buttons.State = MenuState.EnteringMode;
 
-            Content.FadeOut(length, EasingTypes.InSine);
-            Content.MoveTo(new Vector2(-800, 0), length, EasingTypes.InSine);
+            Content.FadeOut(length, Easing.InSine);
+            Content.MoveTo(new Vector2(-800, 0), length, Easing.InSine);
+
+            sideFlashes.FadeOut(64, Easing.OutQuint);
         }
 
         protected override void OnResuming(Screen last)
         {
             base.OnResuming(last);
 
+            background.Next();
+
             //we may have consumed our preloaded instance, so let's make another.
             preloadSongSelect();
-
-            const float length = 300;
-
-            buttons.State = MenuState.TopLevel;
-
-            Content.FadeIn(length, EasingTypes.OutQuint);
-            Content.MoveTo(new Vector2(0, 0), length, EasingTypes.OutQuint);
         }
 
         protected override bool OnExiting(Screen next)

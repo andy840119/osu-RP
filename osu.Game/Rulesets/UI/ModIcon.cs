@@ -6,17 +6,19 @@ using OpenTK.Graphics;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Cursor;
 using osu.Game.Graphics;
 using osu.Game.Rulesets.Mods;
+using OpenTK;
 
 namespace osu.Game.Rulesets.UI
 {
-    public class ModIcon : Container
+    public class ModIcon : Container, IHasTooltip
     {
-        private readonly TextAwesome modIcon;
-        private readonly TextAwesome background;
+        private readonly SpriteIcon modIcon;
+        private readonly SpriteIcon background;
 
-        private const float icon_size = 80;
+        private const float size = 80;
 
         public FontAwesome Icon
         {
@@ -26,28 +28,35 @@ namespace osu.Game.Rulesets.UI
 
         private readonly ModType type;
 
+        public string TooltipText { get; }
+
         public ModIcon(Mod mod)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
 
             type = mod.Type;
 
+            TooltipText = mod.Name;
+
+            Size = new Vector2(size);
+
             Children = new Drawable[]
             {
-                background = new TextAwesome
+                background = new SpriteIcon
                 {
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    TextSize = icon_size,
+                    Size = new Vector2(size),
                     Icon = FontAwesome.fa_osu_mod_bg,
+                    Y = -6.5f,
                     Shadow = true,
                 },
-                modIcon = new TextAwesome
+                modIcon = new SpriteIcon
                 {
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
                     Colour = OsuColour.Gray(84),
-                    TextSize = icon_size - 35,
+                    Size = new Vector2(size - 35),
                     Icon = mod.Icon
                 },
             };

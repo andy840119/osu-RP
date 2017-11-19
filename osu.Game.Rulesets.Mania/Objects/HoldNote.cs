@@ -2,8 +2,8 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using System.Collections.Generic;
+using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.ControlPoints;
-using osu.Game.Database;
 using osu.Game.Rulesets.Objects.Types;
 
 namespace osu.Game.Rulesets.Mania.Objects
@@ -34,6 +34,17 @@ namespace osu.Game.Rulesets.Mania.Objects
                 base.StartTime = value;
                 Head.StartTime = value;
                 Tail.StartTime = EndTime;
+            }
+        }
+
+        public override int Column
+        {
+            get { return base.Column; }
+            set
+            {
+                base.Column = value;
+                Head.Column = value;
+                Tail.Column = value;
             }
         }
 
@@ -80,7 +91,8 @@ namespace osu.Game.Rulesets.Mania.Objects
             {
                 ret.Add(new HoldNoteTick
                 {
-                    StartTime = t
+                    StartTime = t,
+                    Column = Column
                 });
             }
 

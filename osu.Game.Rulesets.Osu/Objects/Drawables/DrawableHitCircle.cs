@@ -7,6 +7,7 @@ using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Osu.Objects.Drawables.Pieces;
 using OpenTK;
 using osu.Game.Rulesets.Objects.Types;
+using osu.Game.Rulesets.Osu.Judgements;
 
 namespace osu.Game.Rulesets.Osu.Objects.Drawables
 {
@@ -38,9 +39,9 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
                     Colour = AccentColour,
                     Hit = () =>
                     {
-                        if (Judgement.Result != HitResult.None) return false;
+                        if (AllJudged)
+                            return false;
 
-                        Judgement.PositionOffset = Vector2.Zero; //todo: set to correct value
                         UpdateJudgement(true);
                         return true;
                     },
@@ -57,6 +58,8 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
                 },
                 ApproachCircle = new ApproachCircle
                 {
+                    Alpha = 0,
+                    Scale = new Vector2(4),
                     Colour = AccentColour,
                 }
             };
@@ -65,35 +68,20 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
             Size = circle.DrawSize;
         }
 
-        protected override void CheckJudgement(bool userTriggered)
+        protected override void CheckForJudgements(bool userTriggered, double timeOffset)
         {
             if (!userTriggered)
             {
-                if (Judgement.TimeOffset > HitObject.HitWindowFor(OsuScoreResult.Hit50))
-                    Judgement.Result = HitResult.Miss;
+                if (timeOffset > HitObject.HitWindowFor(HitResult.Meh))
+                    AddJudgement(new OsuJudgement { Result = HitResult.Miss });
                 return;
             }
 
-            double hitOffset = Math.Abs(Judgement.TimeOffset);
-
-            if (hitOffset < HitObject.HitWindowFor(OsuScoreResult.Hit50))
+            AddJudgement(new OsuJudgement
             {
-                Judgement.Result = HitResult.Hit;
-                Judgement.Score = HitObject.ScoreResultForOffset(hitOffset);
-            }
-            else
-                Judgement.Result = HitResult.Miss;
-        }
-
-        protected override void UpdateInitialState()
-        {
-            base.UpdateInitialState();
-
-            //sane defaults
-            ring.Alpha = circle.Alpha = number.Alpha = glow.Alpha = 1;
-            ApproachCircle.Alpha = 0;
-            ApproachCircle.Scale = new Vector2(4);
-            explode.Alpha = 0;
+                Result = HitObject.ScoreResultForOffset(Math.Abs(timeOffset)),
+                PositionOffset = Vector2.Zero //todo: set to correct value
+            });
         }
 
         protected override void UpdatePreemptState()
@@ -106,43 +94,42 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
 
         protected override void UpdateCurrentState(ArmedState state)
         {
-            ApproachCircle.FadeOut();
+            double duration = ((HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime) - HitObject.StartTime;
 
-            double endTime = (HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime;
-            double duration = endTime - HitObject.StartTime;
-
-            glow.Delay(duration);
-            glow.FadeOut(400);
+            glow.Delay(duration).FadeOut(400);
 
             switch (state)
             {
                 case ArmedState.Idle:
-                    Delay(duration + TIME_PREEMPT);
-                    FadeOut(TIME_FADEOUT);
+                    this.Delay(duration + TIME_PREEMPT).FadeOut(TIME_FADEOUT);
                     Expire(true);
                     break;
                 case ArmedState.Miss:
-                    FadeOut(TIME_FADEOUT / 5);
+                    ApproachCircle.FadeOut(50);
+                    this.FadeOut(TIME_FADEOUT / 5);
                     Expire();
                     break;
                 case ArmedState.Hit:
-                    const double flash_in = 40;
+                    ApproachCircle.FadeOut(50);
 
-                    flash.FadeTo(0.8f, flash_in);
-                    flash.Delay(flash_in);
-                    flash.FadeOut(100);
+                    const double flash_in = 40;
+                    flash.FadeTo(0.8f, flash_in)
+                         .Then()
+                         .FadeOut(100);
 
                     explode.FadeIn(flash_in);
 
-                    Delay(flash_in, true);
+                    using (BeginDelayedSequence(flash_in, true))
+                    {
+                        //after the flash, we can hide some elements that were behind it
+                        ring.FadeOut();
+                        circle.FadeOut();
+                        number.FadeOut();
 
-                    //after the flash, we can hide some elements that were behind it
-                    ring.FadeOut();
-                    circle.FadeOut();
-                    number.FadeOut();
+                        this.FadeOut(800)
+                            .ScaleTo(Scale * 1.5f, 400, Easing.OutQuad);
+                    }
 
-                    FadeOut(800);
-                    ScaleTo(Scale * 1.5f, 400, EasingTypes.OutQuad);
                     Expire();
                     break;
             }

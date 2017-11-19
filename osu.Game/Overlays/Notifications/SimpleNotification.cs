@@ -4,16 +4,16 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Sprites;
 using osu.Game.Graphics;
-using osu.Game.Graphics.Sprites;
+using OpenTK;
 
 namespace osu.Game.Overlays.Notifications
 {
     public class SimpleNotification : Notification
     {
-        private string text;
+        private string text = string.Empty;
         public string Text
         {
             get { return text; }
@@ -35,32 +35,31 @@ namespace osu.Game.Overlays.Notifications
             }
         }
 
-        private readonly SpriteText textDrawable;
-        private readonly TextAwesome iconDrawable;
+        private readonly TextFlowContainer textDrawable;
+        private readonly SpriteIcon iconDrawable;
 
         protected Box IconBackgound;
 
         public SimpleNotification()
         {
-            IconContent.Add(new Drawable[]
+            IconContent.AddRange(new Drawable[]
             {
                 IconBackgound = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
-                    ColourInfo = ColourInfo.GradientVertical(OsuColour.Gray(0.2f), OsuColour.Gray(0.6f))
+                    Colour = ColourInfo.GradientVertical(OsuColour.Gray(0.2f), OsuColour.Gray(0.6f))
                 },
-                iconDrawable = new TextAwesome
+                iconDrawable = new SpriteIcon
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Icon = icon,
-                    TextSize = 20
+                    Size = new Vector2(20),
                 }
             });
 
-            Content.Add(textDrawable = new OsuSpriteText
+            Content.Add(textDrawable = new TextFlowContainer(t => t.TextSize = 16)
             {
-                TextSize = 16,
                 Colour = OsuColour.Gray(128),
                 AutoSizeAxes = Axes.Y,
                 RelativeSizeAxes = Axes.X,

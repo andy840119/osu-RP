@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using osu.Framework;
 using osu.Framework.Graphics;
-using osu.Game.Database;
 
 namespace osu.Game.Beatmaps.Drawables
 {
     public class BeatmapGroup : IStateful<BeatmapGroupState>
     {
+        public event Action<BeatmapGroupState> StateChanged;
+
         public BeatmapPanel SelectedPanel;
 
         /// <summary>
@@ -24,19 +25,28 @@ namespace osu.Game.Beatmaps.Drawables
         /// </summary>
         public Action<BeatmapInfo> StartRequested;
 
-        public BeatmapSetHeader Header;
+        public Action<BeatmapSetInfo> DeleteRequested;
 
-        private BeatmapGroupState state;
+        public Action<BeatmapSetInfo> RestoreHiddenRequested;
+
+        public Action<BeatmapInfo> HideDifficultyRequested;
+
+        public Action<BeatmapInfo> EditRequested;
+
+        public BeatmapSetHeader Header;
 
         public List<BeatmapPanel> BeatmapPanels;
 
         public BeatmapSetInfo BeatmapSet;
 
+        private BeatmapGroupState state;
         public BeatmapGroupState State
         {
             get { return state; }
             set
             {
+                state = value;
+
                 switch (value)
                 {
                     case BeatmapGroupState.Expanded:
@@ -55,32 +65,42 @@ namespace osu.Game.Beatmaps.Drawables
                             panel.State = PanelSelectedState.Hidden;
                         break;
                 }
-                state = value;
+
+                StateChanged?.Invoke(state);
             }
         }
 
-        public BeatmapGroup(BeatmapSetInfo beatmapSet, BeatmapDatabase database)
+        public BeatmapGroup(BeatmapSetInfo beatmapSet, BeatmapManager manager)
         {
+            if (beatmapSet == null)
+                throw new ArgumentNullException(nameof(beatmapSet));
+            if (manager == null)
+                throw new ArgumentNullException(nameof(manager));
+
             BeatmapSet = beatmapSet;
-            WorkingBeatmap beatmap = database.GetWorkingBeatmap(BeatmapSet.Beatmaps.FirstOrDefault());
+            WorkingBeatmap beatmap = manager.GetWorkingBeatmap(BeatmapSet.Beatmaps.FirstOrDefault());
 
             Header = new BeatmapSetHeader(beatmap)
             {
                 GainedSelection = headerGainedSelection,
+                DeleteRequested = b => DeleteRequested(b),
+                RestoreHiddenRequested = b => RestoreHiddenRequested(b),
                 RelativeSizeAxes = Axes.X,
             };
 
-            BeatmapSet.Beatmaps = BeatmapSet.Beatmaps.OrderBy(b => b.StarDifficulty).ToList();
-            BeatmapPanels = BeatmapSet.Beatmaps.Select(b => new BeatmapPanel(b)
+            BeatmapPanels = BeatmapSet.Beatmaps.Where(b => !b.Hidden).OrderBy(b => b.StarDifficulty).Select(b => new BeatmapPanel(b)
             {
                 Alpha = 0,
                 GainedSelection = panelGainedSelection,
-                StartRequested = p => { StartRequested?.Invoke(p.Beatmap); },
+                HideRequested = p => HideDifficultyRequested?.Invoke(p),
+                StartRequested = p => StartRequested?.Invoke(p.Beatmap),
+                EditRequested = p => EditRequested?.Invoke(p.Beatmap),
                 RelativeSizeAxes = Axes.X,
             }).ToList();
 
             Header.AddDifficultyIcons(BeatmapPanels);
         }
+
 
         private void headerGainedSelection(BeatmapSetHeader panel)
         {

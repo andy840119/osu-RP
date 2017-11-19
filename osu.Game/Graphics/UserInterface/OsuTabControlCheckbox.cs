@@ -21,7 +21,7 @@ namespace osu.Game.Graphics.UserInterface
     {
         private readonly Box box;
         private readonly SpriteText text;
-        private readonly TextAwesome icon;
+        private readonly SpriteIcon icon;
 
         private Color4? accentColour;
         public Color4 AccentColour
@@ -49,14 +49,14 @@ namespace osu.Game.Graphics.UserInterface
 
         private void fadeIn()
         {
-            box.FadeIn(transition_length, EasingTypes.OutQuint);
-            text.FadeColour(Color4.White, transition_length, EasingTypes.OutQuint);
+            box.FadeIn(transition_length, Easing.OutQuint);
+            text.FadeColour(Color4.White, transition_length, Easing.OutQuint);
         }
 
         private void fadeOut()
         {
-            box.FadeOut(transition_length, EasingTypes.OutQuint);
-            text.FadeColour(AccentColour, transition_length, EasingTypes.OutQuint);
+            box.FadeOut(transition_length, Easing.OutQuint);
+            text.FadeColour(AccentColour, transition_length, Easing.OutQuint);
         }
 
         protected override bool OnHover(InputState state)
@@ -99,9 +99,9 @@ namespace osu.Game.Graphics.UserInterface
                             TextSize = 14,
                             Font = @"Exo2.0-Bold",
                         },
-                        icon = new TextAwesome
+                        icon = new SpriteIcon
                         {
-                            TextSize = 14,
+                            Size = new Vector2(14),
                             Icon = FontAwesome.fa_circle_o,
                             Shadow = true,
                         },

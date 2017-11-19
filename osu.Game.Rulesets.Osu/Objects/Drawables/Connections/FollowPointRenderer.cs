@@ -52,9 +52,12 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Connections
             }
         }
 
+        public override bool RemoveCompletedTransforms => false;
+
         private void update()
         {
             Clear();
+
             if (hitObjects == null)
                 return;
 
@@ -94,12 +97,11 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Connections
                         using (fp.BeginAbsoluteSequence(fadeInTime))
                         {
                             fp.FadeIn(DrawableOsuHitObject.TIME_FADEIN);
-                            fp.ScaleTo(1, DrawableOsuHitObject.TIME_FADEIN, EasingTypes.Out);
+                            fp.ScaleTo(1, DrawableOsuHitObject.TIME_FADEIN, Easing.Out);
 
-                            fp.MoveTo(pointEndPosition, DrawableOsuHitObject.TIME_FADEIN, EasingTypes.Out);
+                            fp.MoveTo(pointEndPosition, DrawableOsuHitObject.TIME_FADEIN, Easing.Out);
 
-                            fp.Delay(fadeOutTime - fadeInTime);
-                            fp.FadeOut(DrawableOsuHitObject.TIME_FADEIN);
+                            fp.Delay(fadeOutTime - fadeInTime).FadeOut(DrawableOsuHitObject.TIME_FADEIN);
                         }
 
                         fp.Expire(true);

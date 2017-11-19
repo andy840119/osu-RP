@@ -3,9 +3,9 @@
 
 using System;
 using System.IO;
-using osu.Desktop.Beatmaps.IO;
-using osu.Framework.Desktop;
-using osu.Framework.Desktop.Platform;
+using System.Linq;
+using osu.Framework;
+using osu.Framework.Platform;
 using osu.Game.IPC;
 
 namespace osu.Desktop
@@ -15,8 +15,6 @@ namespace osu.Desktop
         [STAThread]
         public static int Main(string[] args)
         {
-            LegacyFilesystemReader.Register();
-
             // Back up the cwd before DesktopGameHost changes it
             var cwd = Environment.CurrentDirectory;
 
@@ -36,7 +34,20 @@ namespace osu.Desktop
                 }
                 else
                 {
-                    host.Run(new OsuGameDesktop(args));
+#if !DEBUG
+                     host.Run(new OsuTestBrowser());
+#else
+                    switch (args.FirstOrDefault() ?? string.Empty)
+                    {
+                        case "--tests":
+                            host.Run(new OsuTestBrowser());
+                            break;
+                        default:
+                            host.Run(new OsuGameDesktop(args));
+                            break;
+                    }
+#endif
+
                 }
                 return 0;
             }

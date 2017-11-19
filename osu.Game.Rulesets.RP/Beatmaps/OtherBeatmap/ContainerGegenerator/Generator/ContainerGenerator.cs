@@ -1,3 +1,6 @@
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using System.Collections.Generic;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Parameter;
 using osu.Game.Rulesets.RP.Objects;
@@ -11,9 +14,9 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Genera
         /// <summary>
         ///     Generators the object by parameter.
         /// </summary>
-        internal List<RpContainerLineGroup> GetListContainer(ConvertParameter single)
+        internal List<RpContainerGroup> GetListContainer(ConvertParameter single)
         {
-            var returnContainer = new List<RpContainerLineGroup>();
+            var returnContainer = new List<RpContainerGroup>();
             var listLayout = new List<RpContainerLine>();
 
             //container number
@@ -26,24 +29,24 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Genera
 
                 //    container layout number;
                 //TODO : adjust it later
-                returnContainer[i].ContainerLayerList[0] = listLayout[i];
+                returnContainer[i].ListContainObject[0] = listLayout[i];
             }
 
             return returnContainer;
         }
 
 
-        private RpContainerLineGroup GenerateSingleContainer(ConvertParameter single)
+        private RpContainerGroup GenerateSingleContainer(ConvertParameter single)
         {
-            var objectContainer = new RpContainerLineGroup(single.SliceConvertParameter.StartTime);
+            var objectContainer = new RpContainerGroup(single.SliceConvertParameter.StartTime);
             objectContainer.StartTime = single.SliceConvertParameter.StartTime;
-            objectContainer.ContainerEndTime = single.SliceConvertParameter.EndTime;
+            objectContainer.EndTime = single.SliceConvertParameter.EndTime;
             objectContainer.BPM = single.SliceConvertParameter.BPM;
             objectContainer.Velocity = single.SliceConvertParameter.Volocity;
             return objectContainer;
         }
 
-        private RpContainerLine GenerateSingleLayout(ConvertParameter single, RpContainerLineGroup container)
+        private RpContainerLine GenerateSingleLayout(ConvertParameter single, RpContainerGroup container)
         {
             var objectContainerLayer = new RpContainerLine(container);
             objectContainerLayer.StartTime = single.SliceConvertParameter.StartTime;

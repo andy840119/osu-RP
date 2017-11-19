@@ -78,22 +78,22 @@ namespace osu.Game.Screens.Ranking
                             RelativeSizeAxes = Axes.Both,
                             Colour = Color4.Transparent,
                         },
-                        new TextAwesome
+                        new SpriteIcon
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             Shadow = false,
                             Colour = OsuColour.Gray(0.95f),
                             Icon = icon,
-                            TextSize = 20,
+                            Size = new Vector2(20),
                         }
                     }
                 }
             };
         }
 
-        protected override void OnActivated() => colouredPart.FadeColour(activeColour, 200, EasingTypes.OutQuint);
+        protected override void OnActivated() => colouredPart.FadeColour(activeColour, 200, Easing.OutQuint);
 
-        protected override void OnDeactivated() => colouredPart.FadeColour(inactiveColour, 200, EasingTypes.OutQuint);
+        protected override void OnDeactivated() => colouredPart.FadeColour(inactiveColour, 200, Easing.OutQuint);
     }
 }

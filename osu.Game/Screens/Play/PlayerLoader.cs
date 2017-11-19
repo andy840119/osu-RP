@@ -7,13 +7,12 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osu.Game.Beatmaps;
-using osu.Game.Database;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Screens.Backgrounds;
-using osu.Game.Screens.Menu;
 using OpenTK;
 using osu.Framework.Localisation;
+using osu.Game.Screens.Menu;
 
 namespace osu.Game.Screens.Play
 {
@@ -21,13 +20,12 @@ namespace osu.Game.Screens.Play
     {
         private Player player;
 
-        private readonly OsuLogo logo;
         private BeatmapMetadataDisplay info;
 
         private bool showOverlays = true;
-        internal override bool ShowOverlays => showOverlays;
+        public override bool ShowOverlays => showOverlays;
 
-        internal override bool AllowRulesetChange => false;
+        public override bool AllowBeatmapRulesetChange => false;
 
         protected override BackgroundScreen CreateBackground() => new BackgroundScreenBeatmap(Beatmap);
 
@@ -35,18 +33,10 @@ namespace osu.Game.Screens.Play
         {
             this.player = player;
 
-            player.RestartRequested = () => {
+            player.RestartRequested = () =>
+            {
                 showOverlays = false;
                 ValidForResume = true;
-            };
-
-            Children = new Drawable[]
-            {
-                logo = new OsuLogo
-                {
-                    Scale = new Vector2(0.15f),
-                    Interactive = false,
-                },
             };
         }
 
@@ -74,23 +64,20 @@ namespace osu.Game.Screens.Play
             {
                 RestartCount = player.RestartCount + 1,
                 RestartRequested = player.RestartRequested,
-                Beatmap = player.Beatmap,
             });
 
-            Delay(400);
-
-            Schedule(pushWhenLoaded);
+            this.Delay(400).Schedule(pushWhenLoaded);
         }
 
         private void contentIn()
         {
-            Content.ScaleTo(1, 650, EasingTypes.OutQuint);
+            Content.ScaleTo(1, 650, Easing.OutQuint);
             Content.FadeInFromZero(400);
         }
 
         private void contentOut()
         {
-            Content.ScaleTo(0.7f, 300, EasingTypes.InQuint);
+            Content.ScaleTo(0.7f, 300, Easing.InQuint);
             Content.FadeOut(250);
         }
 
@@ -104,28 +91,34 @@ namespace osu.Game.Screens.Play
 
             contentIn();
 
-            Delay(500, true);
+            info.Delay(750).FadeIn(500);
+            this.Delay(2150).Schedule(pushWhenLoaded);
+        }
 
-            logo.MoveToOffset(new Vector2(0, -180), 500, EasingTypes.InOutExpo);
-            Delay(250, true);
+        protected override void LogoArriving(OsuLogo logo, bool resuming)
+        {
+            base.LogoArriving(logo, resuming);
 
-            info.FadeIn(500);
+            logo.RelativePositionAxes = Axes.Both;
 
-            Delay(1400, true);
+            logo.ScaleTo(new Vector2(0.15f), 300, Easing.In);
+            logo.MoveTo(new Vector2(0.5f), 300, Easing.In);
+            logo.FadeIn(350);
 
-            Schedule(pushWhenLoaded);
+            logo.Delay(resuming ? 0 : 500).MoveToOffset(new Vector2(0, -0.24f), 500, Easing.InOutExpo);
         }
 
         private void pushWhenLoaded()
         {
-            if (!player.IsLoaded)
+            if (player.LoadState != LoadState.Ready)
+            {
                 Schedule(pushWhenLoaded);
+                return;
+            }
 
             contentOut();
 
-            Delay(250);
-
-            Schedule(() =>
+            this.Delay(250).Schedule(() =>
             {
                 if (!IsCurrentScreen) return;
 
@@ -142,8 +135,8 @@ namespace osu.Game.Screens.Play
 
         protected override bool OnExiting(Screen next)
         {
-            Content.ScaleTo(0.7f, 150, EasingTypes.InQuint);
-            FadeOut(150);
+            Content.ScaleTo(0.7f, 150, Easing.InQuint);
+            this.FadeOut(150);
 
             return base.OnExiting(next);
         }
@@ -227,6 +220,7 @@ namespace osu.Game.Screens.Play
                                 {
                                     new Sprite
                                     {
+                                        RelativeSizeAxes = Axes.Both,
                                         Texture = beatmap?.Background,
                                         Origin = Anchor.Centre,
                                         Anchor = Anchor.Centre,
@@ -256,7 +250,7 @@ namespace osu.Game.Screens.Play
                                 Origin = Anchor.TopCentre,
                                 Anchor = Anchor.TopCentre,
                             },
-                            new MetadataLine("Mapper", metadata.Author)
+                            new MetadataLine("Mapper", metadata.Author.Username)
                             {
                                 Origin = Anchor.TopCentre,
                                 Anchor = Anchor.TopCentre,

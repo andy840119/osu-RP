@@ -1,10 +1,12 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
+using System.Linq;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input;
+using OpenTK;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.Osu.Objects.Drawables.Pieces
@@ -37,7 +39,7 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Pieces
             this.slider = slider;
             Masking = true;
             AutoSizeAxes = Axes.Both;
-            BlendingMode = BlendingMode.Additive;
+            Blending = BlendingMode.Additive;
             Origin = Anchor.Centre;
             BorderThickness = 10;
             BorderColour = Color4.Orange;
@@ -96,18 +98,28 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Pieces
             return base.OnMouseMove(state);
         }
 
+        // If the current time is between the start and end of the slider, we should track mouse input regardless of the cursor position.
+        public override bool ReceiveMouseInputAt(Vector2 screenSpacePos) => canCurrentlyTrack || base.ReceiveMouseInputAt(screenSpacePos);
+
+        public override void ClearTransforms(bool propagateChildren = false, string targetMember = null)
+        {
+            // Consider the case of rewinding - children's transforms are handled internally, so propagating down
+            // any further will cause weirdness with the Tracking bool below. Let's not propagate further at this point.
+            base.ClearTransforms(false, targetMember);
+        }
+
         private bool tracking;
         public bool Tracking
         {
             get { return tracking; }
-            set
+            private set
             {
-                if (value == tracking) return;
-
+                if (value == tracking)
+                    return;
                 tracking = value;
 
-                follow.ScaleTo(tracking ? 2.8f : 1, 300, EasingTypes.OutQuint);
-                follow.FadeTo(tracking ? 0.2f : 0, 300, EasingTypes.OutQuint);
+                follow.ScaleTo(tracking ? 2.8f : 1, 300, Easing.OutQuint);
+                follow.FadeTo(tracking ? 0.2f : 0, 300, Easing.OutQuint);
             }
         }
 
@@ -117,8 +129,11 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Pieces
         {
             base.Update();
 
-            if (Time.Current < slider.EndTime)
-                Tracking = canCurrentlyTrack && lastState != null && Contains(lastState.Mouse.NativeState.Position) && lastState.Mouse.HasMainButtonPressed;
+            // Make sure to use the base version of ReceiveMouseInputAt so that we correctly check the position.
+            Tracking = canCurrentlyTrack
+                        && lastState != null
+                        && base.ReceiveMouseInputAt(lastState.Mouse.NativeState.Position)
+                        && ((Parent as DrawableSlider)?.OsuActionInputManager?.PressedActions.Any(x => x == OsuAction.LeftButton || x == OsuAction.RightButton) ?? false);
         }
 
         public void UpdateProgress(double progress, int repeat)

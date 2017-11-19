@@ -41,7 +41,7 @@ namespace osu.Game.Overlays.Settings.Sections.Graphics
                     RelativeSizeAxes = Axes.X,
                     AutoSizeAxes = Axes.Y,
                     AutoSizeDuration = transition_duration,
-                    AutoSizeEasing = EasingTypes.OutQuint,
+                    AutoSizeEasing = Easing.OutQuint,
                     Masking = true,
 
                     Children = new Drawable[]
@@ -49,12 +49,14 @@ namespace osu.Game.Overlays.Settings.Sections.Graphics
                         new SettingsSlider<double>
                         {
                             LabelText = "Horizontal position",
-                            Bindable = config.GetBindable<double>(FrameworkSetting.LetterboxPositionX)
+                            Bindable = config.GetBindable<double>(FrameworkSetting.LetterboxPositionX),
+                            KeyboardStep = 0.1f
                         },
                         new SettingsSlider<double>
                         {
                             LabelText = "Vertical position",
-                            Bindable = config.GetBindable<double>(FrameworkSetting.LetterboxPositionY)
+                            Bindable = config.GetBindable<double>(FrameworkSetting.LetterboxPositionY),
+                            KeyboardStep = 0.1f
                         },
                     }
                 },
@@ -66,7 +68,7 @@ namespace osu.Game.Overlays.Settings.Sections.Graphics
                 letterboxSettings.AutoSizeAxes = isVisible ? Axes.Y : Axes.None;
 
                 if (!isVisible)
-                    letterboxSettings.ResizeHeightTo(0, transition_duration, EasingTypes.OutQuint);
+                    letterboxSettings.ResizeHeightTo(0, transition_duration, Easing.OutQuint);
             };
             letterboxing.TriggerChange();
         }

@@ -1,12 +1,12 @@
 // Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Game.Database;
 using osu.Game.Graphics;
+using osu.Game.Graphics.Containers;
 using OpenTK;
-using OpenTK.Graphics;
 
 namespace osu.Game.Beatmaps.Drawables
 {
@@ -16,6 +16,9 @@ namespace osu.Game.Beatmaps.Drawables
 
         public DifficultyIcon(BeatmapInfo beatmap) : base(beatmap)
         {
+            if (beatmap == null)
+                throw new ArgumentNullException(nameof(beatmap));
+
             this.beatmap = beatmap;
             Size = new Vector2(20);
         }
@@ -23,23 +26,21 @@ namespace osu.Game.Beatmaps.Drawables
         [BackgroundDependencyLoader]
         private void load()
         {
-            Children = new[]
+            Children = new Drawable[]
             {
-                new TextAwesome
+                new SpriteIcon
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    TextSize = Size.X,
+                    RelativeSizeAxes = Axes.Both,
                     Colour = AccentColour,
                     Icon = FontAwesome.fa_circle
                 },
-                new TextAwesome
+                new ConstrainedIconContainer
                 {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    TextSize = Size.X,
-                    Colour = Color4.White,
-                    Icon = beatmap.Ruleset.CreateInstance().Icon
+                    RelativeSizeAxes = Axes.Both,
+                    // the null coalesce here is only present to make unit tests work (ruleset dlls aren't copied correctly for testing at the moment)
+                    Icon = beatmap.Ruleset?.CreateInstance().CreateIcon() ?? new SpriteIcon { Icon = FontAwesome.fa_question_circle_o }
                 }
             };
         }

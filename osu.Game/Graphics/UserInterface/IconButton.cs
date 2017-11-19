@@ -9,36 +9,96 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Graphics.UserInterface
 {
-    public class IconButton : ClickableContainer
+    public class IconButton : OsuClickableContainer
     {
-        private readonly TextAwesome icon;
-        private readonly Box hover;
-        private readonly Container content;
+        private const float button_size = 30;
 
+        private Color4? flashColour;
+        /// <summary>
+        /// The colour that should be flashed when the <see cref="IconButton"/> is clicked.
+        /// </summary>
+        public Color4 FlashColour
+        {
+            get { return flashColour ?? Color4.White; }
+            set { flashColour = value; }
+        }
+
+        private Color4? iconColour;
+        /// <summary>
+        /// The icon colour. This does not affect <see cref="IconButton.Colour"/>.
+        /// </summary>
+        public Color4 IconColour
+        {
+            get { return iconColour ?? Color4.White; }
+            set
+            {
+                iconColour = value;
+                icon.Colour = value;
+            }
+        }
+
+        private Color4? iconHoverColour;
+        /// <summary>
+        /// The icon colour while the <see cref="IconButton"/> is hovered.
+        /// </summary>
+        public Color4 IconHoverColour
+        {
+            get { return iconHoverColour ?? IconColour; }
+            set { iconHoverColour = value; }
+        }
+
+        private Color4? hoverColour;
+        /// <summary>
+        /// The background colour of the <see cref="IconButton"/> while it is hovered.
+        /// </summary>
+        public Color4 HoverColour
+        {
+            get { return hoverColour ?? Color4.White; }
+            set
+            {
+                hoverColour = value;
+                hover.Colour = value;
+            }
+        }
+
+        /// <summary>
+        /// The icon.
+        /// </summary>
         public FontAwesome Icon
         {
             get { return icon.Icon; }
             set { icon.Icon = value; }
         }
 
-        private const float button_size = 30;
-        private Color4 flashColour;
-
+        /// <summary>
+        /// The icon scale. This does not affect <see cref="IconButton.Scale"/>.
+        /// </summary>
         public Vector2 IconScale
         {
             get { return icon.Scale; }
             set { icon.Scale = value; }
         }
 
+        /// <summary>
+        /// The size of the <see cref="IconButton"/> while it is not being pressed.
+        /// </summary>
+        public Vector2 ButtonSize
+        {
+            get { return content.Size; }
+            set { content.Size = value; }
+        }
+
+        private readonly Container content;
+        private readonly SpriteIcon icon;
+        private readonly Box hover;
+
         public IconButton()
         {
             AutoSizeAxes = Axes.Both;
-
-            Origin = Anchor.Centre;
-            Anchor = Anchor.Centre;
 
             Children = new Drawable[]
             {
@@ -46,8 +106,7 @@ namespace osu.Game.Graphics.UserInterface
                 {
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    Size = new Vector2 (button_size),
-
+                    Size = new Vector2(button_size),
                     CornerRadius = 5,
                     Masking = true,
                     EdgeEffect = new EdgeEffectParameters
@@ -63,11 +122,11 @@ namespace osu.Game.Graphics.UserInterface
                             RelativeSizeAxes = Axes.Both,
                             Alpha = 0,
                         },
-                        icon = new TextAwesome
+                        icon = new SpriteIcon
                         {
                             Origin = Anchor.Centre,
                             Anchor = Anchor.Centre,
-                            TextSize = 18,
+                            Size = new Vector2(18),
                         }
                     }
                 }
@@ -77,37 +136,44 @@ namespace osu.Game.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void load(OsuColour colours)
         {
-            hover.Colour = colours.Yellow.Opacity(0.6f);
-            flashColour = colours.Yellow;
+            if (hoverColour == null)
+                HoverColour = colours.Yellow.Opacity(0.6f);
+
+            if (flashColour == null)
+                FlashColour = colours.Yellow;
+
+            Enabled.ValueChanged += enabled => this.FadeColour(enabled ? Color4.White : colours.Gray9, 200, Easing.OutQuint);
         }
 
         protected override bool OnHover(InputState state)
         {
-            hover.FadeIn(500, EasingTypes.OutQuint);
+            hover.FadeIn(500, Easing.OutQuint);
+            icon.FadeColour(IconHoverColour, 500, Easing.OutQuint);
             return base.OnHover(state);
         }
 
         protected override void OnHoverLost(InputState state)
         {
-            hover.FadeOut(500, EasingTypes.OutQuint);
+            hover.FadeOut(500, Easing.OutQuint);
+            icon.FadeColour(IconColour, 500, Easing.OutQuint);
             base.OnHoverLost(state);
         }
 
         protected override bool OnClick(InputState state)
         {
-            hover.FlashColour(flashColour, 800, EasingTypes.OutQuint);
+            hover.FlashColour(FlashColour, 800, Easing.OutQuint);
             return base.OnClick(state);
         }
 
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
         {
-            content.ScaleTo(0.75f, 2000, EasingTypes.OutQuint);
+            content.ScaleTo(0.75f, 2000, Easing.OutQuint);
             return base.OnMouseDown(state, args);
         }
 
         protected override bool OnMouseUp(InputState state, MouseUpEventArgs args)
         {
-            content.ScaleTo(1, 1000, EasingTypes.OutElastic);
+            content.ScaleTo(1, 1000, Easing.OutElastic);
             return base.OnMouseUp(state, args);
         }
     }

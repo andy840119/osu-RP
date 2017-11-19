@@ -1,28 +1,57 @@
-//Copyright (c) 2007-2016 ppy Pty Ltd <contact@ppy.sh>.
-//Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+Ôªø// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
+using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
+using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
-using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Scoreing;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.ContainerBackground;
+using osu.Game.Rulesets.RP.Judgements;
+using osu.Game.Rulesets.RP.Objects.Drawables.Play;
+using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion;
+using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Interface;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CoopHint;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjects.Drawables;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.HitObjectsConnector;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.Judgement;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.KeySound;
-using osu.Game.Rulesets.UI;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
 {
     /// <summary>
-    ///     óVùEï®åèË˚é¶
+    ///     RpPlayfield
     /// </summary>
-    public class RpPlayfield : Playfield<BaseRpObject, RpJudgement>
+    public class RpPlayfield : Rulesets.UI.Playfield, IHasGameField
     {
+        public List<DrawableBaseRpObject> ListDrawableObject { get; set; }
+        public List<Container> ListGroupContainer { get; set; }
+
+        /// <summary>
+        /// Show the co-op backgrounf
+        /// </summary>
+        private readonly CoopHintLayout _coopHintLayout;
+
+        /// <summary>
+        ///     Draw the line connected to mulit Hit Object
+        /// </summary>
+        private readonly ConnectionRenderer<DrawableBaseRpHitableObject> _hitObjectConnector;
+
+        /// <summary>
+        ///     Hit Effect Layer
+        /// </summary>
+        private readonly JudgementLayout _judgementLayer;
+
+        /// <summary>
+        ///     HitSound Layer
+        /// </summary>
+        private KeySoundLayout _keySoundLayout;
+
+        /// <summary>
+        /// PlayField size
+        /// </summary>
+        public static readonly Vector2 BASE_SIZE = new Vector2(512, 384);
+
         /// <summary>
         ///     set the size
         ///     This Code maybe form osu mode
@@ -38,116 +67,68 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
             }
         }
 
-        /// <summary>
-        /// Show the co-op backgrounf
-        /// </summary>
-        private readonly CoopHintLayout _coopHintLayout;
-
-        /// <summary>
-        ///     RpContainer Object's layout
-        /// </summary>
-        private readonly ContainerBackgroundLayout containerBackgroundLayout;
-
-        /// <summary>
-        ///     RpHitObject's Layout
-        ///     It only store on the list, not added to the Drawable Child
-        /// </summary>
-        private readonly HitObjectLayout _rpObjectLayout;
-
-        /// <summary>
-        ///     Draw the line connected to mulit Hit Object
-        /// </summary>
-        private readonly ConnectionRenderer<DrawableBaseRpHitableObject> _hitObjectConnector;
-
-        /// <summary>
-        ///     Hit Effect Layer
-        /// </summary>
-        private readonly JudgementLayout _judgementLayer;
-
-        /// <summary>
-        ///     HitSound Layer
-        /// </summary>
-        private KeySoundLayout keySoundLayout;
 
         /// <summary>
         ///     Initial Play Field
         /// </summary>
         public RpPlayfield()
-            : base(512)
+            : base(BASE_SIZE.X)
         {
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
 
-            Add(new Drawable[]
+            ListDrawableObject = new List<DrawableBaseRpObject>();
+            ListGroupContainer = new List<Container>();
+
+            AddRange(new Drawable[]
             {
                 _coopHintLayout = new CoopHintLayout
                 {
                     RelativeSizeAxes = Axes.Both,
                     Depth = 3
                 },
-                containerBackgroundLayout = new ContainerBackgroundLayout 
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = 2
-                },
-                _rpObjectLayout = new HitObjectLayout 
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = 1,
-                    ContainerBackgroundLayout = containerBackgroundLayout
-                },
                 _hitObjectConnector = new HitObjectConnector
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Depth = 1
+                    Depth = -1
                     //HitObjectLayout=_rpObjectLayout,
                 },
-                keySoundLayout = new KeySoundLayout 
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = -1
-                },
-                _judgementLayer = new JudgementLayout 
+                _keySoundLayout = new KeySoundLayout
                 {
                     RelativeSizeAxes = Axes.Both,
                     Depth = -2
+                },
+                _judgementLayer = new JudgementLayout
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Depth = -3
                 }
             });
-            Depth = 1;
         }
 
 
         /// <summary>
         ///     Add the DrawableHitObject
         /// </summary>
-        /// <param name="h"></param>
-        public override void Add(DrawableHitObject<BaseRpObject, RpJudgement> hitObject)
+        /// <param name="hitObject"></param>
+        public override void Add(DrawableHitObject hitObject)
         {
             hitObject.Depth = (float)hitObject.HitObject.StartTime;
-
-            //IDrawableHitObjectWithProxiedApproach c = hitObject as IDrawableHitObjectWithProxiedApproach;
-
-
-            if (hitObject is DrawableRpContainerLineGroup)
-            {
-                //˙ùâ¡îwåiï®åè
-                containerBackgroundLayout.AddContainer(hitObject as DrawableRpContainerLineGroup);
-                //
-                //keySoundLayout.Add(containerBackgroundLayout.CreateProxy());
-            }
-            else
-            {
-                base.Add(hitObject);
-                //˙ùâ¡ï®åè
-                _rpObjectLayout.AddDrawObject(hitObject as DrawableBaseRpHitableObject);
-            }
+            this.AddDrawableRpObject(hitObject);
         }
 
 
         public override void PostProcess()
         {
+            foreach (var singleGroup in ListGroupContainer)
+            {
+                base.Add(singleGroup);
+            }
+
+            //TODO : Children >> Objects
+            var listHitObject = HitObjects.Objects.Where(d => d is DrawableBaseRpHitableObject).OrderBy(h => ((DrawableBaseRpObject)h).HitObject.StartTime);
             //order by time
-            _hitObjectConnector.HitObjects = HitObjects.Children.Select(d => (DrawableBaseRpHitableObject)d).OrderBy(h => h.HitObject.StartTime);
+            _hitObjectConnector.HitObjects = HitObjects.Objects.OfType<DrawableBaseRpHitableObject>().OrderBy(h => h.HitObject.StartTime).ToList();
             _hitObjectConnector.ScanSameTuple();
         }
 
@@ -156,9 +137,12 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield
         /// </summary>
         /// <param name="h"></param>
         /// <param name="j"></param>
-        public override void OnJudgement(DrawableHitObject<BaseRpObject, RpJudgement> drawableHitObject)
+        public override void OnJudgement(DrawableHitObject drawableHitObject, Judgement judgement)
         {
-            _judgementLayer.AddHitEffect(drawableHitObject);
+            var rpJudgement = (RpJudgement)judgement;
+            rpJudgement.Position = this.FindObjectPosition(rpJudgement.RpObject);
+            //update position
+            _judgementLayer.AddHitEffect(rpJudgement);
         }
     }
 }

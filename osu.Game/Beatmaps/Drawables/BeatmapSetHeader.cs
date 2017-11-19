@@ -3,22 +3,31 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Localisation;
 using osu.Game.Graphics.Sprites;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.UserInterface;
+using osu.Game.Graphics.UserInterface;
 
 namespace osu.Game.Beatmaps.Drawables
 {
-    public class BeatmapSetHeader : Panel
+    public class BeatmapSetHeader : Panel, IHasContextMenu
     {
         public Action<BeatmapSetHeader> GainedSelection;
+
+        public Action<BeatmapSetInfo> DeleteRequested;
+
+        public Action<BeatmapSetInfo> RestoreHiddenRequested;
+
         private readonly SpriteText title;
         private readonly SpriteText artist;
 
@@ -27,6 +36,9 @@ namespace osu.Game.Beatmaps.Drawables
 
         public BeatmapSetHeader(WorkingBeatmap beatmap)
         {
+            if (beatmap == null)
+                throw new ArgumentNullException(nameof(beatmap));
+
             this.beatmap = beatmap;
 
             Children = new Drawable[]
@@ -35,7 +47,7 @@ namespace osu.Game.Beatmaps.Drawables
                     new PanelBackground(beatmap)
                     {
                         RelativeSizeAxes = Axes.Both,
-                        OnLoadComplete = d => d.FadeInFromZero(400, EasingTypes.Out),
+                        OnLoadComplete = d => d.FadeInFromZero(400, Easing.Out),
                     }
                 )
                 {
@@ -79,6 +91,9 @@ namespace osu.Game.Beatmaps.Drawables
         [BackgroundDependencyLoader]
         private void load(LocalisationEngine localisation)
         {
+            if (localisation == null)
+                throw new ArgumentNullException(nameof(localisation));
+
             title.Current = localisation.GetUnicodePreference(beatmap.Metadata.TitleUnicode, beatmap.Metadata.Title);
             artist.Current = localisation.GetUnicodePreference(beatmap.Metadata.ArtistUnicode, beatmap.Metadata.Artist);
         }
@@ -93,6 +108,7 @@ namespace osu.Game.Beatmaps.Drawables
                 {
                     new BeatmapBackgroundSprite(working)
                     {
+                        RelativeSizeAxes = Axes.Both,
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         FillMode = FillMode.Fill,
@@ -118,21 +134,21 @@ namespace osu.Game.Beatmaps.Drawables
                             new Box
                             {
                                 RelativeSizeAxes = Axes.Both,
-                                ColourInfo = ColourInfo.GradientHorizontal(
+                                Colour = ColourInfo.GradientHorizontal(
                                     Color4.Black, new Color4(0f, 0f, 0f, 0.9f)),
                                 Width = 0.05f,
                             },
                             new Box
                             {
                                 RelativeSizeAxes = Axes.Both,
-                                ColourInfo = ColourInfo.GradientHorizontal(
+                                Colour = ColourInfo.GradientHorizontal(
                                     new Color4(0f, 0f, 0f, 0.9f), new Color4(0f, 0f, 0f, 0.1f)),
                                 Width = 0.2f,
                             },
                             new Box
                             {
                                 RelativeSizeAxes = Axes.Both,
-                                ColourInfo = ColourInfo.GradientHorizontal(
+                                Colour = ColourInfo.GradientHorizontal(
                                     new Color4(0f, 0f, 0f, 0.1f), new Color4(0, 0, 0, 0)),
                                 Width = 0.05f,
                             },
@@ -144,8 +160,29 @@ namespace osu.Game.Beatmaps.Drawables
 
         public void AddDifficultyIcons(IEnumerable<BeatmapPanel> panels)
         {
+            if (panels == null)
+                throw new ArgumentNullException(nameof(panels));
+
             foreach (var p in panels)
                 difficultyIcons.Add(new DifficultyIcon(p.Beatmap));
+        }
+
+        public MenuItem[] ContextMenuItems
+        {
+            get
+            {
+                List<MenuItem> items = new List<MenuItem>();
+
+                if (State == PanelSelectedState.NotSelected)
+                    items.Add(new OsuMenuItem("Expand", MenuItemType.Highlighted, () => State = PanelSelectedState.Selected));
+
+                if (beatmap.BeatmapSetInfo.Beatmaps.Any(b => b.Hidden))
+                    items.Add(new OsuMenuItem("Restore all hidden", MenuItemType.Standard, () => RestoreHiddenRequested?.Invoke(beatmap.BeatmapSetInfo)));
+
+                items.Add(new OsuMenuItem("Delete", MenuItemType.Destructive, () => DeleteRequested?.Invoke(beatmap.BeatmapSetInfo)));
+
+                return items.ToArray();
+            }
         }
     }
 }

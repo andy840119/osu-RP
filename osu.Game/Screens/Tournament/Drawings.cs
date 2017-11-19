@@ -29,7 +29,7 @@ namespace osu.Game.Screens.Tournament
     {
         private const string results_filename = "drawings_results.txt";
 
-        internal override bool ShowOverlays => false;
+        public override bool ShowOverlays => false;
 
         protected override BackgroundScreen CreateBackground() => new BackgroundScreenDefault();
 
@@ -47,10 +47,13 @@ namespace osu.Game.Screens.Tournament
 
         public ITeamList TeamList;
 
-        protected override DependencyContainer CreateLocalDependencies(DependencyContainer parent) => new DependencyContainer(parent);
+        private DependencyContainer dependencies;
+
+        protected override IReadOnlyDependencyContainer CreateLocalDependencies(IReadOnlyDependencyContainer parent) =>
+            dependencies = new DependencyContainer(base.CreateLocalDependencies(parent));
 
         [BackgroundDependencyLoader]
-        private void load(TextureStore textures, Storage storage, DependencyContainer dependencies)
+        private void load(TextureStore textures, Storage storage)
         {
             this.storage = storage;
 
@@ -82,6 +85,7 @@ namespace osu.Game.Screens.Tournament
                 },
                 new Sprite
                 {
+                    RelativeSizeAxes = Axes.Both,
                     FillMode = FillMode.Fill,
                     Texture = textures.Get(@"Backgrounds/Drawings/background.png")
                 },
@@ -233,7 +237,7 @@ namespace osu.Game.Screens.Tournament
                                             RelativeSizeAxes = Axes.X,
 
                                             Text = "Reset",
-                                            Action = () => reset(false)
+                                            Action = () => reset()
                                         }
                                     }
                                 }

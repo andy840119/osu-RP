@@ -44,7 +44,7 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Pieces
                     return;
                 accentColour = value;
 
-                if (LoadState == LoadState.Loaded)
+                if (LoadState == LoadState.Ready)
                     Schedule(reloadTexture);
             }
         }
@@ -65,7 +65,7 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Pieces
                     {
                         path = new Path
                         {
-                            BlendingMode = BlendingMode.None,
+                            Blending = BlendingMode.None,
                         },
                     }
                 },

@@ -1,5 +1,8 @@
+// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.Parameter;
-using osu.Game.Rulesets.RP.Objects.type;
+using osu.Game.Rulesets.RP.Objects;
 
 namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.PostProcess
 {
@@ -7,28 +10,10 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.PostPr
     {
         internal void PostProcess(ConvertParameter single)
         {
-            //follow the coop on the layout HotObject locate in
-            ProcessCoop(single);
             //set all the objects is converted
             ProcessConvert(single);
             //Set the object is multiObject or not
             ProcessMulti(single);
-        }
-
-        /// <summary>
-        ///     Process coop
-        /// </summary>
-        /// <param name="single"></param>
-        private void ProcessCoop(ConvertParameter single)
-        {
-            //Âêå‰∏ÄÁæ§ÁµÅEÔøΩEÁöÅEÔøΩÔøΩ‰ª∂‰ΩçÁΩÆ
-            foreach (var singleTupleHitObjects in single.HitObjectConvertParameter.ListSingleHitObjectConvertParameter)
-            foreach (var singleObject in singleTupleHitObjects.ListBaseHitObject)
-            {
-                var containerIndex = singleObject.ContainerIndex;
-                var layoutIndex = singleObject.LayoutIndex;
-                singleObject.Coop = single.ContainerConvertParameter.ListObjectContainer[containerIndex].ContainerLayerList[layoutIndex].Coop;
-            }
         }
 
         /// <summary>
@@ -37,10 +22,10 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.PostPr
         /// <param name="single"></param>
         private void ProcessConvert(ConvertParameter single)
         {
-            //Âêå‰∏ÄÁæ§ÁµÅEÔøΩEÁöÅEÔøΩÔøΩ‰ª∂‰ΩçÁΩÆ
+            //Âêå‰∏ÄÁæ§ÁµÅEÅEΩEÅEΩEÁöÅEÅEΩEÅEΩÅEΩEÅEΩ‰ª∂‰ΩçÁΩÆ
             foreach (var singleTupleHitObjects in single.HitObjectConvertParameter.ListSingleHitObjectConvertParameter)
             foreach (var singleObject in singleTupleHitObjects.ListBaseHitObject)
-                singleObject.Convert = RpBaseObjectType.Convert.Convert;
+                singleObject.Convert = Convert.Convert;
         }
 
         /// <summary>
@@ -49,13 +34,13 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.PostPr
         /// <param name="single"></param>
         private void ProcessMulti(ConvertParameter single)
         {
-            //Âêå‰∏ÄÁæ§ÁµÅEÔøΩEÁöÅEÔøΩÔøΩ‰ª∂‰ΩçÁΩÆ
+            //Âêå‰∏ÄÁæ§ÁµÅEÅEΩEÅEΩEÁöÅEÅEΩEÅEΩÅEΩEÅEΩ‰ª∂‰ΩçÁΩÆ
             foreach (var singleTupleHitObjects in single.HitObjectConvertParameter.ListSingleHitObjectConvertParameter)
             foreach (var singleObject in singleTupleHitObjects.ListBaseHitObject)
                 if (singleTupleHitObjects.ListBaseHitObject.Count > 1)
-                    singleObject.Multi = RpBaseHitObjectType.Multi.Multi;
+                    singleObject.RpMultiHit = RpMultiHit.Multi;
                 else
-                    singleObject.Multi = RpBaseHitObjectType.Multi.SingleClick;
+                    singleObject.RpMultiHit = RpMultiHit.SingleClick;
         }
     }
 }

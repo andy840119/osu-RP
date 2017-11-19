@@ -7,10 +7,11 @@ using osu.Framework.Graphics.Containers;
 using osu.Game.Overlays.Dialog;
 using OpenTK.Graphics;
 using osu.Framework.Graphics.Shapes;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Overlays
 {
-    public class DialogOverlay : FocusedOverlayContainer
+    public class DialogOverlay : OsuFocusedOverlayContainer
     {
         private readonly Container dialogContainer;
         private PopupDialog currentDialog;
@@ -25,7 +26,7 @@ namespace osu.Game.Overlays
             dialogContainer.Add(currentDialog);
 
             currentDialog.Show();
-            currentDialog.StateChanged += onDialogOnStateChanged;
+            currentDialog.StateChanged += state => onDialogOnStateChanged(dialog, state);
             State = Visibility.Visible;
         }
 
@@ -34,8 +35,7 @@ namespace osu.Game.Overlays
             if (v != Visibility.Hidden) return;
 
             //handle the dialog being dismissed.
-            dialog.Delay(PopupDialog.EXIT_DURATION);
-            dialog.Expire();
+            dialog.Delay(PopupDialog.EXIT_DURATION).Expire();
 
             if (dialog == currentDialog)
                 State = Visibility.Hidden;
@@ -44,13 +44,13 @@ namespace osu.Game.Overlays
         protected override void PopIn()
         {
             base.PopIn();
-            FadeIn(PopupDialog.ENTER_DURATION, EasingTypes.OutQuint);
+            this.FadeIn(PopupDialog.ENTER_DURATION, Easing.OutQuint);
         }
 
         protected override void PopOut()
         {
             base.PopOut();
-            FadeOut(PopupDialog.EXIT_DURATION, EasingTypes.InSine);
+            this.FadeOut(PopupDialog.EXIT_DURATION, Easing.InSine);
         }
 
         public DialogOverlay()

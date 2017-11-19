@@ -1,19 +1,24 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Screens;
 using osu.Game.Beatmaps;
-using osu.Game.Database;
 using osu.Game.Graphics.Containers;
 using OpenTK;
+using osu.Framework.Audio.Sample;
+using osu.Framework.Audio;
+using osu.Framework.Graphics;
+using osu.Game.Rulesets;
+using osu.Game.Screens.Menu;
 
 namespace osu.Game.Screens
 {
     public abstract class OsuScreen : Screen
     {
-        internal BackgroundScreen Background { get; private set; }
+        public BackgroundScreen Background { get; private set; }
 
         /// <summary>
         /// Override to create a BackgroundMode for the current screen.
@@ -21,65 +26,64 @@ namespace osu.Game.Screens
         /// </summary>
         protected virtual BackgroundScreen CreateBackground() => null;
 
-        internal virtual bool ShowOverlays => true;
+        public virtual bool ShowOverlays => true;
 
         protected new OsuGameBase Game => base.Game as OsuGameBase;
 
-        internal virtual bool HasLocalCursorDisplayed => false;
+        public virtual bool HasLocalCursorDisplayed => false;
 
-        internal virtual bool AllowRulesetChange => true;
+        private OsuLogo logo;
 
-        private readonly Bindable<WorkingBeatmap> beatmap = new Bindable<WorkingBeatmap>();
+        /// <summary>
+        /// Whether the beatmap or ruleset should be allowed to be changed by the user or game.
+        /// Used to mark exclusive areas where this is strongly prohibited, like gameplay.
+        /// </summary>
+        public virtual bool AllowBeatmapRulesetChange => true;
 
-        private readonly Bindable<RulesetInfo> ruleset = new Bindable<RulesetInfo>();
+        protected readonly Bindable<WorkingBeatmap> Beatmap = new Bindable<WorkingBeatmap>();
 
-        public WorkingBeatmap Beatmap
+        public WorkingBeatmap InitialBeatmap
         {
-            get
-            {
-                return beatmap.Value;
-            }
             set
             {
-                beatmap.Value = value;
+                if (IsLoaded) throw new InvalidOperationException($"Cannot set {nameof(InitialBeatmap)} post-load.");
+                Beatmap.Value = value;
             }
         }
 
+        protected readonly Bindable<RulesetInfo> Ruleset = new Bindable<RulesetInfo>();
+
+        private SampleChannel sampleExit;
+
         [BackgroundDependencyLoader(permitNulls: true)]
-        private void load(OsuGameBase game, OsuGame osuGame)
+        private void load(OsuGameBase game, OsuGame osuGame, AudioManager audio)
         {
             if (game != null)
             {
                 //if we were given a beatmap at ctor time, we want to pass this on to the game-wide beatmap.
-                var localMap = beatmap.Value;
-                beatmap.BindTo(game.Beatmap);
+                var localMap = Beatmap.Value;
+                Beatmap.BindTo(game.Beatmap);
                 if (localMap != null)
-                    beatmap.Value = localMap;
+                    Beatmap.Value = localMap;
             }
 
             if (osuGame != null)
-                ruleset.BindTo(osuGame.Ruleset);
+                Ruleset.BindTo(osuGame.Ruleset);
+
+            sampleExit = audio.Sample.Get(@"UI/melodic-1");
         }
 
-        protected override void LoadComplete()
+        protected override void OnResuming(Screen last)
         {
-            base.LoadComplete();
-
-            beatmap.ValueChanged += OnBeatmapChanged;
+            base.OnResuming(last);
+            logo.AppendAnimatingAction(() => LogoArriving(logo, true), true);
+            sampleExit?.Play();
         }
 
-        /// <summary>
-        /// The global Beatmap was changed.
-        /// </summary>
-        protected virtual void OnBeatmapChanged(WorkingBeatmap beatmap)
+        protected override void OnSuspending(Screen next)
         {
-        }
-
-        protected override void Update()
-        {
-            if (!IsCurrentScreen) return;
-
-            ruleset.Disabled = !AllowRulesetChange;
+            base.OnSuspending(next);
+            onSuspendingLogo();
         }
 
         protected override void OnEntering(Screen last)
@@ -87,8 +91,6 @@ namespace osu.Game.Screens
             OsuScreen lastOsu = last as OsuScreen;
 
             BackgroundScreen bg = CreateBackground();
-
-            OnBeatmapChanged(Beatmap);
 
             if (lastOsu?.Background != null)
             {
@@ -115,11 +117,19 @@ namespace osu.Game.Screens
                 });
             }
 
+            if ((logo = lastOsu?.logo) == null)
+                LoadComponentAsync(logo = new OsuLogo { Alpha = 0 }, AddInternal);
+
+            logo.AppendAnimatingAction(() => LogoArriving(logo, false), true);
+
             base.OnEntering(last);
         }
 
         protected override bool OnExiting(Screen next)
         {
+            if (ValidForResume && logo != null)
+                onExitingLogo();
+
             OsuScreen nextOsu = next as OsuScreen;
 
             if (Background != null && !Background.Equals(nextOsu?.Background))
@@ -134,12 +144,46 @@ namespace osu.Game.Screens
             if (base.OnExiting(next))
                 return true;
 
-            // while this is not necessary as we are constructing our own bindable, there are cases where
-            // the GC doesn't run as fast as expected and this is triggered post-exit.
-            // added to resolve https://github.com/ppy/osu/issues/829
-            beatmap.ValueChanged -= OnBeatmapChanged;
-
+            Beatmap.UnbindAll();
             return false;
+        }
+
+        /// <summary>
+        /// Fired when this screen was entered or resumed and the logo state is required to be adjusted.
+        /// </summary>
+        protected virtual void LogoArriving(OsuLogo logo, bool resuming)
+        {
+            logo.Action = null;
+            logo.FadeOut(300, Easing.OutQuint);
+            logo.Anchor = Anchor.TopLeft;
+            logo.Origin = Anchor.Centre;
+            logo.RelativePositionAxes = Axes.None;
+            logo.Triangles = true;
+            logo.Ripple = true;
+        }
+
+        private void onExitingLogo()
+        {
+            logo.AppendAnimatingAction(() => { LogoExiting(logo); }, false);
+        }
+
+        /// <summary>
+        /// Fired when this screen was exited to add any outwards transition to the logo.
+        /// </summary>
+        protected virtual void LogoExiting(OsuLogo logo)
+        {
+        }
+
+        private void onSuspendingLogo()
+        {
+            logo.AppendAnimatingAction(() => { LogoSuspending(logo); }, false);
+        }
+
+        /// <summary>
+        /// Fired when this screen was suspended to add any outwards transition to the logo.
+        /// </summary>
+        protected virtual void LogoSuspending(OsuLogo logo)
+        {
         }
     }
 }

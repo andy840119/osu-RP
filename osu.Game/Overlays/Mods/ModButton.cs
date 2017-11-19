@@ -35,7 +35,7 @@ namespace osu.Game.Overlays.Mods
 
         public string TooltipText => (SelectedMod?.Description ?? Mods.FirstOrDefault()?.Description) ?? string.Empty;
 
-        private const EasingTypes mod_switch_easing = EasingTypes.InOutSine;
+        private const Easing mod_switch_easing = Easing.InOutSine;
         private const double mod_switch_duration = 120;
 
         // A selected index of -1 means not selected.
@@ -67,8 +67,8 @@ namespace osu.Game.Overlays.Mods
 
                 if (beforeSelected != Selected)
                 {
-                    iconsContainer.RotateTo(Selected ? 5f : 0f, 300, EasingTypes.OutElastic);
-                    iconsContainer.ScaleTo(Selected ? 1.1f : 1f, 300, EasingTypes.OutElastic);
+                    iconsContainer.RotateTo(Selected ? 5f : 0f, 300, Easing.OutElastic);
+                    iconsContainer.ScaleTo(Selected ? 1.1f : 1f, 300, Easing.OutElastic);
                 }
 
                 if (modBefore != modAfter)
@@ -81,11 +81,13 @@ namespace osu.Game.Overlays.Mods
                     backgroundIcon.Icon = modAfter.Icon;
                     using (BeginDelayedSequence(mod_switch_duration, true))
                     {
-                        foregroundIcon.RotateTo(-rotate_angle * direction);
-                        foregroundIcon.RotateTo(0f, mod_switch_duration, mod_switch_easing);
+                        foregroundIcon
+                            .RotateTo(-rotate_angle * direction)
+                            .RotateTo(0f, mod_switch_duration, mod_switch_easing);
 
-                        backgroundIcon.RotateTo(rotate_angle * direction);
-                        backgroundIcon.RotateTo(0f, mod_switch_duration, mod_switch_easing);
+                        backgroundIcon
+                            .RotateTo(rotate_angle * direction)
+                            .RotateTo(0f, mod_switch_duration, mod_switch_easing);
 
                         Schedule(() => displayMod(modAfter));
                     }
@@ -125,7 +127,7 @@ namespace osu.Game.Overlays.Mods
 
                 if (mod == null)
                 {
-                    Mods = new Mod[0];
+                    Mods = Array.Empty<Mod>();
                     Alpha = 0;
                 }
                 else
@@ -151,8 +153,8 @@ namespace osu.Game.Overlays.Mods
         [BackgroundDependencyLoader]
         private void load(AudioManager audio)
         {
-            sampleOn = audio.Sample.Get(@"Checkbox/check-on");
-            sampleOff = audio.Sample.Get(@"Checkbox/check-off");
+            sampleOn = audio.Sample.Get(@"UI/check-on");
+            sampleOff = audio.Sample.Get(@"UI/check-off");
         }
 
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
@@ -171,7 +173,7 @@ namespace osu.Game.Overlays.Mods
 
         public void SelectNext()
         {
-            (++SelectedIndex == -1 ? sampleOff : sampleOn).Play();
+            (++SelectedIndex == Mods.Length ? sampleOff : sampleOn).Play();
             Action?.Invoke(SelectedMod);
         }
 
@@ -199,20 +201,18 @@ namespace osu.Game.Overlays.Mods
             iconsContainer.Clear();
             if (Mods.Length > 1)
             {
-                iconsContainer.Add(new[]
+                iconsContainer.AddRange(new[]
                 {
                     backgroundIcon = new ModIcon(Mods[1])
                     {
                         Origin = Anchor.BottomRight,
                         Anchor = Anchor.BottomRight,
-                        AutoSizeAxes = Axes.Both,
                         Position = new Vector2(1.5f),
                     },
                     foregroundIcon = new ModIcon(Mods[0])
                     {
                         Origin = Anchor.BottomRight,
                         Anchor = Anchor.BottomRight,
-                        AutoSizeAxes = Axes.Both,
                         Position = new Vector2(-1.5f),
                     },
                 });
@@ -223,7 +223,6 @@ namespace osu.Game.Overlays.Mods
                 {
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    AutoSizeAxes = Axes.Both,
                 });
             }
         }

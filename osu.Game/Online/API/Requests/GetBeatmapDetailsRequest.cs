@@ -2,7 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using Newtonsoft.Json;
-using osu.Game.Database;
+using osu.Game.Beatmaps;
 
 namespace osu.Game.Online.API.Requests
 {
@@ -10,7 +10,7 @@ namespace osu.Game.Online.API.Requests
     {
         private readonly BeatmapInfo beatmap;
 
-        private string lookupString => beatmap.OnlineBeatmapID > 0 ? beatmap.OnlineBeatmapID.ToString() : $@"lookup?checksum={beatmap.Hash}&filename={beatmap.Path}";
+        private string lookupString => beatmap.OnlineBeatmapID > 0 ? beatmap.OnlineBeatmapID.ToString() : $@"lookup?checksum={beatmap.Hash}&filename={System.Uri.EscapeUriString(beatmap.Path)}";
 
         public GetBeatmapDetailsRequest(BeatmapInfo beatmap)
         {

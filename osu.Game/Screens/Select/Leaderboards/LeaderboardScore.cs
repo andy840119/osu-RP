@@ -1,24 +1,30 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
+using System;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
+using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Input;
 using osu.Game.Graphics;
+using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
-using osu.Framework.Extensions.Color4Extensions;
-using osu.Game.Rulesets.Mods;
-using osu.Game.Users;
-using osu.Framework;
 using osu.Game.Rulesets.Scoring;
+using osu.Game.Rulesets.UI;
+using osu.Game.Users;
 
 namespace osu.Game.Screens.Select.Leaderboards
 {
-    public class LeaderboardScore : ClickableContainer, IStateful<Visibility>
+    public class LeaderboardScore : OsuClickableContainer
     {
         public static readonly float HEIGHT = 60;
+
+        public event Action<Visibility> StateChanged;
 
         public readonly int RankPosition;
         public readonly Score Score;
@@ -28,64 +34,16 @@ namespace osu.Game.Screens.Select.Leaderboards
         private const float background_alpha = 0.25f;
         private const float rank_width = 30;
 
-        private readonly Box background;
-        private readonly Container content;
-        private readonly Container avatar;
-        private readonly DrawableRank scoreRank;
-        private readonly OsuSpriteText nameLabel;
-        private readonly GlowingSpriteText scoreLabel;
-        private readonly ScoreComponentLabel maxCombo;
-        private readonly ScoreComponentLabel accuracy;
-        private readonly Container flagBadgeContainer;
-        private readonly FillFlowContainer<ScoreModIcon> modsContainer;
-
-        private Visibility state;
-        public Visibility State
-        {
-            get { return state; }
-            set
-            {
-                state = value;
-
-                switch (state)
-                {
-                    case Visibility.Hidden:
-                        foreach (var d in new Drawable[] { avatar, nameLabel, scoreLabel, scoreRank, flagBadgeContainer, maxCombo, accuracy, modsContainer })
-                            d.FadeOut();
-
-                        Alpha = 0;
-
-                        content.MoveToY(75);
-                        avatar.MoveToX(75);
-                        nameLabel.MoveToX(150);
-                        break;
-                    case Visibility.Visible:
-                        FadeIn(200);
-                        content.MoveToY(0, 800, EasingTypes.OutQuint);
-
-                        Delay(100, true);
-                        avatar.FadeIn(300, EasingTypes.OutQuint);
-                        nameLabel.FadeIn(350, EasingTypes.OutQuint);
-
-                        avatar.MoveToX(0, 300, EasingTypes.OutQuint);
-                        nameLabel.MoveToX(0, 350, EasingTypes.OutQuint);
-
-                        Delay(250, true);
-                        scoreLabel.FadeIn(200);
-                        scoreRank.FadeIn(200);
-
-                        Delay(50, true);
-                        var drawables = new Drawable[] { flagBadgeContainer, maxCombo, accuracy, modsContainer, };
-
-                        for (int i = 0; i < drawables.Length; i++)
-                        {
-                            drawables[i].FadeIn(100 + i * 50);
-                        }
-
-                        break;
-                }
-            }
-        }
+        private Box background;
+        private Container content;
+        private Container avatar;
+        private DrawableRank scoreRank;
+        private OsuSpriteText nameLabel;
+        private GlowingSpriteText scoreLabel;
+        private ScoreComponentLabel maxCombo;
+        private ScoreComponentLabel accuracy;
+        private Container flagBadgeContainer;
+        private FillFlowContainer<ModIcon> modsContainer;
 
         public LeaderboardScore(Score score, int rank)
         {
@@ -94,7 +52,11 @@ namespace osu.Game.Screens.Select.Leaderboards
 
             RelativeSizeAxes = Axes.X;
             Height = HEIGHT;
+        }
 
+        [BackgroundDependencyLoader]
+        private void load()
+        {
             Children = new Drawable[]
             {
                 new Container
@@ -187,7 +149,7 @@ namespace osu.Game.Screens.Select.Leaderboards
                                                     Masking = true,
                                                     Children = new Drawable[]
                                                     {
-                                                        new DrawableFlag(Score.User?.Country?.FlagName ?? "__")
+                                                        new DrawableFlag(Score.User?.Country?.FlagName)
                                                         {
                                                             Width = 30,
                                                             RelativeSizeAxes = Axes.Y,
@@ -235,43 +197,67 @@ namespace osu.Game.Screens.Select.Leaderboards
                                         },
                                     },
                                 },
-                                modsContainer = new FillFlowContainer<ScoreModIcon>
+                                modsContainer = new FillFlowContainer<ModIcon>
                                 {
                                     Anchor = Anchor.BottomRight,
                                     Origin = Anchor.BottomRight,
                                     AutoSizeAxes = Axes.Both,
                                     Direction = FillDirection.Horizontal,
+                                    ChildrenEnumerable = Score.Mods.Select(mod => new ModIcon(mod) { Scale = new Vector2(0.375f) })
                                 },
                             },
                         },
                     },
                 },
             };
+        }
 
-            if (Score.Mods != null)
+        public override void Show()
+        {
+            foreach (var d in new Drawable[] { avatar, nameLabel, scoreLabel, scoreRank, flagBadgeContainer, maxCombo, accuracy, modsContainer })
+                d.FadeOut();
+
+            Alpha = 0;
+
+            content.MoveToY(75);
+            avatar.MoveToX(75);
+            nameLabel.MoveToX(150);
+
+            this.FadeIn(200);
+            content.MoveToY(0, 800, Easing.OutQuint);
+
+            using (BeginDelayedSequence(100, true))
             {
-                foreach (Mod mod in Score.Mods)
+                avatar.FadeIn(300, Easing.OutQuint);
+                nameLabel.FadeIn(350, Easing.OutQuint);
+
+                avatar.MoveToX(0, 300, Easing.OutQuint);
+                nameLabel.MoveToX(0, 350, Easing.OutQuint);
+
+                using (BeginDelayedSequence(250, true))
                 {
-                    // TODO: Get actual mod colours
-                    modsContainer.Add(new ScoreModIcon(mod.Icon, OsuColour.FromHex(@"ffcc22")));
+                    scoreLabel.FadeIn(200);
+                    scoreRank.FadeIn(200);
+
+                    using (BeginDelayedSequence(50, true))
+                    {
+                        var drawables = new Drawable[] { flagBadgeContainer, maxCombo, accuracy, modsContainer, };
+                        for (int i = 0; i < drawables.Length; i++)
+                            drawables[i].FadeIn(100 + i * 50);
+                    }
                 }
             }
         }
 
-        public void ToggleVisibility() => State = State == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-
-        public override void Hide() => State = Visibility.Hidden;
-        public override void Show() => State = Visibility.Visible;
-
-        protected override bool OnHover(Framework.Input.InputState state)
+        protected override bool OnHover(InputState state)
         {
-            background.FadeTo(0.5f, 300, EasingTypes.OutQuint);
+            background.FadeTo(0.5f, 300, Easing.OutQuint);
             return base.OnHover(state);
         }
 
-        protected override void OnHoverLost(Framework.Input.InputState state)
+        protected override void OnHoverLost(InputState state)
         {
-            background.FadeTo(background_alpha, 200, EasingTypes.OutQuint);
+            background.FadeTo(background_alpha, 200, Easing.OutQuint);
             base.OnHoverLost(state);
         }
 
@@ -290,7 +276,7 @@ namespace osu.Game.Screens.Select.Leaderboards
                         BlurSigma = new Vector2(4),
                         CacheDrawnFrameBuffer = true,
                         RelativeSizeAxes = Axes.Both,
-                        BlendingMode = BlendingMode.Additive,
+                        Blending = BlendingMode.Additive,
                         Size = new Vector2(3f),
                         Children = new[]
                         {
@@ -299,8 +285,8 @@ namespace osu.Game.Screens.Select.Leaderboards
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 Font = font,
-                                TextSize = textSize,
                                 FixedWidth = true,
+                                TextSize = textSize,
                                 Text = text,
                                 Colour = glowColour,
                                 Shadow = false,
@@ -322,38 +308,6 @@ namespace osu.Game.Screens.Select.Leaderboards
             }
         }
 
-        private class ScoreModIcon : Container
-        {
-            public ScoreModIcon(FontAwesome icon, Color4 colour)
-            {
-                AutoSizeAxes = Axes.Both;
-
-                Children = new[]
-                {
-                    new TextAwesome
-                    {
-                        Origin = Anchor.Centre,
-                        Anchor = Anchor.Centre,
-                        Icon = FontAwesome.fa_osu_mod_bg,
-                        Colour = colour,
-                        Shadow = true,
-                        TextSize = 30,
-                        UseFullGlyphHeight = false,
-                    },
-                    new TextAwesome
-                    {
-                        Origin = Anchor.Centre,
-                        Anchor = Anchor.Centre,
-                        Icon = icon,
-                        Colour = OsuColour.Gray(84),
-                        TextSize = 18,
-                        Position = new Vector2(0f, 2f),
-                        UseFullGlyphHeight = false,
-                    },
-                };
-            }
-        }
-
         private class ScoreComponentLabel : Container
         {
             public ScoreComponentLabel(FontAwesome icon, string value)
@@ -365,20 +319,21 @@ namespace osu.Game.Screens.Select.Leaderboards
 
                 Children = new Drawable[]
                 {
-                    new TextAwesome
+                    new SpriteIcon
                     {
                         Origin = Anchor.Centre,
                         Icon = FontAwesome.fa_square,
                         Colour = OsuColour.FromHex(@"3087ac"),
                         Rotation = 45,
+                        Size = new Vector2(20),
                         Shadow = true,
                     },
-                    new TextAwesome
+                    new SpriteIcon
                     {
                         Origin = Anchor.Centre,
                         Icon = icon,
                         Colour = OsuColour.FromHex(@"a4edff"),
-                        Scale = new Vector2(0.8f),
+                        Size = new Vector2(14),
                     },
                     new GlowingSpriteText(value, @"Exo2.0-Bold", 17, Color4.White, OsuColour.FromHex(@"83ccfa"))
                     {

@@ -14,6 +14,8 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Connections
     {
         private const float width = 8;
 
+        public override bool RemoveWhenNotAlive => false;
+
         public FollowPoint()
         {
             Origin = Anchor.Centre;
@@ -33,7 +35,7 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Connections
                 new Box
                 {
                     Size = new Vector2(width),
-                    BlendingMode = BlendingMode.Additive,
+                    Blending = BlendingMode.Additive,
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
                     Alpha = 0.5f,

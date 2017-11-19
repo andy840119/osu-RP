@@ -26,8 +26,11 @@ namespace osu.Game.Overlays.Settings.Sections.Audio
         {
             base.Dispose(isDisposing);
 
-            audio.OnNewDevice -= onDeviceChanged;
-            audio.OnLostDevice -= onDeviceChanged;
+            if (audio != null)
+            {
+                audio.OnNewDevice -= onDeviceChanged;
+                audio.OnLostDevice -= onDeviceChanged;
+            }
         }
 
         private void updateItems()
@@ -56,13 +59,12 @@ namespace osu.Game.Overlays.Settings.Sections.Audio
 
             Children = new Drawable[]
             {
-                dropdown = new SettingsDropdown<string>
-                {
-                    Bindable = audio.AudioDevice
-                },
+                dropdown = new SettingsDropdown<string>()
             };
 
             updateItems();
+
+            dropdown.Bindable = audio.AudioDevice;
 
             audio.OnNewDevice += onDeviceChanged;
             audio.OnLostDevice += onDeviceChanged;

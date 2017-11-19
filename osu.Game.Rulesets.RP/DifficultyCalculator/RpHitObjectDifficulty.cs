@@ -1,10 +1,9 @@
 // Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
 using System.Diagnostics;
 using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.type;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.DifficultyCalculator
@@ -58,9 +57,10 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
         internal RpHitObjectDifficulty(BaseRpObject baseHitObject)
         {
             BaseHitObject = baseHitObject;
-            var circleRadius = baseHitObject.Scale * 64;
+            //var circleRadius = baseHitObject.Scale * 64;
+            var circleRadius = 1 * 64;
 
-            var slider = BaseHitObject as RpHoldObject;
+            var slider = BaseHitObject as RpHold;
             if (slider != null)
                 MaxCombo += 2; // slider.Ticks.Count();
 
@@ -73,7 +73,8 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
             }
 
             lazySliderLength = 0;
-            startPosition = baseHitObject.Position;
+            //startPosition = baseHitObject.Position;
+            startPosition = new Vector2();
 
             // Calculate approximation of lazy movement on the slider
             if (slider != null)
@@ -99,13 +100,8 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
                     }
                 };
 
-                // Actual computation of the first lazy curve
-
-                //andy840119 ñ⁄ëO slider üìóLêªçÏTick
-                //foreach (var tick in slider.Ticks)
-                //    addSliderVertex(tick.StackedPosition);
-
-                addSliderVertex(baseHitObject.EndPosition);
+                // addSliderVertex(baseHitObject.EndPosition);
+                addSliderVertex(new Vector2());
 
                 lazySliderLength *= scalingFactor;
                 endPosition = cursorPos;
@@ -159,11 +155,11 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
             var timeElapsed = (BaseHitObject.StartTime - previousHitObject.BaseHitObject.StartTime) / timeRate;
             var decay = Math.Pow(DECAY_BASE[(int)type], timeElapsed / 1000);
 
-            if (BaseHitObject.ObjectType == RpBaseObjectType.ObjectType.Container)
+            if (BaseHitObject.ObjectType == ObjectType.ContainerGroup)
             {
                 // Do nothing for spinners
             }
-            else if (BaseHitObject.ObjectType == RpBaseObjectType.ObjectType.LongTail)
+            else if (BaseHitObject.ObjectType == ObjectType.Hold)
             {
                 switch (type)
                 {
@@ -191,7 +187,7 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
                         break;
                 }
             }
-            else if (BaseHitObject.ObjectType == RpBaseObjectType.ObjectType.Click)
+            else if (BaseHitObject.ObjectType == ObjectType.Hit)
             {
                 addition = spacingWeight(DistanceTo(previousHitObject), type) * spacing_weight_scaling[(int)type];
             }

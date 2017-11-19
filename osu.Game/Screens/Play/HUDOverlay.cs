@@ -32,6 +32,7 @@ namespace osu.Game.Screens.Play
         public readonly HealthDisplay HealthDisplay;
         public readonly SongProgress Progress;
         public readonly ModDisplay ModDisplay;
+        public readonly ReplaySettingsOverlay ReplaySettingsOverlay;
 
         private Bindable<bool> showHud;
         private bool replayLoaded;
@@ -55,13 +56,13 @@ namespace osu.Game.Screens.Play
                     HealthDisplay = CreateHealthDisplay(),
                     Progress = CreateProgress(),
                     ModDisplay = CreateModsContainer(),
-                    //ReplaySettingsOverlay = CreateReplaySettingsOverlay(),
+                    ReplaySettingsOverlay = CreateReplaySettingsOverlay(),
                 }
             });
         }
 
         [BackgroundDependencyLoader(true)]
-        private void load(OsuConfigManager config, NotificationManager notificationManager, OsuColour colours)
+        private void load(OsuConfigManager config, NotificationOverlay notificationOverlay, OsuColour colours)
         {
             showHud = config.GetBindable<bool>(OsuSetting.ShowInterface);
             showHud.ValueChanged += hudVisibility => content.FadeTo(hudVisibility ? 1 : 0, duration);
@@ -71,7 +72,7 @@ namespace osu.Game.Screens.Play
             {
                 hasShownNotificationOnce = true;
 
-                notificationManager?.Post(new SimpleNotification
+                notificationOverlay?.Post(new SimpleNotification
                 {
                     Text = @"The score overlay is currently disabled. You can toggle this by pressing Shift+Tab."
                 });
@@ -90,17 +91,19 @@ namespace osu.Game.Screens.Play
             }
         }
 
-        public virtual void BindHitRenderer(HitRenderer hitRenderer)
+        public virtual void BindRulesetContainer(RulesetContainer rulesetContainer)
         {
-            hitRenderer.InputManager.Add(KeyCounter.GetReceptor());
+            (rulesetContainer.KeyBindingInputManager as ICanAttachKeyCounter)?.Attach(KeyCounter);
 
-            replayLoaded = hitRenderer.HasReplayLoaded;
+            replayLoaded = rulesetContainer.HasReplayLoaded;
+
+            ReplaySettingsOverlay.ReplayLoaded = replayLoaded;
 
             // in the case a replay isn't loaded, we want some elements to only appear briefly.
             if (!replayLoaded)
             {
-                using (ModDisplay.BeginDelayedSequence(2000))
-                    ModDisplay.FadeOut(200);
+                ReplaySettingsOverlay.Hide();
+                ModDisplay.Delay(2000).FadeOut(200);
             }
         }
 
@@ -179,12 +182,7 @@ namespace osu.Game.Screens.Play
             Margin = new MarginPadding { Top = 20, Right = 10 },
         };
 
-        //protected virtual ReplaySettingsOverlay CreateReplaySettingsOverlay() => new ReplaySettingsOverlay
-        //{
-        //    Anchor = Anchor.TopRight,
-        //    Origin = Anchor.TopRight,
-        //    Margin = new MarginPadding { Top = 100, Right = 10 },
-        //};
+        protected virtual ReplaySettingsOverlay CreateReplaySettingsOverlay() => new ReplaySettingsOverlay();
 
         public virtual void BindProcessor(ScoreProcessor processor)
         {

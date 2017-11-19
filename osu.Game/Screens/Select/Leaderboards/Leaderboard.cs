@@ -1,34 +1,37 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
+using System;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
+using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
-using System;
-using osu.Framework.Allocation;
 using osu.Framework.Threading;
-using osu.Game.Database;
+using osu.Game.Beatmaps;
+using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Online.API;
 using osu.Game.Online.API.Requests;
+using System.Linq;
 
 namespace osu.Game.Screens.Select.Leaderboards
 {
     public class Leaderboard : Container
     {
         private readonly ScrollContainer scrollContainer;
-        private readonly FillFlowContainer<LeaderboardScore> scrollFlow;
+        private FillFlowContainer<LeaderboardScore> scrollFlow;
 
         public Action<Score> ScoreSelected;
 
         private readonly LoadingAnimation loading;
 
         private IEnumerable<Score> scores;
+
         public IEnumerable<Score> Scores
         {
             get { return scores; }
@@ -40,33 +43,43 @@ namespace osu.Game.Screens.Select.Leaderboards
                 int i = 150;
                 if (scores == null)
                 {
-                    foreach (var c in scrollFlow.Children)
-                        c.FadeOut(i += 10);
+                    if (scrollFlow != null)
+                    {
+                        foreach (var c in scrollFlow.Children)
+                            c.FadeOut(i += 10);
 
-                    foreach (var c in scrollFlow.Children)
-                        c.LifetimeEnd = Time.Current + i;
+                        foreach (var c in scrollFlow.Children)
+                            c.LifetimeEnd = Time.Current + i;
+                    }
 
                     return;
                 }
 
-                scrollFlow.Clear();
-
-                i = 0;
-                foreach (var s in scores)
+                // schedule because we may not be loaded yet (LoadComponentAsync complains).
+                Schedule(() =>
                 {
-                    var ls = new LeaderboardScore(s, 1 + i)
+                    LoadComponentAsync(new FillFlowContainer<LeaderboardScore>
                     {
-                        AlwaysPresent = true,
-                        Action = () => ScoreSelected?.Invoke(s),
-                        State = Visibility.Hidden,
-                    };
-                    scrollFlow.Add(ls);
+                        RelativeSizeAxes = Axes.X,
+                        AutoSizeAxes = Axes.Y,
+                        Spacing = new Vector2(0f, 5f),
+                        Padding = new MarginPadding { Top = 10, Bottom = 5 },
+                        ChildrenEnumerable = scores.Select((s, index) => new LeaderboardScore(s, index + 1) { Action = () => ScoreSelected?.Invoke(s) })
+                    }, f =>
+                    {
+                        scrollFlow?.Expire();
+                        scrollContainer.Add(scrollFlow = f);
 
-                    ls.Delay(i++ * 50, true);
-                    ls.Show();
-                }
+                        i = 0;
+                        foreach (var s in f.Children)
+                        {
+                            using (s.BeginDelayedSequence(i++ * 50, true))
+                                s.Show();
+                        }
 
-                scrollContainer.ScrollTo(0f, false);
+                        scrollContainer.ScrollTo(0f, false);
+                    });
+                });
             }
         }
 
@@ -74,20 +87,10 @@ namespace osu.Game.Screens.Select.Leaderboards
         {
             Children = new Drawable[]
             {
-                scrollContainer = new ScrollContainer
+                scrollContainer = new OsuScrollContainer
                 {
                     RelativeSizeAxes = Axes.Both,
                     ScrollbarVisible = false,
-                    Children = new Drawable[]
-                    {
-                        scrollFlow = new FillFlowContainer<LeaderboardScore>
-                        {
-                            RelativeSizeAxes = Axes.X,
-                            AutoSizeAxes = Axes.Y,
-                            Spacing = new Vector2(0f, 5f),
-                            Padding = new MarginPadding { Top = 10, Bottom = 5 },
-                        },
-                    },
                 },
                 loading = new LoadingAnimation()
             };
@@ -129,7 +132,7 @@ namespace osu.Game.Screens.Select.Leaderboards
             Scores = null;
             getScoresRequest?.Cancel();
 
-            if (api == null || Beatmap == null) return;
+            if (api == null || Beatmap?.OnlineBeatmapID == null) return;
 
             loading.Show();
 
@@ -151,6 +154,8 @@ namespace osu.Game.Screens.Select.Leaderboards
             if (!scrollContainer.IsScrolledToEnd())
                 fadeStart -= LeaderboardScore.HEIGHT;
 
+            if (scrollFlow == null) return;
+
             foreach (var c in scrollFlow.Children)
             {
                 var topY = c.ToSpaceOfOtherDrawable(Vector2.Zero, scrollFlow).Y;
@@ -162,7 +167,7 @@ namespace osu.Game.Screens.Select.Leaderboards
                     c.Colour = Color4.Transparent;
                 else
                 {
-                    c.ColourInfo = ColourInfo.GradientVertical(
+                    c.Colour = ColourInfo.GradientVertical(
                         Color4.White.Opacity(Math.Min(1 - (topY - fadeStart) / LeaderboardScore.HEIGHT, 1)),
                         Color4.White.Opacity(Math.Min(1 - (bottomY - fadeStart) / LeaderboardScore.HEIGHT, 1)));
                 }

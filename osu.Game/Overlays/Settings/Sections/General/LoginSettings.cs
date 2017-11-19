@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -31,6 +32,11 @@ namespace osu.Game.Overlays.Settings.Sections.General
         private UserPanel panel;
         private UserDropdown dropdown;
 
+        /// <summary>
+        /// Called to request a hide of a parent displaying this container.
+        /// </summary>
+        public Action RequestHide;
+
         public override RectangleF BoundingBox => bounding ? base.BoundingBox : RectangleF.Empty;
 
         public bool Bounding
@@ -51,13 +57,11 @@ namespace osu.Game.Overlays.Settings.Sections.General
             Spacing = new Vector2(0f, 5f);
         }
 
-        private InputManager inputManager;
-
         [BackgroundDependencyLoader(permitNulls: true)]
-        private void load(OsuColour colours, APIAccess api, UserInputManager inputManager)
+        private void load(OsuColour colours, APIAccess api)
         {
-            this.inputManager = inputManager;
             this.colours = colours;
+
             api?.Register(this);
         }
 
@@ -129,7 +133,11 @@ namespace osu.Game.Overlays.Settings.Sections.General
                                         },
                                     },
                                 },
-                                panel = new UserPanel(api.LocalUser.Value) { RelativeSizeAxes = Axes.X },
+                                panel = new UserPanel(api.LocalUser.Value)
+                                {
+                                    RelativeSizeAxes = Axes.X,
+                                    Action = RequestHide
+                                },
                                 dropdown = new UserDropdown { RelativeSizeAxes = Axes.X },
                             },
                         },
@@ -163,7 +171,7 @@ namespace osu.Game.Overlays.Settings.Sections.General
                     break;
             }
 
-            if (form != null) inputManager.ChangeFocus(form);
+            if (form != null) GetContainingInputManager()?.ChangeFocus(form);
         }
 
         public override bool AcceptsFocus => true;
@@ -172,7 +180,7 @@ namespace osu.Game.Overlays.Settings.Sections.General
 
         protected override void OnFocus(InputState state)
         {
-            if (form != null) inputManager.ChangeFocus(form);
+            if (form != null) GetContainingInputManager().ChangeFocus(form);
             base.OnFocus(state);
         }
 
@@ -181,7 +189,6 @@ namespace osu.Game.Overlays.Settings.Sections.General
             private TextBox username;
             private TextBox password;
             private APIAccess api;
-            private InputManager inputManager;
 
             private void performLogin()
             {
@@ -190,9 +197,8 @@ namespace osu.Game.Overlays.Settings.Sections.General
             }
 
             [BackgroundDependencyLoader(permitNulls: true)]
-            private void load(APIAccess api, OsuConfigManager config, UserInputManager inputManager)
+            private void load(APIAccess api, OsuConfigManager config)
             {
-                this.inputManager = inputManager;
                 this.api = api;
                 Direction = FillDirection.Vertical;
                 Spacing = new Vector2(0, 5);
@@ -224,15 +230,13 @@ namespace osu.Game.Overlays.Settings.Sections.General
                         LabelText = "Stay logged in",
                         Bindable = config.GetBindable<bool>(OsuSetting.SavePassword),
                     },
-                    new OsuButton
+                    new SettingsButton
                     {
-                        RelativeSizeAxes = Axes.X,
                         Text = "Sign in",
                         Action = performLogin
                     },
-                    new OsuButton
+                    new SettingsButton
                     {
-                        RelativeSizeAxes = Axes.X,
                         Text = "Register new account",
                         //Action = registerLink
                     }
@@ -245,15 +249,15 @@ namespace osu.Game.Overlays.Settings.Sections.General
 
             protected override void OnFocus(InputState state)
             {
-                Schedule(() => { inputManager.ChangeFocus(string.IsNullOrEmpty(username.Text) ? username : password); });
+                Schedule(() => { GetContainingInputManager().ChangeFocus(string.IsNullOrEmpty(username.Text) ? username : password); });
             }
         }
 
         private class UserDropdown : OsuEnumDropdown<UserAction>
         {
-            protected override DropdownHeader CreateHeader() => new UserDropdownHeader { AccentColour = AccentColour };
-            protected override Menu CreateMenu() => new UserDropdownMenu();
-            protected override DropdownMenuItem<UserAction> CreateMenuItem(string text, UserAction value) => new UserDropdownMenuItem(text, value) { AccentColour = AccentColour };
+            protected override DropdownHeader CreateHeader() => new UserDropdownHeader();
+
+            protected override DropdownMenu CreateMenu() => new UserDropdownMenu();
 
             public Color4 StatusColour
             {
@@ -271,16 +275,59 @@ namespace osu.Game.Overlays.Settings.Sections.General
                 AccentColour = colours.Gray5;
             }
 
+            private class UserDropdownMenu : OsuDropdownMenu
+            {
+                public UserDropdownMenu()
+                {
+                    Masking = true;
+                    CornerRadius = 5;
+
+                    Margin = new MarginPadding { Bottom = 5 };
+
+                    EdgeEffect = new EdgeEffectParameters
+                    {
+                        Type = EdgeEffectType.Shadow,
+                        Colour = Color4.Black.Opacity(0.25f),
+                        Radius = 4,
+                    };
+
+                    ItemsContainer.Padding = new MarginPadding();
+                }
+
+                [BackgroundDependencyLoader]
+                private void load(OsuColour colours)
+                {
+                    BackgroundColour = colours.Gray3;
+                }
+
+                protected override DrawableMenuItem CreateDrawableMenuItem(MenuItem item) => new DrawableUserDropdownMenuItem(item);
+
+                private class DrawableUserDropdownMenuItem : DrawableOsuDropdownMenuItem
+                {
+                    public DrawableUserDropdownMenuItem(MenuItem item)
+                        : base(item)
+                    {
+                        Foreground.Padding = new MarginPadding { Top = 5, Bottom = 5, Left = 10, Right = 5 };
+                        CornerRadius = 5;
+                    }
+
+                    protected override Drawable CreateContent() => new Content
+                    {
+                        Label = { Margin = new MarginPadding { Left = UserDropdownHeader.LABEL_LEFT_MARGIN - 11 } }
+                    };
+                }
+            }
+
             private class UserDropdownHeader : OsuDropdownHeader
             {
                 public const float LABEL_LEFT_MARGIN = 20;
 
-                private readonly TextAwesome statusIcon;
+                private readonly SpriteIcon statusIcon;
                 public Color4 StatusColour
                 {
                     set
                     {
-                        statusIcon.FadeColour(value, 500, EasingTypes.OutQuint);
+                        statusIcon.FadeColour(value, 500, Easing.OutQuint);
                     }
                 }
 
@@ -297,15 +344,15 @@ namespace osu.Game.Overlays.Settings.Sections.General
                         Radius = 4,
                     };
 
-                    Icon.TextSize = 14;
+                    Icon.Size = new Vector2(14);
                     Icon.Margin = new MarginPadding(0);
 
-                    Foreground.Add(statusIcon = new TextAwesome
+                    Foreground.Add(statusIcon = new SpriteIcon
                     {
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
                         Icon = FontAwesome.fa_circle_o,
-                        TextSize = 14,
+                        Size = new Vector2(14),
                     });
 
                     Text.Margin = new MarginPadding { Left = LABEL_LEFT_MARGIN };
@@ -315,39 +362,6 @@ namespace osu.Game.Overlays.Settings.Sections.General
                 private void load(OsuColour colours)
                 {
                     BackgroundColour = colours.Gray3;
-                }
-            }
-
-            private class UserDropdownMenu : OsuMenu
-            {
-                public UserDropdownMenu()
-                {
-                    Margin = new MarginPadding { Bottom = 5 };
-                    CornerRadius = 5;
-                    ItemsContainer.Padding = new MarginPadding(0);
-                    Masking = true;
-                    EdgeEffect = new EdgeEffectParameters
-                    {
-                        Type = EdgeEffectType.Shadow,
-                        Colour = Color4.Black.Opacity(0.25f),
-                        Radius = 4,
-                    };
-                }
-
-                [BackgroundDependencyLoader]
-                private void load(OsuColour colours)
-                {
-                    Background.Colour = colours.Gray3;
-                }
-            }
-
-            private class UserDropdownMenuItem : OsuDropdownMenuItem
-            {
-                public UserDropdownMenuItem(string text, UserAction current) : base(text, current)
-                {
-                    Foreground.Padding = new MarginPadding { Top = 5, Bottom = 5, Left = 10, Right = 5 };
-                    Label.Margin = new MarginPadding { Left = UserDropdownHeader.LABEL_LEFT_MARGIN - 11 };
-                    CornerRadius = 5;
                 }
             }
         }

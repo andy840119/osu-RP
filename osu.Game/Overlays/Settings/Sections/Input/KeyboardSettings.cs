@@ -2,7 +2,6 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
 using osu.Framework.Graphics;
-using osu.Game.Graphics.UserInterface;
 
 namespace osu.Game.Overlays.Settings.Sections.Input
 {
@@ -10,14 +9,14 @@ namespace osu.Game.Overlays.Settings.Sections.Input
     {
         protected override string Header => "Keyboard";
 
-        public KeyboardSettings()
+        public KeyboardSettings(KeyBindingOverlay keyConfig)
         {
             Children = new Drawable[]
             {
-                new OsuButton
+                new SettingsButton
                 {
-                    RelativeSizeAxes = Axes.X,
-                    Text = "Key Configuration"
+                    Text = "Key Configuration",
+                    Action = keyConfig.ToggleVisibility
                 },
             };
         }

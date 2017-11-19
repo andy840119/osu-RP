@@ -1,40 +1,95 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
-using osu.Game;
-using System.Linq;
-using System.Windows.Forms;
-using osu.Framework.Platform;
-using osu.Framework.Desktop.Platform;
-using osu.Desktop.Overlays;
-using System.Reflection;
+using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using osu.Game.Screens.Menu;
+using Microsoft.Win32;
+using osu.Desktop.Overlays;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Platform;
+using osu.Game;
+using OpenTK.Input;
 
 namespace osu.Desktop
 {
     internal class OsuGameDesktop : OsuGame
     {
-        private readonly VersionManager versionManager;
+        private readonly bool noVersionOverlay;
 
         public OsuGameDesktop(string[] args = null)
             : base(args)
         {
-            versionManager = new VersionManager { Depth = int.MinValue };
+            noVersionOverlay = args?.Any(a => a == "--no-version-overlay") ?? false;
+        }
+
+        public override Storage GetStorageForStableInstall()
+        {
+            try
+            {
+                return new StableStorage();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// A method of accessing an osu-stable install in a controlled fashion.
+        /// </summary>
+        private class StableStorage : DesktopStorage
+        {
+            protected override string LocateBasePath()
+            {
+                Func<string, bool> checkExists = p => Directory.Exists(Path.Combine(p, "Songs"));
+
+                string stableInstallPath;
+
+                try
+                {
+                    using (RegistryKey key = Registry.ClassesRoot.OpenSubKey("osu"))
+                        stableInstallPath = key?.OpenSubKey(@"shell\open\command")?.GetValue(String.Empty).ToString().Split('"')[1].Replace("osu!.exe", "");
+
+                    if (checkExists(stableInstallPath))
+                        return stableInstallPath;
+                }
+                catch
+                {
+                }
+
+                stableInstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"osu!");
+                if (checkExists(stableInstallPath))
+                    return stableInstallPath;
+
+                stableInstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".osu");
+                if (checkExists(stableInstallPath))
+                    return stableInstallPath;
+
+                return null;
+            }
+
+            public StableStorage()
+                : base(string.Empty)
+            {
+            }
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
 
-            LoadComponentAsync(versionManager);
-            ScreenChanged += s =>
+            if (!noVersionOverlay)
             {
-                if (!versionManager.IsAlive && s is Intro)
-                    Add(versionManager);
-            };
+                LoadComponentAsync(new VersionManager { Depth = int.MinValue }, v =>
+                {
+                    Add(v);
+                    v.State = Visibility.Visible;
+                });
+            }
         }
 
         public override void SetHost(GameHost host)
@@ -45,41 +100,27 @@ namespace osu.Desktop
             {
                 desktopWindow.CursorState |= CursorState.Hidden;
 
-                desktopWindow.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+                desktopWindow.Icon = new Icon(Assembly.GetExecutingAssembly().GetManifestResourceStream(GetType(), "lazer.ico"));
                 desktopWindow.Title = Name;
 
-                desktopWindow.DragEnter += dragEnter;
-                desktopWindow.DragDrop += dragDrop;
+                desktopWindow.FileDrop += fileDrop;
             }
         }
 
-        private void dragDrop(DragEventArgs e)
+        private void fileDrop(object sender, FileDropEventArgs e)
         {
-            // this method will only be executed if e.Effect in dragEnter gets set to something other that None.
-            var dropData = (object[])e.Data.GetData(DataFormats.FileDrop);
-            var filePaths = dropData.Select(f => f.ToString()).ToArray();
+            var filePaths = new [] { e.FileName };
 
             if (filePaths.All(f => Path.GetExtension(f) == @".osz"))
-                Task.Run(() => BeatmapDatabase.Import(filePaths));
+                Task.Factory.StartNew(() => BeatmapManager.Import(filePaths), TaskCreationOptions.LongRunning);
             else if (filePaths.All(f => Path.GetExtension(f) == @".osr"))
                 Task.Run(() =>
                 {
-                    var score = ScoreDatabase.ReadReplayFile(filePaths.First());
+                    var score = ScoreStore.ReadReplayFile(filePaths.First());
                     Schedule(() => LoadScore(score));
                 });
         }
 
         private static readonly string[] allowed_extensions = { @".osz", @".osr" };
-
-        private void dragEnter(DragEventArgs e)
-        {
-            // dragDrop will only be executed if e.Effect gets set to something other that None in this method.
-            bool isFile = e.Data.GetDataPresent(DataFormats.FileDrop);
-            if (isFile)
-            {
-                var paths = ((object[])e.Data.GetData(DataFormats.FileDrop)).Select(f => f.ToString()).ToArray();
-                e.Effect = allowed_extensions.Any(ext => paths.All(p => p.EndsWith(ext))) ? DragDropEffects.Copy : DragDropEffects.None;
-            }
-        }
     }
 }

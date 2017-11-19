@@ -9,20 +9,18 @@ using osu.Framework.Configuration;
 using osu.Framework.Screens;
 using osu.Framework.Graphics;
 using osu.Framework.MathUtils;
+using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.IO;
 using osu.Game.Configuration;
-using osu.Game.Database;
-using osu.Game.Graphics.Containers;
 using osu.Game.Screens.Backgrounds;
+using OpenTK;
 using OpenTK.Graphics;
 
 namespace osu.Game.Screens.Menu
 {
     public class Intro : OsuScreen
     {
-        private readonly OsuLogo logo;
-
-        public const string MENU_MUSIC_BEATMAP_HASH = "21c1271b91234385978b5418881fdd88";
+        private const string menu_music_beatmap_hash = "3c8b1fcc9434dbb29e2fb613d3b9eada9d7bb6c125ceb32396c3b53437280c83";
 
         /// <summary>
         /// Whether we have loaded the menu previously.
@@ -33,83 +31,52 @@ namespace osu.Game.Screens.Menu
         private SampleChannel welcome;
         private SampleChannel seeya;
 
-        internal override bool HasLocalCursorDisplayed => true;
+        public override bool HasLocalCursorDisplayed => true;
 
-        internal override bool ShowOverlays => false;
+        public override bool ShowOverlays => false;
 
         protected override BackgroundScreen CreateBackground() => new BackgroundScreenEmpty();
-
-        public Intro()
-        {
-            Children = new Drawable[]
-            {
-                new ParallaxContainer
-                {
-                    ParallaxAmount = 0.01f,
-                    Children = new Drawable[]
-                    {
-                        logo = new OsuLogo
-                        {
-                            Alpha = 0,
-                            Triangles = false,
-                            BlendingMode = BlendingMode.Additive,
-                            Interactive = false,
-                            Colour = Color4.DarkGray,
-                            Ripple = false
-                        }
-                    }
-                }
-            };
-        }
 
         private Bindable<bool> menuVoice;
         private Bindable<bool> menuMusic;
         private Track track;
 
         [BackgroundDependencyLoader]
-        private void load(AudioManager audio, OsuConfigManager config, BeatmapDatabase beatmaps, Framework.Game game)
+        private void load(AudioManager audio, OsuConfigManager config, BeatmapManager beatmaps, Framework.Game game)
         {
             menuVoice = config.GetBindable<bool>(OsuSetting.MenuVoice);
             menuMusic = config.GetBindable<bool>(OsuSetting.MenuMusic);
-
-            var trackManager = audio.Track;
 
             BeatmapSetInfo setInfo = null;
 
             if (!menuMusic)
             {
-                var query = beatmaps.Query<BeatmapSetInfo>().Where(b => !b.DeletePending);
-                int count = query.Count();
-                if (count > 0)
-                    setInfo = query.ElementAt(RNG.Next(0, count - 1));
+                var sets = beatmaps.GetAllUsableBeatmapSets();
+                if (sets.Count > 0)
+                    setInfo = beatmaps.QueryBeatmapSet(s => s.ID == sets[RNG.Next(0, sets.Count - 1)].ID);
             }
 
             if (setInfo == null)
             {
-                var query = beatmaps.Query<BeatmapSetInfo>().Where(b => b.Hash == MENU_MUSIC_BEATMAP_HASH);
-
-                setInfo = query.FirstOrDefault();
+                setInfo = beatmaps.QueryBeatmapSet(b => b.Hash == menu_music_beatmap_hash);
 
                 if (setInfo == null)
                 {
                     // we need to import the default menu background beatmap
-                    beatmaps.Import(new OszArchiveReader(game.Resources.GetStream(@"Tracks/circles.osz")));
-
-                    setInfo = query.First();
-
-                    setInfo.DeletePending = true;
-                    beatmaps.Update(setInfo, false);
+                    setInfo = beatmaps.Import(new OszArchiveReader(game.Resources.GetStream(@"Tracks/circles.osz")));
+                    setInfo.Protected = true;
                 }
             }
 
-            beatmaps.GetChildren(setInfo);
-            Beatmap = beatmaps.GetWorkingBeatmap(setInfo.Beatmaps[0]);
+            Beatmap.Value = beatmaps.GetWorkingBeatmap(setInfo.Beatmaps[0]);
 
-            track = Beatmap.Track;
-            trackManager.SetExclusive(track);
+            track = Beatmap.Value.Track;
 
             welcome = audio.Sample.Get(@"welcome");
             seeya = audio.Sample.Get(@"seeya");
+
+            if (setInfo.Protected)
+                beatmaps.Delete(setInfo);
         }
 
         protected override void OnEntering(Screen last)
@@ -121,7 +88,9 @@ namespace osu.Game.Screens.Menu
 
             Scheduler.AddDelayed(delegate
             {
-                track.Start();
+                // Only start the current track if it is the menu music. A beatmap's track is started when entering the Main Manu.
+                if (menuMusic)
+                    track.Start();
 
                 LoadComponentAsync(mainMenu = new MainMenu());
 
@@ -129,14 +98,46 @@ namespace osu.Game.Screens.Menu
                 {
                     DidLoadMenu = true;
                     Push(mainMenu);
-                }, 2300);
-            }, 600);
+                }, delay_step_one);
+            }, delay_step_two);
+        }
 
-            logo.ScaleTo(0.4f);
-            logo.FadeOut();
+        private const double delay_step_one = 2300;
+        private const double delay_step_two = 600;
 
-            logo.ScaleTo(1, 4400, EasingTypes.OutQuint);
-            logo.FadeIn(20000, EasingTypes.OutQuint);
+        public const int EXIT_DELAY = 3000;
+
+        protected override void LogoArriving(OsuLogo logo, bool resuming)
+        {
+            base.LogoArriving(logo, resuming);
+
+            logo.RelativePositionAxes = Axes.Both;
+            logo.Colour = Color4.White;
+            logo.Ripple = false;
+
+            const int quick_appear = 350;
+
+            int initialMovementTime = logo.Alpha > 0.2f ? quick_appear : 0;
+
+            logo.MoveTo(new Vector2(0.5f), initialMovementTime, Easing.OutQuint);
+
+            if (!resuming)
+            {
+                logo.ScaleTo(1);
+                logo.FadeIn();
+                logo.PlayIntro();
+            }
+            else
+            {
+                logo.Triangles = false;
+
+                logo
+                    .ScaleTo(1, initialMovementTime, Easing.OutQuint)
+                    .FadeIn(quick_appear, Easing.OutQuint)
+                    .Then()
+                    .RotateTo(20, EXIT_DELAY * 1.5f)
+                    .FadeOut(EXIT_DELAY);
+            }
         }
 
         protected override void OnSuspending(Screen next)
@@ -156,7 +157,7 @@ namespace osu.Game.Screens.Menu
             if (!(last is MainMenu))
                 Content.FadeIn(300);
 
-            double fadeOutTime = 2000;
+            double fadeOutTime = EXIT_DELAY;
             //we also handle the exit transition.
             if (menuVoice)
                 seeya.Play();
