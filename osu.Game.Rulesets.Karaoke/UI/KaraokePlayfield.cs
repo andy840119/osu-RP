@@ -40,7 +40,7 @@ namespace osu.Game.Rulesets.Karaoke.UI
         private readonly Container judgementLayer;
         private readonly Container KaraokecontrolLayer;
         private readonly KaraokePanelOverlay karaokePanelOverlay;
-        private readonly SnowVisualisationLayer snowVisualisationLayer;
+        private readonly SnowLayer snowVisualisationLayer;
 
         //public override bool ProvidingUserCursor => true;
         public static readonly Vector2 BASE_SIZE = new Vector2(512, 384);

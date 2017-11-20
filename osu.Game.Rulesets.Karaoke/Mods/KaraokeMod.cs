@@ -165,7 +165,7 @@ namespace osu.Game.Rulesets.Karaoke.Mods
 
         public Container CreateNewLayer()
         {
-            return new SnowVisualisationLayer
+            return new SnowLayer
             {
                 Clock = new FramedClock(new StopwatchClock(true)),
                 RelativeSizeAxes = Axes.Both,
