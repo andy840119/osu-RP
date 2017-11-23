@@ -19,6 +19,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 {
     [TestFixture]
     [Ignore("getting CI working")]
+    [System.ComponentModel.Description("Test Karaoke Object")]
     public class TestCaseKaraokeObject : OsuTestCase
     {
         private FramedClock framedClock;

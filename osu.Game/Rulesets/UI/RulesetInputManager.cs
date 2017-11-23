@@ -76,7 +76,7 @@ namespace osu.Game.Rulesets.UI
 
         #region Clock control
 
-        protected override bool ShouldProcessClock => false; // We handle processing the clock ourselves
+        //protected override bool ShouldProcessClock => false; // We handle processing the clock ourselves
 
         private ManualClock clock;
         private IFrameBasedClock parentClock;

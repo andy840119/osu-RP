@@ -17,6 +17,7 @@ namespace osu.Game.Rulesets.Karaoke.Tests
 {
     [TestFixture]
     [Ignore("getting CI working")]
+    [System.ComponentModel.Description("Test KaraokeObject By Slider")]
     public class TestCaseKaraokeObjectBySlider : OsuTestCase
     {
         /// <summary>
