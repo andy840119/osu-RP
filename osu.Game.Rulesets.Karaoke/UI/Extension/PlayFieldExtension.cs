@@ -113,7 +113,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
         /// <param name="value"></param>
         public static void NavigateToTime(this IAmKaraokeField karaokeField, double value)
         {
-            karaokeField.WorkingBeatmap.Track.Seek(value);
+            karaokeField?.WorkingBeatmap?.Track?.Seek(value);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 
         public static double GetSpeed(this IAmKaraokeField karaokeField)
         {
-            return karaokeField.WorkingBeatmap.Track.Rate;
+            return karaokeField?.WorkingBeatmap?.Track?.Rate??1;
         }
 
         public static void AdjustTone(this IAmKaraokeField karaokeField, double value)
@@ -146,7 +146,7 @@ namespace osu.Game.Rulesets.Karaoke.UI.Extension
 
         public static double GetTone(this IAmKaraokeField karaokeField)
         {
-            if (karaokeField.WorkingBeatmap.Track is IHasPitchAdjust pitchAdjustTrack)
+            if (karaokeField?.WorkingBeatmap?.Track is IHasPitchAdjust pitchAdjustTrack)
             {
                 return pitchAdjustTrack.PitchAdjust;
             }

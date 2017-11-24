@@ -25,21 +25,21 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
                         var lastProgress = i >= 1 ? listPoints[i - 1] : new ProgressPoint(0,0);
                         var thisObject = listPoints[i];
 
-                        if (lastProgress.X == thisObject.X)
-                            return lastProgress.X;
+                        if (lastProgress.CharIndex == thisObject.CharIndex)
+                            return lastProgress.CharIndex;
 
                         if (lastProgress.RelativeTime == thisObject.RelativeTime)
-                            return lastProgress.X;
+                            return lastProgress.CharIndex;
 
                         double relativeToThisAndLastTime = nowRelativeTime - lastProgress.RelativeTime;
 
                         //return
-                        return lastProgress.X + KaraokeObjectExtension.GetPositionBetweenTowObjects(lastProgress, thisObject, relativeToThisAndLastTime);
+                        return lastProgress.CharIndex + KaraokeObjectExtension.GetPositionBetweenTowObjects(lastProgress, thisObject, relativeToThisAndLastTime);
                     }
                 }
 
                 //if not any,means it is the last, return karaokeObject's width as progress
-                return listPoints.Last().X;
+                return listPoints.Last().CharIndex;
             }
 
             return 0;
@@ -69,7 +69,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
         /// <param name="time">Time.</param>
         public static float GetPositionBetweenTowObjects(ProgressPoint firstObject,ProgressPoint lastObejct,double time)
         {
-            return (lastObejct.X - firstObject.X) / (float)(lastObejct.RelativeTime - firstObject.RelativeTime) * (float)time;
+            return (lastObejct.CharIndex - firstObject.CharIndex) / (float)(lastObejct.RelativeTime - firstObject.RelativeTime) * (float)time;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
         public static bool AddProgressPoint(this KaraokeObject karaokeObject, ProgressPoint point)
         {
             //TODO : filter
-            if (karaokeObject.ListProgressPoint.Any(x => x.X == point.X))
+            if (karaokeObject.ListProgressPoint.Any(x => x.CharIndex == point.CharIndex))
                 return false;
             if (karaokeObject.ListProgressPoint.Any(x => x.RelativeTime == point.RelativeTime))
                 return false;
