@@ -5,46 +5,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
 {
     public static class KaraokeObjectExtension
     {
-        /// <summary>
-        /// Gets the progress by time.
-        /// </summary>
-        /// <returns>The progress by time.</returns>
-        public static int GetProgressByTime(this KaraokeObject karaokeObject,double nowRelativeTime)
-        {
-            
-            //at least has one point
-            if(karaokeObject.IsInTime(nowRelativeTime) && karaokeObject.ListProgressPoint.Count>0)
-            {
-                var listPoints = karaokeObject.ListProgressPoint;
-
-                for (int i = 0; i < listPoints.Count;i++)
-                {
-                    //means that progress is between this and last objects
-                    if(listPoints[i].RelativeTime> nowRelativeTime)
-                    {
-                        var lastProgress = i >= 1 ? listPoints[i - 1] : new ProgressPoint(0,0);
-                        var thisObject = listPoints[i];
-
-                        if (lastProgress.CharIndex == thisObject.CharIndex)
-                            return lastProgress.CharIndex;
-
-                        if (lastProgress.RelativeTime == thisObject.RelativeTime)
-                            return lastProgress.CharIndex;
-
-                        double relativeToThisAndLastTime = nowRelativeTime - lastProgress.RelativeTime;
-
-                        //return
-                        return thisObject.CharIndex;
-                    }
-                }
-
-                //if not any,means it is the last, return karaokeObject's width as progress
-                return listPoints.Last().CharIndex;
-            }
-
-            return 0;
-        }
-
         public static ProgressPoint GetFirstProgressPointByTime(this KaraokeObject karaokeObject, double nowRelativeTime)
         {
             if (karaokeObject.IsInTime(nowRelativeTime) && karaokeObject.ListProgressPoint.Count > 0)
@@ -79,18 +39,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
                 return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// get delta position from two objects and delta time
-        /// </summary>
-        /// <returns>The position between tow objects.</returns>
-        /// <param name="firstObject">First object.</param>
-        /// <param name="lastObejct">Last obejct.</param>
-        /// <param name="time">Time.</param>
-        public static float GetPositionBetweenTowObjects(ProgressPoint firstObject,ProgressPoint lastObejct,double time)
-        {
-            return (lastObejct.CharIndex - firstObject.CharIndex) / (float)(lastObejct.RelativeTime - firstObject.RelativeTime) * (float)time;
         }
 
         /// <summary>
