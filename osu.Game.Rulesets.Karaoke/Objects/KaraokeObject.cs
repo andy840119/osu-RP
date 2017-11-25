@@ -89,7 +89,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// </summary>
         public List<ProgressPoint> ListProgressPoint { get; set; } = new List<ProgressPoint>()
         {
-            new ProgressPoint(0,0),
+            
         };
 
         /// <summary>

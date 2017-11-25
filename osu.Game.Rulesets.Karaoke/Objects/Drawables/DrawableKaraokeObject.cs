@@ -93,12 +93,14 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             Color4 backgroundColor = Singer?.LytricBackgroundColor ?? Color4.White;
             TextsAndMaskPiece.SetColor(textColor, backgroundColor);
 
-            //Text
+            
             TextsAndMaskPiece.ClearAllText();
-            TextsAndMaskPiece.AddText(Template?.MainText + KaraokeObject.MainText);//main text
+            //main text
+            TextsAndMaskPiece.AddMainText(Template?.MainText + KaraokeObject.MainText);
+            //subtext
             foreach (var singleText in KaraokeObject.ListSubTextObject)
             {
-                TextsAndMaskPiece.AddText(Template?.SubText + singleText);//subtext
+                TextsAndMaskPiece.AddText(Template?.SubText + singleText);
             }
 
             //translate text
@@ -130,11 +132,19 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables
             if (!ProgressUpdateByTime)
                 return;
 
-            double currentTime = Time.Current;
-            if(HitObject.IsInTime(currentTime))
+            double currentRelativeTime = Time.Current - HitObject.StartTime;
+            if(HitObject.IsInTime(currentRelativeTime))
             {
+                //TODO : get progress point
+                var startProgressPoint = HitObject.GetFirstProgressPointByTime(currentRelativeTime);
+                var endProgressPoint = HitObject.GetLastProgressPointByTime(currentRelativeTime);
+
+                var startPosition= TextsAndMaskPiece.MainKaraokeText.GetEndPositionByIndex(startProgressPoint.CharIndex);
+                var endPosition = TextsAndMaskPiece.MainKaraokeText.GetEndPositionByIndex(endProgressPoint.CharIndex);
+
+                var relativeTime = currentRelativeTime - startProgressPoint.RelativeTime;
                 //Update progress
-                Progress = HitObject.GetProgressByTime(currentTime- HitObject.StartTime);
+                Progress = startPosition + (endPosition - startPosition) / (float)(endProgressPoint.RelativeTime - startProgressPoint.RelativeTime) * (float)relativeTime;
 
                 this.Show();
                 Alpha = 1;

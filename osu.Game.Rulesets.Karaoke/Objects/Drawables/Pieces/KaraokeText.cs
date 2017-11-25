@@ -16,24 +16,21 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
         public List<float> ListCharEndPosition { get; protected set; } = new List<float>();
 
-        protected FontStore FontStore=null;
+        
 
-        public TextObject TextObject
+        public virtual TextObject TextObject
         {
             get => _textObject;
             set
             {
                 _textObject = value;
-                if(_textObject==null)
+                if (_textObject == null)
                     return;
                 //set text
                 Text = _textObject.Text;
                 Position = _textObject.Position;
-                if(_textObject.FontSize!=null)
+                if (_textObject.FontSize != null)
                     TextSize = _textObject.FontSize.Value;
-
-                //update each text's end position
-                UpdateSingleCharacterEndPosition();
             }
         }
 
@@ -46,17 +43,38 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
             Origin = Anchor.TopLeft;
             Alpha = 1;
         }
+    }
+
+    public class MainKaraokeText : KaraokeText
+    {
+        protected FontStore FontStore = null;
+
+        public override TextObject TextObject
+        {
+            get => base.TextObject;
+            set
+            {
+                base.TextObject = value;
+                //update each text's end position
+                UpdateSingleCharacterEndPosition();
+            }
+        }
+
+        public MainKaraokeText(TextObject textObject) : base(textObject)
+        {
+
+        }
 
         protected void UpdateSingleCharacterEndPosition()
         {
             if (FontStore == null)
                 return;
 
-            if (_textObject?.Text != null)
+            if (TextObject?.Text != null)
             {
                 float totalWidth = 0;
                 ListCharEndPosition.Clear();
-                foreach (var single in _textObject.Text)
+                foreach (var single in TextObject.Text)
                 {
                     //get single char width
                     var singleCharWhdth = CreateCharacterDrawable(single).Width * TextSize;
@@ -70,11 +88,14 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
         {
             try
             {
+                if (index < 0)
+                    return 0;
+
                 return ListCharEndPosition[index];
             }
             catch
             {
-                return -1;
+                return ListCharEndPosition.Last();
             }
         }
 

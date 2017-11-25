@@ -13,7 +13,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects
             
         }
 
-        public ProgressPoint(double time,float charIndex)
+        public ProgressPoint(double time, int charIndex)
         {
             RelativeTime = time;
             CharIndex = charIndex;
@@ -26,6 +26,6 @@ namespace osu.Game.Rulesets.Karaoke.Objects
         /// <summary>
         /// position at that time
         /// </summary>
-        public float CharIndex { get; set; }
+        public int CharIndex { get; set; }
     }
 }

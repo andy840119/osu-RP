@@ -20,6 +20,8 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
         private float _maskHeight;
 
+        public MainKaraokeText MainKaraokeText => RightSideText.MainKaraokeText;
+
         public TextsAndMask()
         {
             Children = new Drawable[]
@@ -27,6 +29,12 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
                 RightSideText,
                 LeftSideText,
             };
+        }
+
+        public void AddMainText(TextObject textObject)
+        {
+            LeftSideText.AddMainText(textObject);
+            RightSideText.AddMainText(textObject);
         }
 
         public void AddText(TextObject textObject)
@@ -77,8 +85,16 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
         protected class SingleSideOfAndMask : Container
         {
             private List<TextObject> _listText = new List<TextObject>();
-            private List<Drawable> _listDrawableText = new List<Drawable>();
+            private List<KaraokeText> _listDrawableText = new List<KaraokeText>();
+            private TextObject _mainText;
+            public MainKaraokeText MainKaraokeText;
             private float _height;
+
+            public void AddMainText(TextObject textObject)
+            {
+                _mainText = textObject;
+                UpdateChild();
+            }
 
             public void AddText(TextObject textObject)
             {
@@ -101,6 +117,11 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
             protected void UpdateChild()
             {
                 _listDrawableText.Clear();
+                if (_mainText != null)
+                {
+                    MainKaraokeText = new MainKaraokeText(_mainText);
+                    _listDrawableText.Add(MainKaraokeText);
+                }
                 foreach (var singleText in _listText)
                 {
                     _listDrawableText.Add(new KaraokeText(singleText));
@@ -121,7 +142,14 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Drawables.Pieces
 
                 for (int i = 0; i < Children.Count; i++)
                 {
-                    Children[i].Position = _listText[i].Position - Position;
+                    if (i == 0)
+                    {
+                        Children[i].Position = _mainText.Position - Position;
+                    }
+                    else
+                    {
+                        Children[i].Position = _listText[i-1].Position - Position;
+                    }
                 }
                 Width = endPositionX - startPositionX;
             }

@@ -9,7 +9,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
         /// Gets the progress by time.
         /// </summary>
         /// <returns>The progress by time.</returns>
-        public static double GetProgressByTime(this KaraokeObject karaokeObject,double nowRelativeTime)
+        public static int GetProgressByTime(this KaraokeObject karaokeObject,double nowRelativeTime)
         {
             
             //at least has one point
@@ -34,7 +34,7 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
                         double relativeToThisAndLastTime = nowRelativeTime - lastProgress.RelativeTime;
 
                         //return
-                        return lastProgress.CharIndex + KaraokeObjectExtension.GetPositionBetweenTowObjects(lastProgress, thisObject, relativeToThisAndLastTime);
+                        return thisObject.CharIndex;
                     }
                 }
 
@@ -45,6 +45,27 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
             return 0;
         }
 
+        public static ProgressPoint GetFirstProgressPointByTime(this KaraokeObject karaokeObject, double nowRelativeTime)
+        {
+            if (karaokeObject.IsInTime(nowRelativeTime) && karaokeObject.ListProgressPoint.Count > 0)
+            {
+                var index = karaokeObject.ListProgressPoint.FindIndex(x => x.RelativeTime > nowRelativeTime);
+                return index > 0 ? karaokeObject.ListProgressPoint[index - 1] : new ProgressPoint(0, -1);
+            }
+
+            return new ProgressPoint(0, -1);
+        }
+
+        public static ProgressPoint GetLastProgressPointByTime(this KaraokeObject karaokeObject, double nowRelativeTime)
+        {
+            if (karaokeObject.IsInTime(nowRelativeTime) && karaokeObject.ListProgressPoint.Count > 0)
+            {
+                return karaokeObject.ListProgressPoint.Find(x => x.RelativeTime > nowRelativeTime);
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Times the is in time.
         /// </summary>
@@ -53,11 +74,11 @@ namespace osu.Game.Rulesets.Karaoke.Objects.Extension
         /// <param name="nowRelativeTime">Now time.</param>
         public static bool IsInTime(this KaraokeObject karaokeObject, double nowRelativeTime)
         {
-            if (nowRelativeTime < 0 && nowRelativeTime > karaokeObject.Duration)
+            if (nowRelativeTime > 0 && nowRelativeTime <= karaokeObject.Duration)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>
