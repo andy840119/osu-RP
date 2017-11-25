@@ -15,6 +15,8 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
         //我勸你不要亂幹人家的API Key喔
         protected string ApiKey = "AIzaSyB9tomdvp8WmySkEWIhjhVYO3rkhzKOPMc";
 
+        protected override int MaxThanslateSentenceAtTime => 70; //max is 73
+
         protected override Dictionary<TranslateCode, string> LangToCodeDictionary
         {
             get
@@ -173,28 +175,35 @@ namespace osu.Game.Rulesets.Karaoke.Tools.Translator
         {
             try
             {
-                string url = "https://translation.googleapis.com/language/translate/";
-                url += "v2?key=" + ApiKey;
-                url += "&source=" + LangToCodeDictionary[sourceLangeCode];
-                url += "&target=" + LangToCodeDictionary[targetLangCode];
+                List<string> returnString = new List<string>();
 
-                foreach (var singleString in translateListString)
+                int translateTime = translateListString.Count / MaxThanslateSentenceAtTime + 1;
+                for (int i = 0; i < translateTime; i++)
                 {
-                    url += "&q=" + singleString;
-                }
+                    int startIndex = i * MaxThanslateSentenceAtTime;
+                    int count = (i + 1) * MaxThanslateSentenceAtTime >= translateListString.Count ? translateListString.Count - startIndex : MaxThanslateSentenceAtTime;
+                    var partialTranslateString = translateListString.GetRange(startIndex, count);
 
-                WebClient client = new WebClient();
-                client.Encoding = System.Text.Encoding.UTF8;
-                string json = client.DownloadString(url);
-                RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(json);
+                    string url = "https://translation.googleapis.com/language/translate/";
+                    url += "v2?key=" + ApiKey;
+                    url += "&source=" + LangToCodeDictionary[sourceLangeCode];
+                    url += "&target=" + LangToCodeDictionary[targetLangCode];
 
-                List<RootObject.Data.Translation> listTranslate = rootObject?.data?.translations;
+                    foreach (var singleString in partialTranslateString)
+                    {
+                        url += "&q=" + singleString;
+                    }
 
-                List<string> returnString=new List<string>();
+                    WebClient client = new WebClient();
+                    client.Encoding = System.Text.Encoding.UTF8;
+                    string json = client.DownloadString(url);
+                    RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(json);
+                    List<RootObject.Data.Translation> listTranslate = rootObject?.data?.translations;
 
-                foreach (var single in listTranslate)
-                {
-                    returnString.Add(single.translatedText);
+                    foreach (var single in listTranslate)
+                    {
+                        returnString.Add(single.translatedText);
+                    }
                 }
 
                 OnTranslateMultiStringSuccess?.Invoke(this, returnString);
