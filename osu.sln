@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game", "osu.Game\osu.Game.csproj", "{2A66DD92-ADB1-4994-89E2-C94E04ACDA0D}"
 EndProject
@@ -22,8 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Tests", "osu.Game.Tests\osu.Game.Tests.csproj", "{54377672-20B1-40AF-8087-5CF73BF3953A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Desktop", "osu.Desktop\osu.Desktop.csproj", "{419659FD-72EA-4678-9EB8-B22A746CED70}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Rulesets.Karaoke", "osu.Game.Rulesets.Karaoke\osu.Game.Rulesets.Karaoke.csproj", "{7007A270-8FD7-4656-BE74-BD6A84A35C46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Game.Rulesets.RP", "osu.Game.Rulesets.RP\osu.Game.Rulesets.RP.csproj", "{07E65AA5-5A23-4089-9024-21046E882BED}"
 EndProject
@@ -154,18 +152,6 @@ Global
 		{419659FD-72EA-4678-9EB8-B22A746CED70}.VisualTests|Any CPU.Build.0 = Debug|Any CPU
 		{419659FD-72EA-4678-9EB8-B22A746CED70}.VisualTests|x86.ActiveCfg = VisualTests|x86
 		{419659FD-72EA-4678-9EB8-B22A746CED70}.VisualTests|x86.Build.0 = VisualTests|x86
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Debug|x86.Build.0 = Debug|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Release|x86.ActiveCfg = Release|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.Release|x86.Build.0 = Release|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.VisualTests|Any CPU.ActiveCfg = Release|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.VisualTests|Any CPU.Build.0 = Release|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.VisualTests|x86.ActiveCfg = Release|Any CPU
-		{7007A270-8FD7-4656-BE74-BD6A84A35C46}.VisualTests|x86.Build.0 = Release|Any CPU
 		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07E65AA5-5A23-4089-9024-21046E882BED}.Debug|x86.ActiveCfg = Debug|Any CPU
