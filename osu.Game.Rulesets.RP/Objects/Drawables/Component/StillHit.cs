@@ -6,12 +6,12 @@ using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using osu.Game.Rulesets.RP.SkinManager;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 {
-    public class StillHit : Container, IHasDirection,IHasCoop, IComponentBase
+    public class StillHit : Container, IHasDirection, IHasCoop, IComponentBase
     {
         /// <summary>
         ///    Still piece
@@ -45,12 +45,11 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         void CreaterDrawable()
         {
             Children = new Drawable[]
-               {
-                    StillHitPicec = new ImagePicec(RpTexturePathManager.GetStartObjectImageNameByType(ObjectType.Hit, Special.Normal, Direction))
-                    {
-
-                    },
-               };
+            {
+                StillHitPicec = new ImagePicec(RpTexturePathManager.GetStartObjectImageNameByType(ObjectType.Hit, Special.Normal, Direction))
+                {
+                },
+            };
             StillHitPicec.Alpha = 0;
             StillHitPicec.Scale = new Vector2(0.5f);
             StillHitPicec.Colour = RpTextureColorManager.GetKeyLayoutButtonDirection(Direction);

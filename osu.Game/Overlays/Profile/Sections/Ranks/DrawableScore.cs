@@ -1,121 +1,141 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
 
-using System.Collections.Generic;
 using OpenTK;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Graphics;
-using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Screens.Select.Leaderboards;
-using System.Linq;
 using osu.Framework.Localisation;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.UI;
+using OpenTK.Graphics;
+using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Cursor;
+using osu.Framework.Input;
+using osu.Framework.Extensions.Color4Extensions;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Overlays.Profile.Sections.Ranks
 {
-    public class DrawableScore : Container
+    public abstract class DrawableScore : Container
     {
-        private readonly FillFlowContainer<OsuSpriteText> stats;
+        private const int fade_duration = 200;
+
+        protected readonly FillFlowContainer<OsuSpriteText> Stats;
         private readonly FillFlowContainer metadata;
-        private readonly ModContainer modContainer;
-        private readonly Score score;
-        private readonly double? weight;
+        private readonly ScoreModsContainer modsContainer;
+        protected readonly Score Score;
+        private readonly Box underscoreLine;
+        private readonly Box coloredBackground;
+        private readonly Container background;
 
-        public DrawableScore(Score score, double? weight = null)
+        protected DrawableScore(Score score)
         {
-            this.score = score;
-            this.weight = weight;
+            Score = score;
 
+            RelativeSizeAxes = Axes.X;
+            Height = 60;
             Children = new Drawable[]
             {
-                new DrawableRank(score.Rank)
+                background = new Container
                 {
-                    RelativeSizeAxes = Axes.Y,
-                    Width = 60,
-                    FillMode = FillMode.Fit,
-                },
-                stats = new FillFlowContainer<OsuSpriteText>
-                {
-                    RelativeSizeAxes = Axes.X,
-                    AutoSizeAxes = Axes.Y,
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreRight,
-                    Direction = FillDirection.Vertical,
-                },
-                metadata = new FillFlowContainer
-                {
-                    RelativeSizeAxes = Axes.X,
-                    AutoSizeAxes = Axes.Y,
-                    Anchor = Anchor.CentreLeft,
-                    Origin = Anchor.CentreLeft,
-                    Margin = new MarginPadding { Left = 70 },
-                    Direction = FillDirection.Vertical,
-                    Child = new OsuSpriteText
+                    RelativeSizeAxes = Axes.Both,
+                    Masking = true,
+                    CornerRadius = 3,
+                    Alpha = 0,
+                    EdgeEffect = new EdgeEffectParameters
                     {
-                        Text = score.Date.LocalDateTime.ToShortDateString(),
-                        TextSize = 11,
-                        Colour = OsuColour.Gray(0xAA),
-                        Depth = -1,
+                        Type = EdgeEffectType.Shadow,
+                        Offset = new Vector2(0f, 1f),
+                        Radius = 1f,
+                        Colour = Color4.Black.Opacity(0.2f),
                     },
+                    Child = coloredBackground = new Box { RelativeSizeAxes = Axes.Both }
                 },
-                modContainer = new ModContainer
+                new Container
                 {
-                    AutoSizeAxes = Axes.Y,
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreRight,
-                    Width = 60,
-                    Margin = new MarginPadding { Right = 150 }
-                }
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
+                    Width = 0.97f,
+                    Children = new Drawable[]
+                    {
+                        underscoreLine = new Box
+                        {
+                            Anchor = Anchor.BottomCentre,
+                            Origin = Anchor.BottomCentre,
+                            RelativeSizeAxes = Axes.X,
+                            Height = 1,
+                        },
+                        new DrawableRank(score.Rank)
+                        {
+                            RelativeSizeAxes = Axes.Y,
+                            Width = 60,
+                            FillMode = FillMode.Fit,
+                        },
+                        Stats = new FillFlowContainer<OsuSpriteText>
+                        {
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            Direction = FillDirection.Vertical,
+                        },
+                        metadata = new FillFlowContainer
+                        {
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            Margin = new MarginPadding { Left = 70 },
+                            Direction = FillDirection.Vertical,
+                            Child = new OsuSpriteText
+                            {
+                                Text = score.Date.LocalDateTime.ToShortDateString(),
+                                TextSize = 11,
+                                Colour = OsuColour.Gray(0xAA),
+                                Depth = -1,
+                            },
+                        },
+                        modsContainer = new ScoreModsContainer
+                        {
+                            AutoSizeAxes = Axes.Y,
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            Width = 60,
+                            Margin = new MarginPadding { Right = 160 }
+                        }
+                    }
+                },
             };
         }
 
-        [BackgroundDependencyLoader]
+        [BackgroundDependencyLoader(true)]
         private void load(OsuColour colour, LocalisationEngine locale, BeatmapSetOverlay beatmapSetOverlay)
         {
-            double pp = score.PP ?? 0;
-            stats.Add(new OsuSpriteText
-            {
-                Text = $"{pp:0}pp",
-                Anchor = Anchor.TopRight,
-                Origin = Anchor.TopRight,
-                TextSize = 18,
-                Font = "Exo2.0-BoldItalic",
-            });
+            coloredBackground.Colour = underscoreLine.Colour = colour.Gray4;
 
-            if (weight.HasValue)
+            Stats.Add(new OsuSpriteText
             {
-                stats.Add(new OsuSpriteText
-                {
-                    Text = $"weighted: {pp * weight:0}pp ({weight:P0})",
-                    Anchor = Anchor.TopRight,
-                    Origin = Anchor.TopRight,
-                    Colour = colour.GrayA,
-                    TextSize = 11,
-                    Font = "Exo2.0-RegularItalic",
-                });
-            }
-
-            stats.Add(new OsuSpriteText
-            {
-                Text = $"accuracy: {score.Accuracy:P2}",
+                Text = $"accuracy: {Score.Accuracy:P2}",
                 Anchor = Anchor.TopRight,
                 Origin = Anchor.TopRight,
                 Colour = colour.GrayA,
                 TextSize = 11,
                 Font = "Exo2.0-RegularItalic",
+                Depth = -1,
             });
 
-            metadata.Add(new OsuHoverContainer
+            metadata.Add(new MetadataContainer(Score.Beatmap.Metadata.Title, Score.Beatmap.Metadata.Artist)
             {
                 AutoSizeAxes = Axes.Both,
                 Action = () =>
                 {
-                    if (score.Beatmap.OnlineBeatmapSetID.HasValue) beatmapSetOverlay.ShowBeatmapSet(score.Beatmap.OnlineBeatmapSetID.Value);
+                    if (Score.Beatmap.OnlineBeatmapSetID.HasValue) beatmapSetOverlay?.ShowBeatmapSet(Score.Beatmap.OnlineBeatmapSetID.Value);
                 },
                 Child = new FillFlowContainer
                 {
@@ -125,15 +145,15 @@ namespace osu.Game.Overlays.Profile.Sections.Ranks
                         new OsuSpriteText
                         {
                             Current = locale.GetUnicodePreference(
-                                $"{score.Beatmap.Metadata.TitleUnicode ?? score.Beatmap.Metadata.Title} [{score.Beatmap.Version}] ",
-                                $"{score.Beatmap.Metadata.Title ?? score.Beatmap.Metadata.TitleUnicode} [{score.Beatmap.Version}] "
+                                $"{Score.Beatmap.Metadata.TitleUnicode ?? Score.Beatmap.Metadata.Title} [{Score.Beatmap.Version}] ",
+                                $"{Score.Beatmap.Metadata.Title ?? Score.Beatmap.Metadata.TitleUnicode} [{Score.Beatmap.Version}] "
                             ),
                             TextSize = 15,
                             Font = "Exo2.0-SemiBoldItalic",
                         },
                         new OsuSpriteText
                         {
-                            Current = locale.GetUnicodePreference(score.Beatmap.Metadata.ArtistUnicode, score.Beatmap.Metadata.Artist),
+                            Current = locale.GetUnicodePreference(Score.Beatmap.Metadata.ArtistUnicode, Score.Beatmap.Metadata.Artist),
                             TextSize = 12,
                             Padding = new MarginPadding { Top = 3 },
                             Font = "Exo2.0-RegularItalic",
@@ -142,21 +162,33 @@ namespace osu.Game.Overlays.Profile.Sections.Ranks
                 },
             });
 
-            foreach (Mod mod in score.Mods)
-                modContainer.Add(new ModIcon(mod)
-                {
-                    AutoSizeAxes = Axes.Both,
-                    Scale = new Vector2(0.5f),
-                });
+            foreach (Mod mod in Score.Mods)
+                modsContainer.Add(new ModIcon(mod) { Scale = new Vector2(0.5f) });
         }
 
-        private class ModContainer : FlowContainer<ModIcon>
+        protected override bool OnClick(InputState state) => true;
+
+        protected override bool OnHover(InputState state)
         {
-            protected override IEnumerable<Vector2> ComputeLayoutPositions()
+            background.FadeIn(fade_duration, Easing.OutQuint);
+            underscoreLine.FadeOut(fade_duration, Easing.OutQuint);
+            return true;
+        }
+
+        protected override void OnHoverLost(InputState state)
+        {
+            background.FadeOut(fade_duration, Easing.OutQuint);
+            underscoreLine.FadeIn(fade_duration, Easing.OutQuint);
+            base.OnHoverLost(state);
+        }
+
+        private class MetadataContainer : OsuHoverContainer, IHasTooltip
+        {
+            public string TooltipText { get; set; }
+
+            public MetadataContainer(string title, string artist)
             {
-                int count = FlowingChildren.Count();
-                for (int i = 0; i < count; i++)
-                    yield return new Vector2(DrawWidth * i * (count == 1 ? 0 : 1f / (count - 1)), 0);
+                TooltipText = $"{artist} - {title}";
             }
         }
     }

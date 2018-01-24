@@ -15,7 +15,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES30;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     public class Slider : Container
     {

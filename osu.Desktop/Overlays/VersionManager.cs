@@ -3,7 +3,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Net.Http;
 using osu.Framework.Allocation;
 using osu.Framework.Development;
 using osu.Framework.Graphics;
@@ -198,10 +197,9 @@ namespace osu.Desktop.Overlays
                     }
                 }
             }
-            catch (HttpRequestException)
+            catch (Exception)
             {
-                //likely have no internet connection.
-                //we'll ignore this and retry later.
+                // we'll ignore this and retry later. can be triggered by no internet connection or thread abortion.
             }
             finally
             {
@@ -233,7 +231,8 @@ namespace osu.Desktop.Overlays
                 Text = @"Update ready to install. Click to restart!",
                 Activated = () =>
                 {
-                    UpdateManager.RestartAppWhenExited();
+                    // Squirrel returns execution to us after the update process is started, so it's safe to use Wait() here
+                    UpdateManager.RestartAppWhenExited().Wait();
                     game.GracefullyExit();
                     return true;
                 }

@@ -17,6 +17,8 @@ using osu.Game.Rulesets.UI;
 using osu.Game.Screens.Backgrounds;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using osu.Framework.Threading;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.Scoring;
@@ -34,15 +36,17 @@ namespace osu.Game.Screens.Play
     {
         protected override BackgroundScreen CreateBackground() => new BackgroundScreenBeatmap(Beatmap);
 
-        internal override bool ShowOverlays => false;
+        public override bool ShowOverlays => false;
 
-        internal override bool HasLocalCursorDisplayed => !pauseContainer.IsPaused && !HasFailed && RulesetContainer.ProvidingUserCursor;
+        public override bool HasLocalCursorDisplayed => !pauseContainer.IsPaused && !HasFailed && RulesetContainer.ProvidingUserCursor;
 
         public Action RestartRequested;
 
-        internal override bool AllowBeatmapRulesetChange => false;
+        public override bool AllowBeatmapRulesetChange => false;
 
         public bool HasFailed { get; private set; }
+
+        public bool AllowPause { get; set; } = true;
 
         public int RestartCount;
 
@@ -142,16 +146,6 @@ namespace osu.Game.Screens.Play
             userAudioOffset.ValueChanged += v => offsetClock.Offset = v;
             userAudioOffset.TriggerChange();
 
-            Schedule(() =>
-            {
-                adjustableSourceClock.Reset();
-
-                foreach (var mod in working.Mods.Value.OfType<IApplicableToClock>())
-                    mod.ApplyToClock(adjustableSourceClock);
-
-                decoupledClock.ChangeSource(adjustableSourceClock);
-            });
-
             Children = new Drawable[]
             {
                 storyboardContainer = new Container
@@ -166,7 +160,7 @@ namespace osu.Game.Screens.Play
                     FramedClock = offsetClock,
                     OnRetry = Restart,
                     OnQuit = Exit,
-                    CheckCanPause = () => ValidForResume && !HasFailed && !RulesetContainer.HasReplayLoaded,
+                    CheckCanPause = () => AllowPause && ValidForResume && !HasFailed && !RulesetContainer.HasReplayLoaded,
                     Retries = RestartCount,
                     OnPause = () => {
                         hudOverlay.KeyCounter.IsCounting = pauseContainer.IsPaused;
@@ -230,9 +224,23 @@ namespace osu.Game.Screens.Play
 
             breakOverlay.BindProcessor(scoreProcessor);
 
+            hudOverlay.ReplaySettingsOverlay.PlaybackSettings.AdjustableClock = adjustableSourceClock;
+
             // Bind ScoreProcessor to ourselves
             scoreProcessor.AllJudged += onCompletion;
             scoreProcessor.Failed += onFail;
+
+            foreach (var mod in Beatmap.Value.Mods.Value.OfType<IApplicableToScoreProcessor>())
+                mod.ApplyToScoreProcessor(scoreProcessor);
+        }
+
+        private void applyRateFromMods()
+        {
+            if (adjustableSourceClock == null) return;
+
+            adjustableSourceClock.Rate = 1;
+            foreach (var mod in Beatmap.Value.Mods.Value.OfType<IApplicableToClock>())
+                mod.ApplyToClock(adjustableSourceClock);
         }
 
         private void initializeStoryboard(bool asyncLoad)
@@ -242,7 +250,10 @@ namespace osu.Game.Screens.Play
             storyboard = beatmap.Storyboard.CreateDrawable(Beatmap.Value);
             storyboard.Masking = true;
 
-            storyboardContainer.Add(asyncLoad ? new AsyncLoadWrapper(storyboard) { RelativeSizeAxes = Axes.Both } : (Drawable)storyboard);
+            if (asyncLoad)
+                LoadComponentAsync(storyboard, storyboardContainer.Add);
+            else
+                storyboardContainer.Add(storyboard);
         }
 
         public void Restart()
@@ -299,7 +310,7 @@ namespace osu.Game.Screens.Play
             if (!loadedSuccessfully)
                 return;
 
-            (Background as BackgroundScreenBeatmap)?.BlurTo(Vector2.Zero, 1500, Easing.OutQuint);
+            (Background as BackgroundScreenBeatmap)?.BlurTo(Vector2.Zero, 1000, Easing.OutQuint);
 
             dimLevel.ValueChanged += dimLevel_ValueChanged;
             showStoryboard.ValueChanged += showStoryboard_ValueChanged;
@@ -312,10 +323,26 @@ namespace osu.Game.Screens.Play
                 .Delay(250)
                 .FadeIn(250);
 
-            this.Delay(750).Schedule(() =>
+            Task.Run(() =>
             {
-                if (!pauseContainer.IsPaused)
-                    decoupledClock.Start();
+                adjustableSourceClock.Reset();
+
+                // this is temporary until we have blocking (async.Wait()) audio component methods.
+                // then we can call ResetAsync().Wait() or the blocking version above.
+                while (adjustableSourceClock.IsRunning)
+                    Thread.Sleep(1);
+
+                Schedule(() =>
+                {
+                    decoupledClock.ChangeSource(adjustableSourceClock);
+                    applyRateFromMods();
+
+                    this.Delay(750).Schedule(() =>
+                    {
+                        if (!pauseContainer.IsPaused)
+                            decoupledClock.Start();
+                    });
+                });
             });
 
             pauseContainer.Alpha = 0;
@@ -330,8 +357,11 @@ namespace osu.Game.Screens.Play
 
         protected override bool OnExiting(Screen next)
         {
-            if (HasFailed || !ValidForResume || pauseContainer?.AllowExit != false || RulesetContainer?.HasReplayLoaded != false)
+            if (!AllowPause || HasFailed || !ValidForResume || pauseContainer?.IsPaused != false || RulesetContainer?.HasReplayLoaded != false)
             {
+                // In the case of replays, we may have changed the playback rate.
+                applyRateFromMods();
+
                 fadeOut();
                 return base.OnExiting(next);
             }

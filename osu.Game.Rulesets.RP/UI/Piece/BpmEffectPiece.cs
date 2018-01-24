@@ -3,7 +3,7 @@
 
 using osu.Framework.Graphics.Containers;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     /// <summary>
     /// this class will beat

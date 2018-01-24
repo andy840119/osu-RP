@@ -2,11 +2,10 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
-using System.Linq;
 using osu.Framework.Graphics.Containers;
+using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
-using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
 using osu.Game.Rulesets.RP.Objects.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
@@ -29,7 +28,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         public ContainerGroupContainArea()
         {
-            ListTemplate=new List<IHasTemplate>();
+            ListTemplate = new List<IHasTemplate>();
         }
 
         public void FadeIn(double time = 0)

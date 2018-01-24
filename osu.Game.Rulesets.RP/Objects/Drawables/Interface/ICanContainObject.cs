@@ -5,6 +5,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Interface
 {
     public interface ICanContainObject : IHasTemplate
     {
-
     }
 }

@@ -18,7 +18,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
         /// </summary>
         public static void ReSignId()
         {
-
         }
 
         public static void BindingAll(this List<BaseRpObject> ilstObjects)
@@ -40,8 +39,6 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Externsion
 
         public static void BindingRpContainerLine(this List<BaseRpObject> ilstObjects, BaseRpObject single)
         {
-
         }
-
     }
 }

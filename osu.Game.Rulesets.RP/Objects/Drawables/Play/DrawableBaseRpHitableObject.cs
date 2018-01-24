@@ -11,7 +11,6 @@ using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.KeyManager;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component;
 using osu.Game.Rulesets.RP.Objects.Drawables.Extension;
-using osu.Game.Rulesets.RP.Objects.Drawables.Interface;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
 {
@@ -28,7 +27,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         protected DrawableBaseRpHitableObject(BaseRpHitableObject hitObject)
             : base(hitObject)
         {
-           
         }
 
         protected override void ConstructObject()
@@ -39,7 +37,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
         //press down event
         protected virtual void OnKeyPressDown()
         {
-
             UpdateJudgement(true);
             //Debug.Print(Judgement.Result + " " + RpHitObject.StartTime + " " + Position.X + "," + Position.Y);
         }
@@ -86,9 +83,9 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             {
                 var result = HitObject.ScoreResultForOffset(timeOffset);
                 //cell component to show effect
-                this.TickleComponents(result);
+                this.TickleComponents(RpObject);
                 //call parent component to show effect
-                this.ParentObject.TickleComponents(RpObject,result);
+                ParentObject.TickleComponents(RpObject, result);
             }
         }
 
@@ -118,7 +115,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Play
             {
                 var pressDelay = Math.Abs(Time.Current - HitObject.StartTime);
                 //Hit at the time
-                if (pressDelay < HitObject.HitWindowFor((HitResult.Meh)))
+                if (pressDelay < HitObject.HitWindowFor(HitResult.Meh))
                 {
                     OnKeyPressDown();
                     return true;

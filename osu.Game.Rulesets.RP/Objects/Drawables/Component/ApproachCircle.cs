@@ -6,7 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using osu.Game.Rulesets.RP.SkinManager;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
@@ -43,7 +43,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         public ApproachCircle()
         {
-
         }
 
         /// <summary>

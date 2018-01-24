@@ -19,11 +19,9 @@ namespace osu.Game.Rulesets.RP.Scoreing
     /// </summary>
     internal class RpScoreProcessor : ScoreProcessor<BaseRpObject>
     {
-
         public RpScoreProcessor(RulesetContainer<BaseRpObject> hitRenderer)
             : base(hitRenderer)
         {
-
         }
 
         private float hpDrainRate;

@@ -23,7 +23,7 @@ using osu.Game.Graphics.Cursor;
 
 namespace osu.Game.Screens.Select
 {
-    internal class BeatmapCarousel : OsuScrollContainer
+    public class BeatmapCarousel : OsuScrollContainer
     {
         public BeatmapInfo SelectedBeatmap => selectedPanel?.Beatmap;
 
@@ -116,10 +116,10 @@ namespace osu.Game.Screens.Select
             Schedule(() => removeGroup(groups.Find(b => b.BeatmapSet.ID == beatmapSet.ID)));
         }
 
-        internal void UpdateBeatmap(BeatmapInfo beatmap)
+        public void UpdateBeatmap(BeatmapInfo beatmap)
         {
             // todo: this method should not run more than once for the same BeatmapSetInfo.
-            var set = manager.Refresh(beatmap.BeatmapSet);
+            var set = manager.QueryBeatmapSet(s => s.ID == beatmap.BeatmapSetInfoID);
 
             // todo: this method should be smarter as to not recreate panels that haven't changed, etc.
             var group = groups.Find(b => b.BeatmapSet.ID == set.ID);
@@ -186,13 +186,18 @@ namespace osu.Game.Screens.Select
 
         public Action<BeatmapInfo> HideDifficultyRequested;
 
+        private void selectNullBeatmap()
+        {
+            selectedGroup = null;
+            selectedPanel = null;
+            SelectionChanged?.Invoke(null);
+        }
+
         public void SelectNext(int direction = 1, bool skipDifficulties = true)
         {
             if (groups.All(g => g.State == BeatmapGroupState.Hidden))
             {
-                selectedGroup = null;
-                selectedPanel = null;
-                SelectionChanged?.Invoke(null);
+                selectNullBeatmap();
                 return;
             }
 
@@ -383,6 +388,14 @@ namespace osu.Game.Screens.Select
             if (group == null)
                 return;
 
+            if (selectedGroup == group)
+            {
+                if (getVisibleGroups().Count() == 1)
+                    selectNullBeatmap();
+                else
+                    SelectNext();
+            }
+
             groups.Remove(group);
             panels.Remove(group.Header);
             foreach (var p in group.BeatmapPanels)
@@ -390,9 +403,6 @@ namespace osu.Game.Screens.Select
 
             scrollableContent.Remove(group.Header);
             scrollableContent.RemoveRange(group.BeatmapPanels);
-
-            if (selectedGroup == group)
-                SelectNext();
 
             computeYPositions();
         }
@@ -562,7 +572,18 @@ namespace osu.Game.Screens.Select
                     // Makes sure headers are always _below_ panels,
                     // and depth flows downward.
                     panel.Depth = i + (panel is BeatmapSetHeader ? panels.Count : 0);
-                    scrollableContent.Add(panel);
+
+                    switch (panel.LoadState)
+                    {
+                        case LoadState.NotLoaded:
+                            LoadComponentAsync(panel);
+                            break;
+                        case LoadState.Loading:
+                            break;
+                        default:
+                            scrollableContent.Add(panel);
+                            break;
+                    }
                 }
             }
 

@@ -91,13 +91,13 @@ namespace osu.Game.Overlays
 
             sections = new ProfileSection[]
             {
-                new AboutSection(),
+                //new AboutSection(),
                 //new RecentSection(),
                 new RanksSection(),
                 //new MedalsSection(),
-                //new HistoricalSection(),
-                //new BeatmapsSection(),
-                //new KudosuSection()
+                new HistoricalSection(),
+                new BeatmapsSection(),
+                new KudosuSection()
             };
             tabs = new ProfileTabControl
             {
@@ -164,6 +164,7 @@ namespace osu.Game.Overlays
             }
 
             Show();
+            sectionsContainer.ScrollToTop();
         }
 
         private void userLoadComplete(User user)
@@ -175,7 +176,7 @@ namespace osu.Game.Overlays
                 var sec = sections.FirstOrDefault(s => s.Identifier == id);
                 if (sec != null)
                 {
-                    sec.User = user;
+                    sec.User.Value = user;
 
                     sectionsContainer.Add(sec);
                     tabs.AddItem(sec);

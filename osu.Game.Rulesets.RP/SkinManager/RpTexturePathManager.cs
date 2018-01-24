@@ -3,7 +3,6 @@
 
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Objects;
-using osu.Game.Rulesets.RP.Objects.Drawables.Play;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.RP.SkinManager
@@ -273,9 +272,9 @@ namespace osu.Game.Rulesets.RP.SkinManager
         {
             string fileName = null;
 
-            if (baseHitObject as RpHitObject != null)
+            if (baseHitObject as RpHit != null)
             {
-                switch ((baseHitObject as RpHitObject).Direction)
+                switch ((baseHitObject as RpHit).Direction)
                 {
                     case Direction.Up:
                         fileName = @"Up";

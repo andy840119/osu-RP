@@ -36,7 +36,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
                 for (var i = 0; i < singleTuple.ListBaseHitObject.Count; i++)
                     if (_lastHitObjectTuple.ListBaseHitObject.Count > i)
                     {
-                        (singleTuple.ListBaseHitObject[i] as RpHitObject).Direction = FindNext((_lastHitObjectTuple.ListBaseHitObject[i] as RpHitObject).Direction);
+                        (singleTuple.ListBaseHitObject[i] as RpHit).Direction = FindNext((_lastHitObjectTuple.ListBaseHitObject[i] as RpHit).Direction);
                     }
                 convert = false;
             }
@@ -45,7 +45,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
                 for (var i = 0; i < singleTuple.ListBaseHitObject.Count; i++)
                     if (_lastHitObjectTuple.ListBaseHitObject.Count > i)
                     {
-                        (singleTuple.ListBaseHitObject[i] as RpHitObject).Direction = FindPrevious((_lastHitObjectTuple.ListBaseHitObject[i] as RpHitObject).Direction);
+                        (singleTuple.ListBaseHitObject[i] as RpHit).Direction = FindPrevious((_lastHitObjectTuple.ListBaseHitObject[i] as RpHit).Direction);
                     }
                 convert = true;
             }
@@ -62,7 +62,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Type
         /// </summary>
         protected void OptimizeBetterHitExperiance()
         {
-            RpHitObject hitObject = _lastHitObjectTuple.ListBaseHitObject[0] as RpHitObject;
+            RpHit hitObject = _lastHitObjectTuple.ListBaseHitObject[0] as RpHit;
 
             if (hitObject != null)
             {

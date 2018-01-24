@@ -60,7 +60,7 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
             //var circleRadius = baseHitObject.Scale * 64;
             var circleRadius = 1 * 64;
 
-            var slider = BaseHitObject as RpHoldObject;
+            var slider = BaseHitObject as RpHold;
             if (slider != null)
                 MaxCombo += 2; // slider.Ticks.Count();
 

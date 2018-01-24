@@ -14,8 +14,8 @@ using osu.Game.Rulesets.RP.Replays;
 using osu.Game.Rulesets.RP.Scoreing;
 using osu.Game.Rulesets.RP.UI.GamePlay.Playfield;
 using osu.Game.Rulesets.Scoring;
-using OpenTK;
 using osu.Game.Rulesets.UI;
+using OpenTK;
 
 namespace osu.Game.Rulesets.RP.UI.GamePlay.RulesetContainer
 {
@@ -70,14 +70,14 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.RulesetContainer
         {
             DrawableHitObject<BaseRpObject> returnObject = null;
 
-            if (h is RpHitObject)
-                return new DrawableRpHitObject((RpHitObject)h);
-            if (h is RpHoldObject)
-                return new DrawableRpHoldObject((RpHoldObject)h);
-            if (h is RpContainerLineHoldObject)
-                return new DrawableRpContainerLineHoldObject((RpContainerLineHoldObject)h);
-            if (h is RpContainerLineGroup)
-                return new DrawableRpContainerLineGroup((RpContainerLineGroup)h);
+            if (h is RpHit)
+                return new DrawableRpHit((RpHit)h);
+            if (h is RpHold)
+                return new DrawableRpHold((RpHold)h);
+            if (h is RpRectangleHold)
+                return new DrawableRpRectangleHold((RpRectangleHold)h);
+            if (h is RpContainerGroup)
+                return new DrawableRpContainerGroup((RpContainerGroup)h);
 
             if (h is RpContainerLine)
                 return new DrawableRpContainerLine((RpContainerLine)h);

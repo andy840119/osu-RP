@@ -14,9 +14,9 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Genera
         /// <summary>
         ///     Generators the object by parameter.
         /// </summary>
-        internal List<RpContainerLineGroup> GetListContainer(ConvertParameter single)
+        internal List<RpContainerGroup> GetListContainer(ConvertParameter single)
         {
-            var returnContainer = new List<RpContainerLineGroup>();
+            var returnContainer = new List<RpContainerGroup>();
             var listLayout = new List<RpContainerLine>();
 
             //container number
@@ -36,9 +36,9 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Genera
         }
 
 
-        private RpContainerLineGroup GenerateSingleContainer(ConvertParameter single)
+        private RpContainerGroup GenerateSingleContainer(ConvertParameter single)
         {
-            var objectContainer = new RpContainerLineGroup(single.SliceConvertParameter.StartTime);
+            var objectContainer = new RpContainerGroup(single.SliceConvertParameter.StartTime);
             objectContainer.StartTime = single.SliceConvertParameter.StartTime;
             objectContainer.EndTime = single.SliceConvertParameter.EndTime;
             objectContainer.BPM = single.SliceConvertParameter.BPM;
@@ -46,7 +46,7 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.ContainerGegenerator.Genera
             return objectContainer;
         }
 
-        private RpContainerLine GenerateSingleLayout(ConvertParameter single, RpContainerLineGroup container)
+        private RpContainerLine GenerateSingleLayout(ConvertParameter single, RpContainerGroup container)
         {
             var objectContainerLayer = new RpContainerLine(container);
             objectContainerLayer.StartTime = single.SliceConvertParameter.StartTime;

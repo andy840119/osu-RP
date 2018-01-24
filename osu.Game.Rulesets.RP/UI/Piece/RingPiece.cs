@@ -8,7 +8,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Game.Rulesets.RP.Objects;
 
-namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
+namespace osu.Game.Rulesets.RP.UI.Piece
 {
     /// <summary>
     ///     中間那個環
@@ -16,9 +16,9 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece
     public class RingPiece : Container
     {
         private readonly Sprite ring;
-        private RpHitObject _rpObject;
+        private RpHit _rpObject;
 
-        public RingPiece(RpHitObject rpObject)
+        public RingPiece(RpHit rpObject)
         {
             _rpObject = rpObject;
 

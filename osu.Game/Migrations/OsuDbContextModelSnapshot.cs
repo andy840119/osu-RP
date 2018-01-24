@@ -95,11 +95,16 @@ namespace osu.Game.Migrations
 
                     b.HasIndex("BeatmapSetInfoID");
 
-                    b.HasIndex("Hash");
+                    b.HasIndex("Hash")
+                        .IsUnique();
 
-                    b.HasIndex("MD5Hash");
+                    b.HasIndex("MD5Hash")
+                        .IsUnique();
 
                     b.HasIndex("MetadataID");
+
+                    b.HasIndex("OnlineBeatmapID")
+                        .IsUnique();
 
                     b.HasIndex("RulesetID");
 
@@ -177,9 +182,13 @@ namespace osu.Game.Migrations
 
                     b.HasIndex("DeletePending");
 
-                    b.HasIndex("Hash");
+                    b.HasIndex("Hash")
+                        .IsUnique();
 
                     b.HasIndex("MetadataID");
+
+                    b.HasIndex("OnlineBeatmapSetID")
+                        .IsUnique();
 
                     b.ToTable("BeatmapSetInfo");
                 });

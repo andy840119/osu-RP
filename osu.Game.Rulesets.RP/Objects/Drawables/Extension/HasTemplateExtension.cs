@@ -15,11 +15,10 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
 {
     public static class HasTemplateExtension
     {
-        private static PathPrecentageCounter PathPrecentageCounter=new PathPrecentageCounter();
+        private static PathPrecentageCounter PathPrecentageCounter = new PathPrecentageCounter();
 
         public static void InitialTemplate(this IHasTemplate drawableObject)
         {
-
             //set all attribute form object to drawable component
             drawableObject.UpdateObjectToDrawable();
 
@@ -37,7 +36,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         public static double DelayTime => 0;
 
         //update progress
-        public static void UpdateTemplate(this IHasTemplate drawableObject,double currentTime)
+        public static void UpdateTemplate(this IHasTemplate drawableObject, double currentTime)
         {
             //start progress
             var startProgress = PathPrecentageCounter.CalculatePrecentage(drawableObject.RpObject.StartTime - currentTime + DelayTime, 1);
@@ -62,7 +61,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         }
 
         //Fade in
-        public static IHasTemplate FadeInComponents(this IHasTemplate drawableObject,double time = 0)
+        public static IHasTemplate FadeInComponents(this IHasTemplate drawableObject, double time = 0)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {
@@ -81,7 +80,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         }
 
         //fade out
-        public static IHasTemplate FadeOutComponents(this IHasTemplate drawableObject,double time = 0)
+        public static IHasTemplate FadeOutComponents(this IHasTemplate drawableObject, double time = 0)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {
@@ -91,7 +90,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         }
 
         //tickle
-        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject, HitResult result)
+        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject, BaseRpObject result)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {
@@ -104,17 +103,16 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Extension
         }
 
         //Tickle form child object
-        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject ,ObjectType tickleFrom, HitResult result)
+        public static IHasTemplate TickleComponents(this IHasTemplate drawableObject, BaseRpObject tickleFrom, HitResult result)
         {
             foreach (IComponentBase single in drawableObject.Components)
             {
                 if (single is IComponentTickleByChild canTickleObject)
                 {
-                    canTickleObject.Tickle(tickleFrom,result);
+                    canTickleObject.Tickle(tickleFrom, result);
                 }
             }
             return drawableObject;
         }
-
     }
 }

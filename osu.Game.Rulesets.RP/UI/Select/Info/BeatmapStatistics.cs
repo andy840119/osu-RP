@@ -4,9 +4,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using osu.Game.Beatmaps;
 using osu.Game.Graphics;
-using System.Linq;
 using osu.Game.Rulesets.RP.Objects;
 
 namespace osu.Game.Rulesets.RP.UI.Select.Info
@@ -32,7 +32,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Info
             yield return new BeatmapStatistic
             {
                 Name = @"Hit",
-                Content = _beatmap.Beatmap.HitObjects.Where(x=>x is RpHitObject).Count().ToString("N0"),
+                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpHit).Count().ToString("N0"),
                 Icon = FontAwesome.fa_dot_circle_o
             };
 
@@ -40,7 +40,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Info
             yield return new BeatmapStatistic
             {
                 Name = @"Hold",
-                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpHoldObject).Count().ToString("N0"),
+                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpHold).Count().ToString("N0"),
                 Icon = FontAwesome.fa_circle_o
             };
 
@@ -48,7 +48,7 @@ namespace osu.Game.Rulesets.RP.UI.Select.Info
             yield return new BeatmapStatistic
             {
                 Name = @"Press",
-                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpContainerLineHoldObject).Count().ToString("N0"),
+                Content = _beatmap.Beatmap.HitObjects.Where(x => x is RpRectangleHold).Count().ToString("N0"),
                 Icon = FontAwesome.fa_circle_o
             };
 

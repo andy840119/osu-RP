@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap;
 using osu.Game.Rulesets.RP.Objects;
+using osu.Game.Rulesets.Mods;
 
 namespace osu.Game.Rulesets.RP.DifficultyCalculator
 {
@@ -37,16 +38,21 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
         {
         }
 
+        public RpDifficultyCalculator(Beatmap beatmap, Mod[] mods)
+            : base(beatmap)
+        {
+        }
+
         protected override void PreprocessHitObjects()
         {
         }
 
-        protected override double CalculateInternal(Dictionary<string, string> categoryDifficulty)
+        public override double Calculate(Dictionary<string, string> categoryDifficulty = null)
         {
             // Fill our custom DifficultyHitObject class, that carries additional information
             DifficultyHitObjects.Clear();
 
-            foreach (var hitObject in Objects)
+            foreach (var hitObject in Beatmap.HitObjects)
                 DifficultyHitObjects.Add(new RpHitObjectDifficulty(hitObject));
 
             // Sort DifficultyHitObjects by StartTime of the HitObjects - just to make sure.
@@ -178,7 +184,7 @@ namespace osu.Game.Rulesets.RP.DifficultyCalculator
             return difficulty;
         }
 
-        protected override BeatmapConverter<BaseRpObject> CreateBeatmapConverter() => new BeatmapConvertor();
+        protected override BeatmapConverter<BaseRpObject> CreateBeatmapConverter(Beatmap beatmap) => new BeatmapConvertor();
 
 
         //ÅEΩzÅEΩE

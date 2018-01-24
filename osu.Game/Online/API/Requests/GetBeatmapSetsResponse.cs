@@ -6,15 +6,16 @@ using System.Linq;
 using Newtonsoft.Json;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets;
+using System;
 
 namespace osu.Game.Online.API.Requests
 {
-    public class GetBeatmapSetsResponse : BeatmapMetadata
+    public class GetBeatmapSetsResponse : BeatmapMetadata // todo: this is a bit wrong...
     {
         [JsonProperty(@"covers")]
         private BeatmapSetOnlineCovers covers { get; set; }
 
-        [JsonProperty(@"previewUrl")]
+        [JsonProperty(@"preview_url")]
         private string preview { get; set; }
 
         [JsonProperty(@"play_count")]
@@ -23,8 +24,20 @@ namespace osu.Game.Online.API.Requests
         [JsonProperty(@"favourite_count")]
         private int favouriteCount { get; set; }
 
-        [JsonProperty(@"id")]
-        private int onlineId { get; set; }
+        [JsonProperty(@"bpm")]
+        private double bpm { get; set; }
+
+        [JsonProperty(@"video")]
+        private bool hasVideo { get; set; }
+
+        [JsonProperty(@"submitted_date")]
+        private DateTimeOffset submitted { get; set; }
+
+        [JsonProperty(@"ranked_date")]
+        private DateTimeOffset ranked { get; set; }
+
+        [JsonProperty(@"last_updated")]
+        private DateTimeOffset lastUpdated { get; set; }
 
         [JsonProperty(@"user_id")]
         private long creatorId {
@@ -38,7 +51,7 @@ namespace osu.Game.Online.API.Requests
         {
             return new BeatmapSetInfo
             {
-                OnlineBeatmapSetID = onlineId,
+                OnlineBeatmapSetID = OnlineBeatmapSetID,
                 Metadata = this,
                 OnlineInfo = new BeatmapSetOnlineInfo
                 {
@@ -46,6 +59,11 @@ namespace osu.Game.Online.API.Requests
                     Preview = preview,
                     PlayCount = playCount,
                     FavouriteCount = favouriteCount,
+                    BPM = bpm,
+                    HasVideo = hasVideo,
+                    Submitted = submitted,
+                    Ranked = ranked,
+                    LastUpdated = lastUpdated,
                 },
                 Beatmaps = beatmaps.Select(b => b.ToBeatmap(rulesets)).ToList(),
             };
@@ -53,6 +71,9 @@ namespace osu.Game.Online.API.Requests
 
         private class GetBeatmapSetsBeatmapResponse : BeatmapMetadata
         {
+            [JsonProperty(@"id")]
+            private int onlineBeatmapID { get; set; }
+
             [JsonProperty(@"playcount")]
             private int playCount { get; set; }
 
@@ -65,6 +86,30 @@ namespace osu.Game.Online.API.Requests
             [JsonProperty(@"difficulty_rating")]
             private double starDifficulty { get; set; }
 
+            [JsonProperty(@"drain")]
+            private float drainRate { get; set; }
+
+            [JsonProperty(@"cs")]
+            private float circleSize { get; set; }
+
+            [JsonProperty(@"ar")]
+            private float approachRate { get; set; }
+
+            [JsonProperty(@"accuracy")]
+            private float overallDifficulty { get; set; }
+
+            [JsonProperty(@"total_length")]
+            private double length { get; set; }
+
+            [JsonProperty(@"count_circles")]
+            private int circleCount { get; set; }
+
+            [JsonProperty(@"count_sliders")]
+            private int sliderCount { get; set; }
+
+            [JsonProperty(@"version")]
+            private string version { get; set; }
+
             public BeatmapInfo ToBeatmap(RulesetStore rulesets)
             {
                 return new BeatmapInfo
@@ -72,10 +117,22 @@ namespace osu.Game.Online.API.Requests
                     Metadata = this,
                     Ruleset = rulesets.GetRuleset(ruleset),
                     StarDifficulty = starDifficulty,
+                    OnlineBeatmapID = onlineBeatmapID,
+                    Version = version,
+                    BaseDifficulty = new BeatmapDifficulty
+                    {
+                        DrainRate = drainRate,
+                        CircleSize = circleSize,
+                        ApproachRate = approachRate,
+                        OverallDifficulty = overallDifficulty,
+                    },
                     OnlineInfo = new BeatmapOnlineInfo
                     {
                         PlayCount = playCount,
                         PassCount = passCount,
+                        Length = length,
+                        CircleCount = circleCount,
+                        SliderCount = sliderCount,
                     },
                 };
             }

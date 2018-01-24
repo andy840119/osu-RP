@@ -34,7 +34,7 @@ namespace osu.Desktop
                 }
                 else
                 {
-#if DEBUG
+#if !DEBUG
                      host.Run(new OsuTestBrowser());
 #else
                     switch (args.FirstOrDefault() ?? string.Empty)

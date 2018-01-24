@@ -9,8 +9,8 @@ namespace osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Interface
 {
     public interface IHasGameField
     {
-          List<DrawableBaseRpObject> ListDrawableObject { get; set; }
+        List<DrawableBaseRpObject> ListDrawableObject { get; set; }
 
-          List<Container> ListGroupContainer { get; set; }
+        List<Container> ListGroupContainer { get; set; }
     }
 }

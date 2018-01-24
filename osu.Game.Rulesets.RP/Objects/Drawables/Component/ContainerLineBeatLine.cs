@@ -3,12 +3,11 @@
 
 using System.Collections.Generic;
 using osu.Framework.Graphics.Containers;
-using osu.Game.Rulesets.RP.Objects.Drawables.Calculator;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using osu.Game.Rulesets.RP.SkinManager;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
@@ -27,10 +26,9 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         private float _velocity = 1;
 
 
-
         public double StartTime
         {
-            get=> _startTime;
+            get => _startTime;
             set
             {
                 _startTime = value;
@@ -40,7 +38,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
 
         public double EndTime
         {
-            get=> _endTime;
+            get => _endTime;
             set
             {
                 _endTime = value;

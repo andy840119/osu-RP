@@ -25,9 +25,9 @@ namespace osu.Game.Rulesets.RP.Beatmaps.OtherBeatmap.HitObjectGegenerator.Genera
             return single.HitObjectConvertParameter.ListSingleHitObjectConvertParameter;
         }
 
-        public RpHitObject GenerateRpHitObject(SingleHitObjectConvertParameter singleHitObject, ConvertParameter single)
+        public RpHit GenerateRpHitObject(SingleHitObjectConvertParameter singleHitObject, ConvertParameter single)
         {
-            var rpHitObject = new RpHitObject(single.ContainerConvertParameter.ListObjectContainer[0].ListContainObject[0], singleHitObject.StartTime);
+            var rpHitObject = new RpHit(single.ContainerConvertParameter.ListObjectContainer[0].ListContainObject[0], singleHitObject.StartTime);
             //fake sample
             return rpHitObject;
         }

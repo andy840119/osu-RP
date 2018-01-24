@@ -18,6 +18,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface
     /// </summary>
     public interface IComponentTickleByHit
     {
-        void Tickle(HitResult result);
+        void Tickle(BaseRpObject result);
     }
 }

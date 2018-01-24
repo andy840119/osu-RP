@@ -9,7 +9,7 @@ namespace osu.Game.Rulesets.RP.Objects
     /// <summary>
     ///     裡面朁E��存所有該在上面皁E��件
     /// </summary>
-    public class RpContainerLine : BaseRpObject, IHasID, IHasEndTime, IHasParent<RpContainerLineGroup>, IHasContainList<BaseRpHitableObject>, IHasLength, IHasCoop, IHasOppositeDirection, IHasLayerIndex
+    public class RpContainerLine : BaseRpObject, IHasID, IHasEndTime, IHasParent<RpContainerGroup>, IHasContainList<BaseRpHitableObject>, IHasLength, IHasCoop, IHasOppositeDirection, IHasLayerIndex
     {
         //ID
         public int ID { get; set; }
@@ -31,7 +31,7 @@ namespace osu.Game.Rulesets.RP.Objects
         }
 
         //parent object
-        public RpContainerLineGroup ParentObject { get; set; }
+        public RpContainerGroup ParentObject { get; set; }
 
         public int ParentID { get; set; }
 
@@ -76,14 +76,14 @@ namespace osu.Game.Rulesets.RP.Objects
         public Coop Coop { get; set; }
 
         //constructure
-        public RpContainerLine(RpContainerLineGroup objectContainer, double startTime)
+        public RpContainerLine(RpContainerGroup objectContainer, double startTime)
             : base(startTime)
         {
             UpdateContainerLayout(objectContainer);
         }
 
         //constructure
-        public RpContainerLine(RpContainerLineGroup objectContainer)
+        public RpContainerLine(RpContainerGroup objectContainer)
             : base(objectContainer.StartTime)
         {
             UpdateContainerLayout(objectContainer);
@@ -98,7 +98,7 @@ namespace osu.Game.Rulesets.RP.Objects
         ///     更新裡面皁E��E��E
         /// </summary>
         /// <param name="objectContainer"></param>
-        public void UpdateContainerLayout(RpContainerLineGroup objectContainer)
+        public void UpdateContainerLayout(RpContainerGroup objectContainer)
         {
             ParentObject = objectContainer;
             PreemptTime = objectContainer.PreemptTime;

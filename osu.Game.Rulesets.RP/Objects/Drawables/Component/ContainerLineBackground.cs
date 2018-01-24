@@ -7,7 +7,7 @@ using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
 using osu.Game.Rulesets.RP.SkinManager;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
@@ -15,7 +15,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
     /// <summary>
     /// container line Background
     /// </summary>
-    public class ContainerLineBackground : Container, IHasCoop, IComponentBase,IHasLayerIndex
+    public class ContainerLineBackground : Container, IHasCoop, IComponentBase, IHasLayerIndex
     {
         /// <summary>
         ///     背景
@@ -38,7 +38,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
             }
         }
 
-        public int LayerIndex { get; set; } 
+        public int LayerIndex { get; set; }
 
         private void createDrawable()
         {

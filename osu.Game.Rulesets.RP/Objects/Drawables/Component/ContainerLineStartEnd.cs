@@ -6,8 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Extension;
 using osu.Game.Rulesets.RP.Objects.Drawables.Component.Interface;
 using osu.Game.Rulesets.RP.Objects.Interface;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
-using OpenTK;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK.Graphics;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
@@ -24,7 +23,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
         /// </summary>
         private RectanglePiece _containerEndDecisionLineComponent;
 
-        
+
         private double _startTime;
         private double _endTime;
         private double _duration;
@@ -111,14 +110,14 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Component
                 //Scale = new Vector2(0.002f, 0.2f * layerCount),
                 //Position = CalculatePosition(0)
                 //Position = this.PositionOfTime(0)
-                Colour= new Color4(226, 66, 54, 255),
-        };
+                Colour = new Color4(226, 66, 54, 255),
+            };
 
             //結束物件
             _containerEndDecisionLineComponent = new RectanglePiece(5, 50)
             {
                 //Scale = new Vector2(0.002f, 0.2f * layerCount),
-                //Position = CalculatePosition((HitObject as RpContainerLineGroup).EndTime - HitObject.StartTime)
+                //Position = CalculatePosition((HitObject as RpContainerGroup).EndTime - HitObject.StartTime)
                 //Position = this.PositionOfTime(Duration)
                 Colour = new Color4(226, 66, 54, 255),
             };

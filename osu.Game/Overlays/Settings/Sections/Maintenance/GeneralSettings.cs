@@ -12,9 +12,9 @@ namespace osu.Game.Overlays.Settings.Sections.Maintenance
 {
     public class GeneralSettings : SettingsSubsection
     {
-        private OsuButton importButton;
-        private OsuButton deleteButton;
-        private OsuButton restoreButton;
+        private TriangleButton importButton;
+        private TriangleButton deleteButton;
+        private TriangleButton restoreButton;
 
         protected override string Header => "General";
 
@@ -29,7 +29,8 @@ namespace osu.Game.Overlays.Settings.Sections.Maintenance
                     Action = () =>
                     {
                         importButton.Enabled.Value = false;
-                        Task.Run(() => beatmaps.ImportFromStable()).ContinueWith(t => Schedule(() => importButton.Enabled.Value = true));
+                        Task.Factory.StartNew(beatmaps.ImportFromStable)
+                            .ContinueWith(t => Schedule(() => importButton.Enabled.Value = true), TaskContinuationOptions.LongRunning);
                     }
                 },
                 deleteButton = new SettingsButton

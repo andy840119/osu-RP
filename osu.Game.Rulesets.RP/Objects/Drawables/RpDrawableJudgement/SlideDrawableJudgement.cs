@@ -6,14 +6,13 @@ using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.RP.Judgements;
 using osu.Game.Rulesets.RP.SkinManager;
-using osu.Game.Rulesets.RP.UI.GamePlay.Playfield.Layout.CommonDwawablePiece;
+using osu.Game.Rulesets.RP.UI.Piece;
 using OpenTK;
 
 namespace osu.Game.Rulesets.RP.Objects.Drawables.RpDrawableJudgement
 {
     public class SlideDrawableJudgement : DrawableJudgement
     {
-
         /// <summary>
         ///     白色十字
         /// </summary>
@@ -24,7 +23,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.RpDrawableJudgement
         /// </summary>
         private readonly ImagePicec _onpuPicec;
 
-        public SlideDrawableJudgement(RpJudgement judgement) : base(judgement)
+        public SlideDrawableJudgement(RpJudgement judgement)
+            : base(judgement)
         {
             Origin = Anchor.Centre;
 

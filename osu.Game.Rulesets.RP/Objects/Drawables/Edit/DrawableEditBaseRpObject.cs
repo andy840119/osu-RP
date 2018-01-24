@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Graphics;
@@ -23,7 +22,7 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit
     /// <summary>
     /// base editable object
     /// </summary>
-    public class DrawableEditBaseRpObject : DrawableHitObject<BaseRpObject>, IHasContextMenu,IHasEditableTemplate
+    public class DrawableEditBaseRpObject : DrawableHitObject<BaseRpObject>, IHasContextMenu, IHasEditableTemplate
     {
         public MenuItem[] ContextMenuItems { get; protected set; }
 
@@ -32,6 +31,8 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit
         public BaseRpObject RpObject { get; protected set; }
 
         public Container DrawableObject { get; protected set; }
+
+        public IHasTemplate ParentObject { get; set; }
 
         /// <summary>
         /// generate right click menu
@@ -105,7 +106,6 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit
         //建構樣板物件
         protected virtual void ConstructObject()
         {
-
         }
 
         //建構
@@ -207,6 +207,5 @@ namespace osu.Game.Rulesets.RP.Objects.Drawables.Edit
             //更新物件位置
             this.UpdateTemplate(Time.Current);
         }
-
     }
 }

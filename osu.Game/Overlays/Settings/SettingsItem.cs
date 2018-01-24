@@ -33,7 +33,7 @@ namespace osu.Game.Overlays.Settings
 
         private SpriteText text;
 
-        private readonly RestoreDefaultValueButton<T> restoreDefaultValueButton = new RestoreDefaultValueButton<T>();
+        private readonly RestoreDefaultValueButton restoreDefaultValueButton = new RestoreDefaultValueButton();
 
         public bool ShowsDefaultIndicator = true;
 
@@ -80,7 +80,7 @@ namespace osu.Game.Overlays.Settings
                 controlWithCurrent?.Current.BindTo(bindable);
                 if (ShowsDefaultIndicator)
                 {
-                    restoreDefaultValueButton.Bindable.BindTo(bindable);
+                    restoreDefaultValueButton.Bindable = bindable.GetBoundCopy();
                     restoreDefaultValueButton.Bindable.TriggerChange();
                 }
             }
@@ -132,9 +132,19 @@ namespace osu.Game.Overlays.Settings
             }
         }
 
-        private class RestoreDefaultValueButton<T> : Box, IHasTooltip
+        private class RestoreDefaultValueButton : Box, IHasTooltip
         {
-            internal readonly Bindable<T> Bindable = new Bindable<T>();
+            private Bindable<T> bindable;
+            public Bindable<T> Bindable
+            {
+                get { return bindable; }
+                set
+                {
+                    bindable = value;
+                    bindable.ValueChanged += newValue => UpdateState();
+                    bindable.DisabledChanged += disabled => UpdateState();
+                }
+            }
 
             private Color4 buttonColour;
 
@@ -142,9 +152,6 @@ namespace osu.Game.Overlays.Settings
 
             public RestoreDefaultValueButton()
             {
-                Bindable.ValueChanged += value => UpdateState();
-                Bindable.DisabledChanged += disabled => UpdateState();
-
                 RelativeSizeAxes = Axes.Y;
                 Width = SettingsOverlay.CONTENT_MARGINS;
                 Alpha = 0f;
@@ -160,8 +167,8 @@ namespace osu.Game.Overlays.Settings
 
             protected override bool OnClick(InputState state)
             {
-                if (!Bindable.Disabled)
-                    Bindable.SetDefault();
+                if (bindable != null && !bindable.Disabled)
+                    bindable.SetDefault();
                 return true;
             }
 
@@ -178,16 +185,18 @@ namespace osu.Game.Overlays.Settings
                 UpdateState();
             }
 
-            internal void SetButtonColour(Color4 buttonColour)
+            public void SetButtonColour(Color4 buttonColour)
             {
                 this.buttonColour = buttonColour;
                 UpdateState();
             }
 
-            internal void UpdateState()
+            public void UpdateState()
             {
-                var colour = Bindable.Disabled ? Color4.Gray : buttonColour;
-                this.FadeTo(Bindable.IsDefault ? 0f : hovering && !Bindable.Disabled ? 1f : 0.5f, 200, Easing.OutQuint);
+                if (bindable == null)
+                    return;
+                var colour = bindable.Disabled ? Color4.Gray : buttonColour;
+                this.FadeTo(bindable.IsDefault ? 0f : hovering && !bindable.Disabled ? 1f : 0.5f, 200, Easing.OutQuint);
                 this.FadeColour(ColourInfo.GradientHorizontal(colour.Opacity(0.8f), colour.Opacity(0)), 200, Easing.OutQuint);
             }
         }
